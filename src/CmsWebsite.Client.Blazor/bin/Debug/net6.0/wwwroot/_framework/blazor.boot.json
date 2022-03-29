@@ -197,14 +197,14 @@
       "netstandard.dll": "sha256-+9Yr\/gSP3tCZAMbOdAcGhHGuMcyg\/AaxVKtt3tGsvao=",
       "System.Private.CoreLib.dll": "sha256-SnxOe5QK250duVAQOw0iWr1sODhUuVEUykExQyQ\/WSk=",
       "CmsWebsite.Share.dll": "sha256-iaOTvAU53oxT2kkGAemBM3ED4duEwLQCjfYPx++hkJw=",
-      "CmsWebsite.Client.Blazor.dll": "sha256-8J7C8jKHuQUI\/r+vTOKS8ZBZ2UL+uQLasO8zfe4DpMw="
+      "CmsWebsite.Client.Blazor.dll": "sha256-s\/BVJRCqE2uOQqU9I+HcXaqcIHBz8Da+eY1qcK5ga7k="
     },
     "extensions": null,
     "lazyAssembly": null,
     "libraryInitializers": null,
     "pdb": {
       "CmsWebsite.Share.pdb": "sha256-8vcW5Z+uXaCE7vaqJtB1PdkiY6LIDRyyeiZ8tuhs6A0=",
-      "CmsWebsite.Client.Blazor.pdb": "sha256-DIZ4QobExZpv9vihROLI0HsZ+22rbpKVjkK282Cjm80="
+      "CmsWebsite.Client.Blazor.pdb": "sha256-zeEPQAvkS2cimjs1L98dm\/OzUNUKfUwOEWzndzSbRSM="
     },
     "runtime": {
       "dotnet.6.0.2.f35rkgywo8.js": "sha256-wbTVn69TU0+WI83iB+kky8tf\/BjZdYJeM0rUP96ur\/c=",
