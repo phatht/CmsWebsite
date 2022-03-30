@@ -1,0 +1,29 @@
+﻿<h4 class="category">VĂN BẢN</h4>
+
+<RadzenTabs Change=@OnChange TabPosition="@tabPosition"
+            style="height: 400px" RenderMode="TabRenderMode.Client">
+    <Tabs>
+
+        <RadzenTabsItem Text="HƯỚNG DẪN">
+        </RadzenTabsItem>
+        <RadzenTabsItem Text="PHÁP LUẬT">
+        </RadzenTabsItem>
+
+    </Tabs>
+</RadzenTabs>
+
+
+@code {
+
+    TabPosition tabPosition = TabPosition.Top;
+
+    protected override void OnInitialized()
+    {
+
+    }
+
+    void OnChange(int index)
+    {
+
+    }
+}

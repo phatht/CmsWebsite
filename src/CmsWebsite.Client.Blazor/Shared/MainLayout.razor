@@ -28,25 +28,26 @@
     <div class="col-md-3">
         <LienKetWebsite></LienKetWebsite>
         <DanhSachMatTran></DanhSachMatTran>
+        <VanBanPhapLuat></VanBanPhapLuat>
     </div>
 </div>
 <Footer></Footer>
  
 @functions {
 
-    [CascadingParameter]
-    Task<AuthenticationState> AuthenticationState { get; set; }
+    //[CascadingParameter]
+    //Task<AuthenticationState> AuthenticationState { get; set; }
 
-    protected override async Task OnParametersSetAsync()
-    {
-        if (!(await AuthenticationState).User.Identity.IsAuthenticated)
-        {
-            navigationManager.NavigateTo("/login");
-        }
-    }
-    async Task LogoutClick()
-    {
-        await authStateProvider.Logout();
-        navigationManager.NavigateTo("/login");
-    }
+    //protected override async Task OnParametersSetAsync()
+    //{
+    //    if (!(await AuthenticationState).User.Identity.IsAuthenticated)
+    //    {
+    //        navigationManager.NavigateTo("/login");
+    //    }
+    //}
+    //async Task LogoutClick()
+    //{
+    //    await authStateProvider.Logout();
+    //    navigationManager.NavigateTo("/login");
+    //}
 }
