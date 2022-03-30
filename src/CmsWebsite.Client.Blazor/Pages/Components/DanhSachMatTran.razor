@@ -1,0 +1,33 @@
+﻿<h3>ỦY BAN MẶT TRẬN CÁC TỈNH THÀNH PHỐ</h3>  
+  <RadzenListBox AllowFiltering="true" 
+  FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" 
+  FilterOperator="StringFilterOperator.Contains" 
+  @bind-Value=@value
+  Data=@List TextProperty="Name" 
+  ValueProperty="Link" Change=@(args => OnChange(args, "ListBox with custom filter operator")) Style="height:200px" Class="w-100" />
+ 
+@code {
+    private string value = string.Empty;
+    List<Item> List = new List<Item>() { 
+        new Item ("https://chinhphu.vn/", "Cổng thông tin điện tử chính phủ"),
+        new Item ("https://dangcongsan.vn/", "Báo điện tử đảng cộng sản") 
+    };
+
+    public class Item
+    { 
+        public Item(string link, string name)
+        {
+            Link = link;
+            Name = name;
+        }
+        public string Link { get; set; }
+        public string Name { get; set; }
+
+    }
+
+    void OnChange(object value, string name)
+    {
+        
+    }
+
+}

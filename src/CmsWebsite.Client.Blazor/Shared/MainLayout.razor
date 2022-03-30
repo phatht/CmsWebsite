@@ -1,17 +1,52 @@
 ﻿@inherits LayoutComponentBase
+@inject NavigationManager navigationManager
+@inject CustomStateProvider authStateProvider
+@using CmsWebsite.Client.Blazor.Pages.Components;
 
 <div class="page">
-    <div class="sidebar">
+    <div class="col-md-2 sidebar">
         <NavMenu />
     </div>
 
-    <main>
+    <div class="col-md-7 main">
         <div class="top-row px-4">
-            <a href="https://docs.microsoft.com/aspnet/" target="_blank">About</a>
+            @DateTime.Now.ToString("dd/MM/yyy HH:mm") | Hotline: 08046154 | Liên hệ
+            <button type="button" class="btn btn-link ml-md-auto">Facebook</button>
+            <button type="button" class="btn btn-link ml-md-auto">Mobile</button>
+            <button type="button" class="btn btn-link ml-md-auto">Email</button>
+        </div>
+        <div>
+
+            <SurveyPrompt Title="Tin mới: " />
+
+        </div>
+        <div class="content px-4">
+            @Body
         </div>
 
-        <article class="content px-4">
-            @Body
-        </article>
-    </main>
+    </div>
+    <div class="col-md-3">
+        <LienKetWebsite></LienKetWebsite>
+        <DanhSachMatTran></DanhSachMatTran>
+    </div>
 </div>
+<Footer></Footer>
+ 
+@functions {
+
+    [CascadingParameter]
+    Task<AuthenticationState> AuthenticationState { get; set; }
+
+    protected override async Task OnParametersSetAsync()
+    {
+        if (!(await AuthenticationState).User.Identity.IsAuthenticated)
+        {
+            navigationManager.NavigateTo("/login");
+        }
+    }
+    async Task LogoutClick()
+    {
+        await authStateProvider.Logout();
+        navigationManager.NavigateTo("/login");
+    }
+}

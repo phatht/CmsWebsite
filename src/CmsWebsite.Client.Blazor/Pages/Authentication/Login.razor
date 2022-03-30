@@ -1,0 +1,55 @@
+﻿@page "/login"
+@layout AuthLayout
+@inject NavigationManager navigationManager
+@inject CustomStateProvider authStateProvider
+
+<div class="col-md-4 offset-md-4">
+
+    <EditForm class="form-signin" OnValidSubmit="OnSubmit" Model="loginRequest">
+        <DataAnnotationsValidator />
+
+        <label for="inputUsername" class="sr-only">Tên đăng nhập</label>
+        <InputText id="inputUsername" class="form-control" @bind-Value="loginRequest.UserName" autofocus />
+        <ValidationMessage For="@(() => loginRequest.UserName)" />
+
+        <label for="inputPassword" class="sr-only">Mật khẩu</label>
+        <InputText type="password" id="inputPassword" class="form-control" @bind-Value="loginRequest.Password" />
+        <ValidationMessage For="@(() => loginRequest.Password)" />
+
+        <div class="col-md-6 form-check m-3">
+            <InputCheckbox id="inputRememberMe" class="form-check-input" @bind-Value="@loginRequest.RememberMe" />
+            <label class="form-check-label" for="inputRememberMe">Ghi nhớ đăng nhập</label>
+
+        </div>
+        <div class="col-md-6">
+            <NavLink href="register">
+                <h6 class="font-weight-normal text-center">Tạo tài khoản !</h6>
+            </NavLink>
+        </div>
+
+        <button class="btn btn-lg btn-primary btn-block" type="submit">Đăng nhập</button>
+
+        <label class="text-danger">@error</label>
+
+
+    </EditForm>
+
+</div>
+@code {
+    LoginRequest loginRequest { get; set; } = new LoginRequest();
+    string error { get; set; }
+
+    async Task OnSubmit()
+    {
+        error = null;
+        try
+        {
+            await authStateProvider.Login(loginRequest);
+            navigationManager.NavigateTo("");
+        }
+        catch (Exception ex)
+        {
+            error = ex.Message;
+        }
+    }
+}

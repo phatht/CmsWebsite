@@ -1,0 +1,25 @@
+﻿<h3>LIÊN KẾT WEBSITE</h3>  
+<RadzenDropDown AllowClear="true" TValue="string" Class="w-100" 
+                            FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" 
+                            FilterOperator="StringFilterOperator.Contains" AllowFiltering="true"
+                            Data=@List TextProperty="Name" ValueProperty="Link"  />
+ 
+@code {
+   
+    List<Item> List = new List<Item>() { 
+        new Item ("https://chinhphu.vn/", "Cổng thông tin điện tử chính phủ"),
+        new Item ("https://dangcongsan.vn/", "Báo điện tử đảng cộng sản") 
+    };
+
+    public class Item
+    { 
+        public Item(string link, string name)
+        {
+            Link = link;
+            Name = name;
+        }
+        public string Link { get; set; }
+        public string Name { get; set; }
+
+    }
+}

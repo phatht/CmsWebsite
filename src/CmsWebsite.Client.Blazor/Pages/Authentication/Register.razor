@@ -1,0 +1,51 @@
+﻿@page "/register"
+@layout AuthLayout
+@inject NavigationManager navigationManager
+@inject CustomStateProvider authStateProvider
+<div class="col-md-4 offset-md-4">
+    <h1 class="h2 font-weight-normal login-title">
+        Đăng ký tài khoản
+    </h1>
+
+    <EditForm class="form-signin" OnValidSubmit="OnSubmit" Model="registerRequest">
+        <DataAnnotationsValidator />
+
+        <label for="inputUsername" class="sr-only">Tên đăng nhập</label>
+        <InputText id="inputUsername" class="form-control"  autofocus @bind-Value="@registerRequest.UserName" />
+        <ValidationMessage For="@(() => registerRequest.UserName)" />
+
+        <label for="inputPassword" class="sr-only">Mật khẩu</label>
+        <InputText type="password" id="inputPassword" class="form-control"  @bind-Value="@registerRequest.Password" />
+        <ValidationMessage For="@(() => registerRequest.Password)" />
+
+        <label for="inputPasswordConfirm" class="sr-only">Xác nhận mật khẩu</label>
+        <InputText type="password" id="inputPasswordConfirm" class="form-control"  @bind-Value="@registerRequest.PasswordConfirm" />
+        <ValidationMessage For="@(() => registerRequest.PasswordConfirm)" />
+
+        <button class="btn btn-lg btn-primary btn-block m-3" type="submit">Tạo tài khoản</button>
+
+        <label class="text-danger">@error</label>
+        <NavLink href="login">
+            <h6 class="font-weight-normal text-center">Bạn đã có tài khoản? Nhấn vào đây để đăng nhập</h6>
+        </NavLink>
+    </EditForm>
+</div>
+@functions {
+
+    RegisterRequest registerRequest { get; set; } = new RegisterRequest();
+    string error { get; set; }
+
+    async Task OnSubmit()
+    {
+        error = null;
+        try
+        {
+            await authStateProvider.Register(registerRequest);
+            navigationManager.NavigateTo("");
+        }
+        catch (Exception ex)
+        {
+            error = ex.Message;
+        }
+    }
+}
