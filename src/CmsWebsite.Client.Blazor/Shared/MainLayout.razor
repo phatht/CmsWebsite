@@ -2,24 +2,24 @@
 @inject NavigationManager navigationManager
 @inject CustomStateProvider authStateProvider
 @using CmsWebsite.Client.Blazor.Pages.Components;
-
+<link href="_content/Radzen.Blazor/css/default.css"  rel="stylesheet" >
 <div class="page">
+
     <div class="col-md-2 sidebar">
         <NavMenu />
     </div>
 
     <div class="col-md-7 main">
         <div class="top-row px-4">
-            @DateTime.Now.ToString("dd/MM/yyy HH:mm") | Hotline: 08046154 | Liên hệ
-            <button type="button" class="btn btn-link ml-md-auto">Facebook</button>
-            <button type="button" class="btn btn-link ml-md-auto">Mobile</button>
-            <button type="button" class="btn btn-link ml-md-auto">Email</button>
+            @DateTime.Now.ToString("dd/MM/yyy HH:mm") | Hotline:  <span style="color:red"> 08046154</span> | Liên hệ
+            <button type="button" class="btn btn-link ml-md-auto"><RadzenIcon Icon="facebook" /> Facebook</button>
+            <button type="button" class="btn btn-link ml-md-auto"><RadzenIcon Icon="call" />Mobile</button>
+            <button type="button" class="btn btn-link ml-md-auto"><RadzenIcon Icon="mark_email_read" />Email</button>
+        </div> 
+        <div class="m-2"> 
+            <TinMoi /> 
         </div>
-        <div>
 
-            <SurveyPrompt Title="Tin mới: " />
-
-        </div>
         <div class="content px-4">
             @Body
         </div>
@@ -32,8 +32,10 @@
     </div>
 </div>
 <Footer></Footer>
- 
+
 @functions {
+
+
 
     //[CascadingParameter]
     //Task<AuthenticationState> AuthenticationState { get; set; }

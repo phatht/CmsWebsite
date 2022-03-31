@@ -1,21 +1,32 @@
-﻿<h4 class="category">VĂN BẢN</h4>
+﻿<RadzenCard  class="m-1">
+    <h6 class="category">VĂN BẢN</h6>
 
-<RadzenTabs Change=@OnChange TabPosition="@tabPosition"
-            style="height: 400px" RenderMode="TabRenderMode.Client">
-    <Tabs>
+    <RadzenTabs Change=@OnChange TabPosition="TabPosition.Top"
+                 RenderMode="TabRenderMode.Client">
+        <Tabs>
+            <RadzenTabsItem Text="HƯỚNG DẪN" Style="font-size:small">
+            </RadzenTabsItem>
+            <RadzenTabsItem Text="PHÁP LUẬT" Style="font-size:small">
+            </RadzenTabsItem>
+        </Tabs>
+    </RadzenTabs>
 
-        <RadzenTabsItem Text="HƯỚNG DẪN">
-        </RadzenTabsItem>
-        <RadzenTabsItem Text="PHÁP LUẬT">
-        </RadzenTabsItem>
 
-    </Tabs>
-</RadzenTabs>
+    <RadzenTabs Change=@OnChange TabPosition="TabPosition.Bottom"
+                 RenderMode="TabRenderMode.Client">
+        <Tabs>
+            <RadzenTabsItem Text="XEM NHIỀU" Style="font-size:small">
+            </RadzenTabsItem>
+            <RadzenTabsItem Text="TIN MỚI" Style="font-size:small">
+            </RadzenTabsItem>
+        </Tabs>
+    </RadzenTabs>
 
+</RadzenCard>
 
 @code {
 
-    TabPosition tabPosition = TabPosition.Top;
+    
 
     protected override void OnInitialized()
     {

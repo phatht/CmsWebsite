@@ -1,7 +1,9 @@
 ﻿@import url('open-iconic/font/css/open-iconic-bootstrap.min.css');
+@import url('https://fonts.googleapis.com/css2?family=Work+Sans');
 
 html, body {
-    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    /* font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;*/
+    font-family: 'Lato','Helvetica Neue',Arial,Helvetica,sans-serif !important
 }
 
 h1:focus {
@@ -65,5 +67,5 @@ a, .btn-link {
 
 
 .category {
-    color: red
+    color: #007bff
 }

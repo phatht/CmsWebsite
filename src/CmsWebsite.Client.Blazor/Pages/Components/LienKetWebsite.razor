@@ -1,10 +1,18 @@
-﻿<h4 class="category">LIÊN KẾT WEBSITE</h4>
+﻿
+<NavLink class="nav-link" href="login" style="float:right">
+   Đăng nhập <span class="oi oi-power-standby"></span>
+</NavLink>
 
-<RadzenDropDown AllowClear="true" TValue="string" Class="w-100"
-                FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive"
-                FilterOperator="StringFilterOperator.Contains" AllowFiltering="true"
-                Data=@List TextProperty="Name" ValueProperty="Link" />
+<RadzenTextBox Class="w-100"  Placeholder="Tìm kiếm thông tin" />
 
+<RadzenCard class="m-1">
+    <h6 class="category">LIÊN KẾT WEBSITE</h6>
+
+    <RadzenDropDown AllowClear="true" TValue="string" Class="w-100"
+                    FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive"
+                    FilterOperator="StringFilterOperator.Contains" AllowFiltering="true"
+                    Data=@List TextProperty="Name" ValueProperty="Link" />
+</RadzenCard>
 @code {
 
     List<Item> List = new List<Item>() {

@@ -8,11 +8,11 @@
     <EditForm class="form-signin" OnValidSubmit="OnSubmit" Model="loginRequest">
         <DataAnnotationsValidator />
 
-        <label for="inputUsername" class="sr-only">Tên đăng nhập</label>
+        <label for="inputUsername" class="sr-only m-1">Tên đăng nhập</label>
         <InputText id="inputUsername" class="form-control" @bind-Value="loginRequest.UserName" autofocus />
         <ValidationMessage For="@(() => loginRequest.UserName)" />
 
-        <label for="inputPassword" class="sr-only">Mật khẩu</label>
+        <label for="inputPassword" class="sr-only m-1">Mật khẩu</label>
         <InputText type="password" id="inputPassword" class="form-control" @bind-Value="loginRequest.Password" />
         <ValidationMessage For="@(() => loginRequest.Password)" />
 
@@ -21,16 +21,14 @@
             <label class="form-check-label" for="inputRememberMe">Ghi nhớ đăng nhập</label>
 
         </div>
-        <div class="col-md-6">
-            <NavLink href="register">
-                <h6 class="font-weight-normal text-center">Tạo tài khoản !</h6>
-            </NavLink>
-        </div>
 
-        <button class="btn btn-lg btn-primary btn-block" type="submit">Đăng nhập</button>
+        <button class="btn btn-lg btn-primary btn-block m-2" style="width:100%" type="submit">Đăng nhập</button>
+
+        <NavLink href="register">
+            <h6 class="font-weight-normal text-center" style="float:right">Tạo tài khoản !</h6>
+        </NavLink>
 
         <label class="text-danger">@error</label>
-
 
     </EditForm>
 

@@ -10,19 +10,19 @@
     <EditForm class="form-signin" OnValidSubmit="OnSubmit" Model="registerRequest">
         <DataAnnotationsValidator />
 
-        <label for="inputUsername" class="sr-only">Tên đăng nhập</label>
+        <label for="inputUsername" class="sr-only m-1">Tên đăng nhập</label>
         <InputText id="inputUsername" class="form-control"  autofocus @bind-Value="@registerRequest.UserName" />
         <ValidationMessage For="@(() => registerRequest.UserName)" />
 
-        <label for="inputPassword" class="sr-only">Mật khẩu</label>
+        <label for="inputPassword" class="sr-only m-1">Mật khẩu</label>
         <InputText type="password" id="inputPassword" class="form-control"  @bind-Value="@registerRequest.Password" />
         <ValidationMessage For="@(() => registerRequest.Password)" />
 
-        <label for="inputPasswordConfirm" class="sr-only">Xác nhận mật khẩu</label>
+        <label for="inputPasswordConfirm" class="sr-only m-1">Xác nhận mật khẩu</label>
         <InputText type="password" id="inputPasswordConfirm" class="form-control"  @bind-Value="@registerRequest.PasswordConfirm" />
         <ValidationMessage For="@(() => registerRequest.PasswordConfirm)" />
 
-        <button class="btn btn-lg btn-primary btn-block m-3" type="submit">Tạo tài khoản</button>
+        <button class="btn btn-lg btn-primary btn-block m-2" style="width:100%" type="submit">Tạo tài khoản</button>
 
         <label class="text-danger">@error</label>
         <NavLink href="login">
