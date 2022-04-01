@@ -15,10 +15,12 @@ namespace CmsWebsite.Api.Infrastructure.Data
 
         public ApplicationDBContext(DbContextOptions<ApplicationDBContext> options) : base(options)
         {
+          
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
             // Fluent API
             modelBuilder.Entity<Article>(ConfigureArticle);
             modelBuilder.Entity<ArticleCategories>(ConfigureArticleCategories);
@@ -27,13 +29,13 @@ namespace CmsWebsite.Api.Infrastructure.Data
         private void ConfigureArticle(EntityTypeBuilder<Article> entity)
         {
             entity.ToTable("CmsArticle");
-            entity.HasKey(r => r.ItemID);
+            entity.HasKey(r => r.ArticleID);
             entity.Property(r => r.Title).IsRequired();
         }
 
         private void ConfigureArticleCategories(EntityTypeBuilder<ArticleCategories> entity)
         {
-            entity.ToTable("CmsArticle");
+            entity.ToTable("CmsArticleCategories");
             entity.HasKey(r => r.ID); 
         }
 

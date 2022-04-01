@@ -22,10 +22,4 @@
     <ProjectReference Include="..\CmsWebsite.Share\CmsWebsite.Share.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Domain\Interfaces\" />
-    <Folder Include="Domain\Service\" />
-    <Folder Include="Infrastructure\Repositories\" />
-  </ItemGroup>
-
 </Project>

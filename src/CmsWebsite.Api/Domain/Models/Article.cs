@@ -2,7 +2,7 @@
 {
     public class Article
     {
-        public long ItemID { get; set; }
+        public long ArticleID { get; set; }
         public string UserId { get; set; }
         public DateTime CreatedDate { get; set; }
         public string Title { get; set; }

@@ -1,5 +1,8 @@
-﻿using CmsWebsite.Api.Domain.Models;
+﻿using CmsWebsite.Api.Domain.Interfaces;
+using CmsWebsite.Api.Domain.Models;
+using CmsWebsite.Api.Domain.Service;
 using CmsWebsite.Api.Infrastructure.Data;
+using CmsWebsite.Api.Infrastructure.Repositories;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -15,6 +18,13 @@ builder.Services.AddSwaggerGen();
 // CẤU HÌNH KẾT NỐI VỚI DATABASE
 builder.Services.AddDbContext<ApplicationDBContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 builder.Services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<ApplicationDBContext>();
+
+// DI
+
+builder.Services.AddScoped<IArticleRepository, ArticleRepository>();
+builder.Services.AddScoped<IArticleService, ArticleService>();
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+
 builder.Services.ConfigureApplicationCookie(options =>
 {
     options.Cookie.HttpOnly = false;
