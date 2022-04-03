@@ -15,11 +15,13 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="Serilog.AspNetCore" Version="5.0.0" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\CmsWebsite.Share\CmsWebsite.Share.csproj" />
+    <ProjectReference Include="..\CommonNetCore\CommonNetCore.csproj" />
   </ItemGroup>
 
 </Project>

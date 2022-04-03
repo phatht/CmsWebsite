@@ -1,18 +1,48 @@
 ﻿<div class="row">
-    <div class="col-xl-6">
-        <h3 class="mt-3">Image from application assets</h3>
-        <RadzenImage Path="images/community.svg" Style="width: 60%; margin: 3rem;" />
-    </div>
-    <div class="col-xl-6">
-        <h3 class="mt-3">Image from url</h3>
-        <RadzenImage Path="https://www.radzen.com/assets/hero-40b90af93c7bda2d44608c74e2b8eeb6785e273e02340ec44583d097b5dfb896.png" Style="width: 100%;">
-        </RadzenImage>
-    </div>
+
+    @if (Data != null)
+    {
+        foreach (var item in Data)
+        {
+            <RadzenCard Style="width:33%">
+                <div class="d-flex flex-row">
+                    <img src=@item.UrlImage class="rounded-circle float-left mr-3" style="width: 80px; height: 80px;">
+                    <div>
+                        <span>
+                          
+                        </span>
+                    </div>
+                    <div>
+                        <span class="cms-content">@item.Content</span>
+                    </div>
+                </div>
+            </RadzenCard>
+        }
+    }
 </div>
+
 @code {
 
-    [Parameter] public string? img { get; set; }
-    [Parameter] public string? content { get; set; }
-    [Parameter] public DateTime? time { get; set; }
+    [Parameter]
+    public List<Item>? data { get; set; }
+
+    List<Item> Data = new List<Item>() {
+        new Item ("img/empty.jpg", "Cổng thông tin điện tử chính phủ",null),
+        new Item ("img/empty.jpg", "Sáng 31/3, phiên trọng thể Đại hội Hội Doanh nhân trẻ Việt Nam lần thứ VII",null),
+        new Item ("img/empty.jpg", "Ngày bầu cử đại biểu Quốc hội khóa XV và đại biểu Hội đồng nhân dân các cấp nhiệm kỳ 2021-2026",null)
+    };
+
+    public class Item
+    {
+        public Item(string urlImage, string content, DateTime? createDate)
+        {
+            UrlImage = urlImage;
+            Content = content;
+            CreateDate = createDate;
+        }
+        public string UrlImage { get; set; }
+        public string Content { get; set; }
+        public DateTime? CreateDate { get; set; }
+    }
 
 }

@@ -29,12 +29,14 @@ namespace CmsWebsite.Api.Domain.Service
         }
 
         public async Task<IEnumerable<Article>> GetArticleAsync()
-        {
+        { 
             return await _unitOfWork.ArticleRepository.ListAsync();
+
         }
 
         public async Task<Article> GetArticleAsync(long id)
         {
+ 
             return await _unitOfWork.ArticleRepository.FindAsync(id);
         }
 

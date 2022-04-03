@@ -20,7 +20,7 @@ namespace CmsWebsite.Api.Controllers
         public async Task<ActionResult<IEnumerable<Article>>> GetArticle()
         {
             var article = await _articleService.GetArticleAsync();
-            return Ok(article);
+           return Ok(article);
         }
 
         // GET: api/article/5

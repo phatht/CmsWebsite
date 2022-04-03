@@ -14,6 +14,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		.editorconfig = .editorconfig
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BuildingBlocks", "BuildingBlocks", "{3D513A23-C75B-4F96-A27D-4B1ECD2A7CB7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommonNetCore", "CommonNetCore\CommonNetCore.csproj", "{EFE0F081-BD3C-4827-A5BC-C45005B8DE3B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -32,9 +36,16 @@ Global
 		{0D9E3D20-1715-4D1E-85EB-8ECC90B21E53}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0D9E3D20-1715-4D1E-85EB-8ECC90B21E53}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0D9E3D20-1715-4D1E-85EB-8ECC90B21E53}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EFE0F081-BD3C-4827-A5BC-C45005B8DE3B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EFE0F081-BD3C-4827-A5BC-C45005B8DE3B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EFE0F081-BD3C-4827-A5BC-C45005B8DE3B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EFE0F081-BD3C-4827-A5BC-C45005B8DE3B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{EFE0F081-BD3C-4827-A5BC-C45005B8DE3B} = {3D513A23-C75B-4F96-A27D-4B1ECD2A7CB7}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {0EB4FAB5-7773-472E-AE81-81360126AC69}

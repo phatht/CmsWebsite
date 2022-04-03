@@ -61,11 +61,16 @@ a, .btn-link {
     color: white;
 }
 
-    .blazor-error-boundary::after {
-        content: "An error has occurred."
-    }
+.blazor-error-boundary::after {
+    content: "An error has occurred."
+}
 
 
 .category {
     color: #007bff
+}
+
+.cms-content > span {
+    font-size: 16px;
+    text-align: justify;
 }

@@ -5,9 +5,19 @@ using CmsWebsite.Api.Infrastructure.Data;
 using CmsWebsite.Api.Infrastructure.Repositories;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using CommonNetCore.Serilog;
+using Serilog;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Serilog
+var logger = new LoggerConfiguration()
+.ReadFrom.Configuration(builder.Configuration)
+.Enrich.FromLogContext()
+.CreateLogger();
+builder.Logging.ClearProviders();
+builder.Logging.AddSerilog(logger);
 // Add services to the container.
 
 builder.Services.AddControllers();
@@ -57,11 +67,14 @@ app.UseCors(x => x
    .AllowCredentials());               // allow credentials 
 
 app.UseHttpsRedirection();
- 
+
 app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
 
+
+
 app.Run();
+
