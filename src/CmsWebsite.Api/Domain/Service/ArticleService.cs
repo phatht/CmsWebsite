@@ -9,7 +9,7 @@ namespace CmsWebsite.Api.Domain.Service
         Task<IEnumerable<Article>> GetArticleAsync();
 
         Task<Article> GetArticleAsync(long id);
-
+        //create
         Task<Article> PutArticleAsync(Article article);
 
         Task<Article> DeleteArticle(long id);

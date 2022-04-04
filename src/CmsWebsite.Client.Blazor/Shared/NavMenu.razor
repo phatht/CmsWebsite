@@ -24,19 +24,19 @@
 
 
         <li class="nav-item">
-            <NavLink class="nav-link" href="" @onclick="()=>expandSubMenu= !expandSubMenu">
+            <NavLink class="nav-link" href="fetchdata" @onclick="()=>expandSubMenu= !expandSubMenu">
                 Hoạt động mặt trận
             </NavLink>
             @if (expandSubMenu)
             {
                 <ul class="nav flex-column">
                     <li class="nav-item">
-                        <NavLink class="nav-link" href="">
+                        <NavLink class="nav-link" href="/article/create">
                             Tin hoạt động
                         </NavLink>
                     </li>
                     <li class="nav-item">
-                        <NavLink class="nav-link" href="">
+                        <NavLink class="nav-link" href="/article/create">
                             Hoạt động địa phượng
                         </NavLink>
                     </li>
@@ -50,13 +50,28 @@
                 Dân tộc - tôn giáo
             </NavLink>
         </li>
-
+        <li class="nav-item">
+            <NavLink class="nav-link" href="article" @onclick="()=>expandSubMenu2= !expandSubMenu2">
+                Bài viết
+            </NavLink>
+            @if (expandSubMenu2)
+            {
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <NavLink class="nav-link" href="article/create">
+                            Thêm bài viết
+                        </NavLink>
+                    </li>
+                </ul>
+            }
+        </li>
     </ul>
 </div>
 
 @code {
     private bool collapseNavMenu = false;
     private bool expandSubMenu;//add
+    private bool expandSubMenu2;//add
 
     private string NavMenuCssClass => collapseNavMenu ? "collapse" : null;
 

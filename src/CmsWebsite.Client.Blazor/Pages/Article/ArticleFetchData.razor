@@ -1,0 +1,57 @@
+﻿@page "/article"
+
+@using CmsWebsite.Share.Models.Article
+@inject HttpClient Http
+@inject IArticleService _client
+@if (Articles is null)
+{
+        <p> Loading Articles</p>
+}
+else
+{
+        <RadzenDataGrid AllowFiltering="true" AllowColumnResize="true"
+        FilterMode="FilterMode.Simple" AllowSorting="true" PageSize="5"
+        AllowPaging="true"  FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive"
+        ShowPagingSummary="true"
+        Data="@Articles" TItem="ListDTO" LogicalFilterOperator="LogicalFilterOperator.Or">
+            <Columns>
+                <RadzenDataGridColumn TItem="ListDTO" Title="Photo" Width="80px" >
+                    <Template Context="data">
+                        <RadzenImage Path="@data.ImageFile" style="width: 40px; height: 40px; border-radius: 8px;" />
+                    </Template>
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="ListDTO" Property="Title"
+            Title="Title" Width="140px" />
+                <RadzenDataGridColumn TItem="ListDTO" Property="Description"
+            Title="Description" Width="140px"/>
+                <RadzenDataGridColumn TItem="ListDTO" Property="SummaryArticle"
+            Title="Summary Article" Width="140px"/>
+                
+                <RadzenDataGridColumn TItem="ListDTO" Property="CreatedDate"
+            Title="Created Date" Width="140px" FormatString="{0:d}"  />
+                <RadzenDataGridColumn TItem="ListDTO" Property="PublishDate"
+            Title="Publish Date" Width="140px" FormatString="{0:d}"  />
+                <RadzenDataGridColumn TItem="ListDTO" Property="LastModifiedDate"
+            Title="Last Modified Date" Width="160px" FormatString="{0:d}"  />
+                <RadzenDataGridColumn TItem="ListDTO" Property="NumberOfViews"
+            Title="Number Of Views"  />
+                <RadzenDataGridColumn Width="140px" TItem="ListDTO" Property="Status"
+            Title="Status"  />
+            </Columns>
+        </RadzenDataGrid>
+}
+
+
+
+
+
+
+
+@code {
+    private List<ListDTO> Articles;
+    protected override async Task OnInitializedAsync()
+    {
+        Articles = await _client.GetListArticle();
+
+    }
+}

@@ -1,0 +1,65 @@
+﻿@page "/article/create"
+@using CmsWebsite.Share.Models.Article
+@using System.Text.Json
+@inject NavigationManager uriHelper
+@inject IArticleService _client
+<h3>Create</h3>
+
+<RadzenTemplateForm TItem="CreateArticleRequest" Data="@article" Submit=@CreateArticle>
+<p>
+    <RadzenLabel Component="ImageFile" Text="ImageFile" />
+    <RadzenFileInput TValue="string" Class="w-100" 
+            Change=@(args => OnChange(args, "FileInput")) Error=@(args => OnError(args, "FileInput")) />
+  </p><p>
+    <RadzenLabel Component="Title" Text="Title" />
+    <RadzenTextBox Name="Title" @bind-Value="@article.Title" />
+  </p>
+  <p>
+    <RadzenLabel Component="Description" Text="Description" />
+    <RadzenTextBox Name="Description" />
+  </p>
+  <p>
+    <RadzenLabel Component="SummaryArticle" Text="Summary Article" />
+    <RadzenTextBox Name="SummaryArticle" />
+  </p>
+  <p>
+    <RadzenLabel Component="KeyWords" Text="KeyWords" />
+    <RadzenTextBox Name="KeyWords" />
+  </p>
+  <p>
+    <RadzenLabel Component="SubHead" Text="SubHead" />
+    <RadzenTextBox Name="SubHead" />
+  </p>
+  <RadzenButton ButtonType="ButtonType.Submit" Text="Save" />
+</RadzenTemplateForm>
+
+@code {
+    //[Inject] private IArticleService _client { get; set; }
+    CreateArticleRequest article = new CreateArticleRequest();
+    private List<ListDTO> Articles;
+    protected override async Task OnInitializedAsync()
+    {
+
+    }
+    async Task CreateArticle()
+    {
+        article.UserId = "string";
+        Console.WriteLine(JsonSerializer.Serialize(article, new JsonSerializerOptions() {  WriteIndented = true }));
+        //var result = await _client.CreateArticle(article);
+        //if (result)
+        //{
+        //    uriHelper.NavigateTo("/article");
+        //}
+        //else
+        //{
+        //    Console.WriteLine("Error");
+        //}
+    }
+    void OnChange(string value, string name)
+    {
+    }
+
+    void OnError(UploadErrorEventArgs args, string name)
+    {
+    }
+}
