@@ -64,6 +64,10 @@ namespace CmsWebsite.Api.Domain.Service
             }
 
             existingArticle.Description = article.Description;
+            existingArticle.Title = article.Title;
+            existingArticle.ImageFile = article.ImageFile;
+            existingArticle.KeyWords = article.KeyWords;
+            existingArticle.SubHead = article.SubHead;
 
             try
             {

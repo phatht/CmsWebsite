@@ -3,7 +3,7 @@ using CmsWebsite.Client.Blazor.Services;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
-
+using Radzen;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 
@@ -22,7 +22,7 @@ builder.Services.AddScoped<CustomStateProvider>();
 builder.Services.AddScoped<AuthenticationStateProvider>(s => s.GetRequiredService<CustomStateProvider>());
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IArticleService, ArticleService>();
-
-
+builder.Services.AddScoped<DialogService>();
+builder.Services.AddScoped<NotificationService>();
 await builder.Build().RunAsync();
     

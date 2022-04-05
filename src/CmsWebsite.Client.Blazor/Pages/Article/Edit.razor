@@ -1,0 +1,76 @@
+﻿@page "/article/edit/{articleId:long}"
+@using CmsWebsite.Share.Models.Article
+@using System.Text.Json
+
+@inject CmsWebsite.Client.Blazor.Services.IArticleService _client
+@inject NavigationManager uriHelper
+<h3>Edit</h3>
+
+<RadzenTemplateForm TItem="Article" Data="@article" Submit=@UpdateArticle>
+<p>
+    <RadzenLabel Component="ImageFile" Text="ImageFile" />
+    <RadzenFileInput TValue="string"@bind-Value="@article.ImageFile" Class="w-100" />
+  </p><p>
+    <RadzenLabel Component="Title" Text="Title" />
+    <RadzenTextBox Name="Title" @bind-Value="@article.Title" />
+  </p>
+  <p>
+    <RadzenLabel Component="Description" Text="Description" />
+    <RadzenTextBox Name="Description" @bind-Value="@article.Description" />
+  </p>
+  <p>
+    <RadzenLabel Component="SummaryArticle" Text="Summary Article" />
+    <RadzenTextBox Name="SummaryArticle"@bind-Value="@article.SummaryArticle" />
+  </p>
+  <p>
+    <RadzenLabel Component="KeyWords" Text="KeyWords" />
+    <RadzenTextBox Name="KeyWords" @bind-Value="@article.KeyWords" />
+  </p>
+  <p>
+    <RadzenLabel Component="SubHead" Text="SubHead" />
+    <RadzenTextBox Name="SubHead" @bind-Value="@article.SubHead" />
+  </p>
+  <p>
+    <RadzenDatePicker  @bind-Value=@article.PublishDate TValue="DateTime" ShowTime="true" ShowSeconds="true" 
+            HoursStep="1.5" MinutesStep="5" SecondsStep="10" DateFormat="MM/dd/yyyy HH:mm">
+            <FooterTemplate>
+                <RadzenButton Click=@OnTodayClick Text="Today" />
+            </FooterTemplate>
+        </RadzenDatePicker>
+    <RadzenButton ButtonType="ButtonType.Submit" Text="Save" />
+    <RadzenButton ButtonStyle="ButtonStyle.Light" ButtonType="ButtonType.Button" Click=@Back Text="Back" />
+
+  </p>
+</RadzenTemplateForm>
+
+@code {
+    Article article = new Article();
+    [Parameter]
+    public long articleId { set; get; }
+    private List<ArListDTO> Articles;
+    protected async override Task OnParametersSetAsync()
+    {
+        article = await _client.GetArticle(articleId);
+    }
+    async Task UpdateArticle()
+    {
+        article.UserId = "string";
+        var result = await _client.UpdateArticle(articleId, article);
+        if (result)
+        {
+            uriHelper.NavigateTo("article");
+        }
+        else
+        {
+            Console.WriteLine(JsonSerializer.Serialize(article, new JsonSerializerOptions() { WriteIndented = true }));
+        }
+    }
+    void OnTodayClick()
+    {
+        article.PublishDate = DateTime.Now;
+    }
+    void Back()
+    {
+        uriHelper.NavigateTo("article");
+    }
+}

@@ -1,44 +1,60 @@
 ﻿@page "/article"
-
+@layout MainLayout;
 @using CmsWebsite.Share.Models.Article
-@inject HttpClient Http
+@using System.Text.Json
 @inject IArticleService _client
+@inject NavigationManager uriHelper
+@inject DialogService DialogService
+@inject NotificationService NotificationService
 @if (Articles is null)
 {
-        <p> Loading Articles</p>
+    <p> Loading Articles</p>
 }
 else
 {
-        <RadzenDataGrid AllowFiltering="true" AllowColumnResize="true"
-        FilterMode="FilterMode.Simple" AllowSorting="true" PageSize="5"
-        AllowPaging="true"  FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive"
-        ShowPagingSummary="true"
-        Data="@Articles" TItem="ListDTO" LogicalFilterOperator="LogicalFilterOperator.Or">
-            <Columns>
-                <RadzenDataGridColumn TItem="ListDTO" Title="Photo" Width="80px" >
-                    <Template Context="data">
-                        <RadzenImage Path="@data.ImageFile" style="width: 40px; height: 40px; border-radius: 8px;" />
-                    </Template>
-                </RadzenDataGridColumn>
-                <RadzenDataGridColumn TItem="ListDTO" Property="Title"
-            Title="Title" Width="140px" />
-                <RadzenDataGridColumn TItem="ListDTO" Property="Description"
-            Title="Description" Width="140px"/>
-                <RadzenDataGridColumn TItem="ListDTO" Property="SummaryArticle"
-            Title="Summary Article" Width="140px"/>
-                
-                <RadzenDataGridColumn TItem="ListDTO" Property="CreatedDate"
-            Title="Created Date" Width="140px" FormatString="{0:d}"  />
-                <RadzenDataGridColumn TItem="ListDTO" Property="PublishDate"
-            Title="Publish Date" Width="140px" FormatString="{0:d}"  />
-                <RadzenDataGridColumn TItem="ListDTO" Property="LastModifiedDate"
-            Title="Last Modified Date" Width="160px" FormatString="{0:d}"  />
-                <RadzenDataGridColumn TItem="ListDTO" Property="NumberOfViews"
-            Title="Number Of Views"  />
-                <RadzenDataGridColumn Width="140px" TItem="ListDTO" Property="Status"
-            Title="Status"  />
-            </Columns>
-        </RadzenDataGrid>
+<RadzenDataGrid @ref="grid0" AllowFiltering="true" AllowColumnResize="true"
+                FilterMode="FilterMode.Simple" AllowSorting="true" PageSize="5"
+                AllowPaging="true" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive"
+                ShowPagingSummary="true"
+                Data="@Articles" TItem="ArListDTO" LogicalFilterOperator="LogicalFilterOperator.Or">
+    <Columns>
+        <RadzenDataGridColumn TItem="ArListDTO" Title="Photo" Width="80px">
+            <Template Context="data">
+                <RadzenImage Path="@data.ImageFile" style="width: 40px; height: 40px; border-radius: 8px;" />
+            </Template>
+        </RadzenDataGridColumn>
+        <RadzenDataGridColumn TItem="ArListDTO" Property="Title"
+                              Title="Title" Width="140px" />
+        <RadzenDataGridColumn TItem="ArListDTO" Property="Description"
+                              Title="Description" Width="140px" />
+        <RadzenDataGridColumn TItem="ArListDTO" Property="SummaryArticle"
+                              Title="Summary Article" Width="140px" />
+
+        <RadzenDataGridColumn TItem="ArListDTO" Property="CreatedDate"
+                              Title="Created Date" Width="140px" FormatString="{0:d}" />
+        <RadzenDataGridColumn TItem="ArListDTO" Property="PublishDate"
+                              Title="Publish Date" Width="140px" FormatString="{0:d}" />
+        <RadzenDataGridColumn TItem="ArListDTO" Property="LastModifiedDate"
+                              Title="Last Modified Date" Width="160px" FormatString="{0:d}" />
+        <RadzenDataGridColumn TItem="ArListDTO" Property="NumberOfViews"
+                              Title="Number Of Views" />
+        <RadzenDataGridColumn Width="140px" TItem="ArListDTO" Property="Status"
+                              Title="Status" />
+        <RadzenDataGridColumn TItem="ArListDTO" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="120px">
+            <Template Context="data">
+                <RadzenButton Class="m-1" ButtonStyle="Radzen.ButtonStyle.Secondary" Icon="edit"
+                              Click="@((args) => EditRow(data.ArticleID))" @onclick:stopPropagation="true" />
+            </Template>
+        </RadzenDataGridColumn>
+        <RadzenDataGridColumn TItem="ArListDTO" Context="order" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="60px">
+            <Template Context="data">
+                <RadzenButton Class="m-1" ButtonStyle="ButtonStyle.Danger" Icon="delete"
+                              Click="@((args) => DeleteRow(data.ArticleID))" @onclick:stopPropagation="true" />
+            </Template>
+        </RadzenDataGridColumn>
+
+    </Columns>
+</RadzenDataGrid>
 }
 
 
@@ -48,10 +64,41 @@ else
 
 
 @code {
-    private List<ListDTO> Articles;
+    protected List<ArListDTO> Articles { get; set; }
+    protected RadzenDataGrid<ArListDTO> grid0;
     protected override async Task OnInitializedAsync()
     {
         Articles = await _client.GetListArticle();
+        //Console.WriteLine(JsonSerializer.Serialize(Articles, new JsonSerializerOptions() { WriteIndented = true }));
 
+
+    }
+    protected void EditRow(long id) => uriHelper.NavigateTo($"article/edit/{id}");
+    protected async Task DeleteRow(long id)
+    {
+        try
+        {
+            var confirmed = await DialogService.Confirm(
+               "Bạn có chắc muốn xoá?", "Xoá bài viết", options: new ConfirmOptions()
+                   {
+                       OkButtonText = "Đồng ý",
+                       CancelButtonText = "Không"
+                   });
+            if (confirmed == true)
+            {
+                var result = await _client.DeleteArticle(id);
+                if (result != null)
+                {
+                    var itemToRemove = Articles.Single(r => r.ArticleID == id);
+                    Articles.Remove(itemToRemove);
+                    await grid0.Reload();
+                    NotificationService.Notify(new NotificationMessage { Severity = NotificationSeverity.Success, Summary = "Thông báo sự kiện", Detail = "Đã xoá thành công", Duration = 4000 });
+                }
+            }
+        }
+        catch (System.Exception exception)
+        {
+            NotificationService.Notify(new NotificationMessage { Severity = NotificationSeverity.Error, Summary = "Thông báo sự kiện", Detail = $"{exception}", Duration = 4000 });
+        }
     }
 }
