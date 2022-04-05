@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace CmsWebsite.Share.Models.Authentication
+﻿namespace CmsWebsite.Share.Models.IdentityModels
 {
     public class CurrentUser
     {

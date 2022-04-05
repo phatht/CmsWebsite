@@ -1,4 +1,4 @@
-﻿using CmsWebsite.Share.Models.Authentication;
+﻿using CmsWebsite.Share.Models.IdentityModels;
 
 namespace CmsWebsite.Client.Blazor.Services
 {

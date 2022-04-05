@@ -5,9 +5,7 @@ using CmsWebsite.Api.Infrastructure.Data;
 using CmsWebsite.Api.Infrastructure.Repositories;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using CommonNetCore.Serilog;
 using Serilog;
-
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -29,12 +27,6 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<ApplicationDBContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 builder.Services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<ApplicationDBContext>();
 
-// DI
-
-builder.Services.AddScoped<IArticleRepository, ArticleRepository>();
-builder.Services.AddScoped<IArticleService, ArticleService>();
-builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
-
 builder.Services.ConfigureApplicationCookie(options =>
 {
     options.Cookie.HttpOnly = false;
@@ -44,11 +36,36 @@ builder.Services.ConfigureApplicationCookie(options =>
         return Task.CompletedTask;
     };
 });
-builder.Services.AddControllers().AddNewtonsoftJson();
-builder.Services.AddControllersWithViews();
 
 //ADD CORS CHO PHÉP THỰC HIỆN API 
 builder.Services.AddCors();
+
+//builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+//       .AddJwtBearer(options =>
+//       {
+//           options.TokenValidationParameters = new TokenValidationParameters
+//           {
+//               ValidateIssuer = true,
+//               ValidateAudience = true,
+//               ValidateLifetime = true,
+//               ValidateIssuerSigningKey = true,
+//               ValidIssuer = builder.Configuration["JwtIssuer"],
+//               ValidAudience = builder.Configuration["JwtAudience"],
+//               IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JwtSecurityKey"]))
+//           };
+//       });
+
+
+// DI
+
+builder.Services.AddScoped<IArticleRepository, ArticleRepository>();
+builder.Services.AddScoped<IArticleService, ArticleService>();
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+
+builder.Services.AddControllers().AddNewtonsoftJson();
+builder.Services.AddControllersWithViews();
+
 
 var app = builder.Build();
 
@@ -58,7 +75,12 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+ 
+app.UseHttpsRedirection();
+app.UseStaticFiles();
 
+
+app.UseRouting();
 //ENABLE CORS
 app.UseCors(x => x
    .AllowAnyMethod()
@@ -66,14 +88,14 @@ app.UseCors(x => x
    .SetIsOriginAllowed(origin => true) // allow any origin  
    .AllowCredentials());               // allow credentials 
 
-app.UseHttpsRedirection();
-
-app.UseRouting();
-app.UseAuthentication();
+app.UseAuthentication();  
 app.UseAuthorization();
 
-app.MapControllers();
 
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapControllers();
+});
 
 
 app.Run();

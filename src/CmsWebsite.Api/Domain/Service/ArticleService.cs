@@ -70,6 +70,8 @@ namespace CmsWebsite.Api.Domain.Service
             try
             {
                 _unitOfWork.ArticleRepository.Update(existingArticle);
+
+                
                 await _unitOfWork.CommitAsync();
 
                 return existingArticle;

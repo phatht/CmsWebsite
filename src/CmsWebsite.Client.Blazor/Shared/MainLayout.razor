@@ -3,55 +3,59 @@
 @inject CustomStateProvider authStateProvider
 @using CmsWebsite.Client.Blazor.Pages.Components;
 <link href="_content/Radzen.Blazor/css/default.css" rel="stylesheet">
- 
-<div class="page">
 
-    <div class="col-md-2 sidebar">
-        <NavMenu />
-          
-    </div>
 
-    <div class="col-md-7 main">
-        <div class="top-row px-4">
-            @DateTime.Now.ToString("dd/MM/yyy HH:mm") | Hotline:  <span style="color:red"> 08046154</span> | Liên hệ
-            <button type="button" class="btn btn-link ml-md-auto"><RadzenIcon Icon="facebook" /> Facebook</button>
-            <button type="button" class="btn btn-link ml-md-auto"><RadzenIcon Icon="call" />Mobile</button>
-            <button type="button" class="btn btn-link ml-md-auto"><RadzenIcon Icon="mark_email_read" />Email</button>
+        <div class="page">
+           
+            <div class="col-md-2 sidebar">
+                <NavMenu />
+            </div>
+
+            <div class="col-md-7 main">
+                <div class="top-row px-4">
+                    @DateTime.Now.ToString("dd/MM/yyy HH:mm") | Hotline:  <span style="color:red"> 08046154</span> | Liên hệ
+                    <button type="button" class="btn btn-link ml-md-auto"><RadzenIcon Icon="facebook" /> Facebook</button>
+                    <button type="button" class="btn btn-link ml-md-auto"><RadzenIcon Icon="call" />Mobile</button>
+                    <button type="button" class="btn btn-link ml-md-auto"><RadzenIcon Icon="mark_email_read" />Email</button>
+                </div>
+                <div class="m-2">
+                    <ItemContent />
+                </div>
+
+                <div class="content px-4">
+                    @Body
+                </div>
+
+            </div>
+            <div class="col-md-3"> 
+                <NavLink class="nav-link" onclick="@LogoutClick" style="float:right">
+                    Thoát <span class="oi oi-power-standby"></span>
+                </NavLink>
+                <LienKetWebsite></LienKetWebsite>
+                <DanhSachMatTran></DanhSachMatTran>
+                <VanBanPhapLuat></VanBanPhapLuat>
+            </div>
         </div>
-        <div class="m-2">
-            <ItemContent />
-        </div>
-
-        <div class="content px-4">
-            @Body
-        </div>
-
-    </div>
-    <div class="col-md-3">
-        <LienKetWebsite></LienKetWebsite>
-        <DanhSachMatTran></DanhSachMatTran>
-        <VanBanPhapLuat></VanBanPhapLuat>
-    </div>
-</div>
-<Footer></Footer>
-
+        <Footer></Footer>
+  
 @functions {
 
+    [CascadingParameter]
+    Task<AuthenticationState> AuthenticationState { get; set; }
 
 
-    //[CascadingParameter]
-    //Task<AuthenticationState> AuthenticationState { get; set; }
 
-    //protected override async Task OnParametersSetAsync()
-    //{
-    //    if (!(await AuthenticationState).User.Identity.IsAuthenticated)
-    //    {
-    //        navigationManager.NavigateTo("/login");
-    //    }
-    //}
-    //async Task LogoutClick()
-    //{
-    //    await authStateProvider.Logout();
-    //    navigationManager.NavigateTo("/login");
-    //}
+    protected override async Task OnParametersSetAsync()
+    {
+        if (!(await AuthenticationState).User.Identity.IsAuthenticated)
+        {
+            navigationManager.NavigateTo("/login");
+        }
+    }
+
+    async Task LogoutClick()
+    {
+        await authStateProvider.Logout();
+        navigationManager.NavigateTo("/login");
+    }
 }

@@ -21,7 +21,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\CmsWebsite.Share\CmsWebsite.Share.csproj" />
-    <ProjectReference Include="..\CommonNetCore\CommonNetCore.csproj" />
   </ItemGroup>
 
 </Project>

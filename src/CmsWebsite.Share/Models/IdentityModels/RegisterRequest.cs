@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace CmsWebsite.Share.Models.Authentication
+namespace CmsWebsite.Share.Models.IdentityModels
 {
     public class RegisterRequest
     {

@@ -8,7 +8,7 @@
     }
   },
   "profiles": {
-    "CmsWebsite.Client.Blazor": {
+    "CmsWebsite.Client.Blazor": { 
       "commandName": "Project",
       "dotnetRunMessages": true,
       "launchBrowser": true,

@@ -8,7 +8,7 @@
         </button>
     </div>
 </div>
- 
+
 <div class="@NavMenuCssClass" @onclick="ToggleNavMenu">
     <ul class="nav flex-column">
         <li class="nav-item">
@@ -21,29 +21,31 @@
                 Giám sát & phản biện
             </NavLink>
         </li>
+        <AuthorizeView>
+            <Authorized>
 
-
-        <li class="nav-item">
-            <NavLink class="nav-link" href="" @onclick="()=>expandSubMenu= !expandSubMenu">
-                Hoạt động mặt trận
-            </NavLink>
-            @if (expandSubMenu)
-            {
-                <ul class="nav flex-column m-2">
-                    <li class="nav-item">
-                        <NavLink class="nav-link" href="">
-                            Tin hoạt động
-                        </NavLink>
-                    </li>
-                    <li class="nav-item">
-                        <NavLink class="nav-link" href="">
-                            Hoạt động địa phượng
-                        </NavLink>
-                    </li>
-                </ul>
-            }
-        </li>
-
+                <li class="nav-item">
+                    <NavLink class="nav-link" href="" @onclick="()=>expandSubMenu= !expandSubMenu">
+                        Hoạt động mặt trận
+                    </NavLink>
+                    @if (expandSubMenu)
+                    {
+                        <ul class="nav flex-column m-2">
+                            <li class="nav-item">
+                                <NavLink class="nav-link" href="">
+                                    Tin hoạt động
+                                </NavLink>
+                            </li>
+                            <li class="nav-item">
+                                <NavLink class="nav-link" href="">
+                                    Hoạt động địa phượng
+                                </NavLink>
+                            </li>
+                        </ul>
+                    }
+                </li>
+            </Authorized>
+        </AuthorizeView>
 
         <li class="nav-item">
             <NavLink class="nav-link" href="fetchdata">

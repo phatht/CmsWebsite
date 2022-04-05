@@ -1,6 +1,5 @@
 ﻿using CmsWebsite.Api.Domain.Models;
-using CmsWebsite.Share.Models.Authentication;
-using Microsoft.AspNetCore.Authorization;
+using CmsWebsite.Share.Models.IdentityModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
@@ -43,7 +42,7 @@ namespace CmsWebsite.Api.Controllers
             });
         }
 
-        [Authorize]
+        //[Authorize]
         [HttpPost]
         public async Task<IActionResult> Logout()
         {
@@ -53,6 +52,7 @@ namespace CmsWebsite.Api.Controllers
         [HttpGet]
         public CurrentUser CurrentUserInfo()
         {
+#pragma warning disable CS8601 // Possible null reference assignment.
             return new CurrentUser
             {
                 IsAuthenticated = User.Identity.IsAuthenticated,
@@ -60,6 +60,7 @@ namespace CmsWebsite.Api.Controllers
                 Claims = User.Claims
                 .ToDictionary(c => c.Type, c => c.Value)
             };
+#pragma warning restore CS8601 // Possible null reference assignment.
         }
     }
 }
