@@ -7,7 +7,7 @@ namespace CmsWebsite.Api.Infrastructure.Repositories
 {
     public class ArticleRepository : BaseRepository, IArticleRepository
     {
-        public ArticleRepository(ApplicationDBContext context) : base(context)
+        public ArticleRepository(ApplicationDbContext context) : base(context)
         {
         }
 

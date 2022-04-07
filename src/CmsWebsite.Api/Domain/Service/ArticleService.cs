@@ -60,7 +60,7 @@ namespace CmsWebsite.Api.Domain.Service
 
             if (existingArticle == null)
             {
-                throw new NotFoundException($"Article {id} is not found.");
+                throw new NotFoundException($"Article {id} is not found."); 
             }
 
             existingArticle.Description = article.Description;

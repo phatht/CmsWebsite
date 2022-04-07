@@ -11,7 +11,7 @@ namespace CmsWebsite.Client.Blazor.Services
             _httpClient = httpClient;
         }
 
-        public async Task<bool> CreateArticle(Article arRequest)
+        public async Task<bool> CreateArticle(ArticleCreateRequest arRequest)
         {
             var result = await _httpClient.PostAsJsonAsync("api/article",arRequest);
             return result.IsSuccessStatusCode;
@@ -23,9 +23,9 @@ namespace CmsWebsite.Client.Blazor.Services
             return result.IsSuccessStatusCode;
         }
 
-        public async Task<Article> GetArticle(long id)
+        public async Task<ArticleCreateRequest> GetArticle(long id)
         {
-            var result = await _httpClient.GetFromJsonAsync<Article>($"api/article/{id}");
+            var result = await _httpClient.GetFromJsonAsync<ArticleCreateRequest>($"api/article/{id}");
             return result;
         }
 
@@ -35,7 +35,7 @@ namespace CmsWebsite.Client.Blazor.Services
             return result;
         }
 
-        public async Task<bool> UpdateArticle(long id, Article arRequest)
+        public async Task<bool> UpdateArticle(long id, ArticleCreateRequest arRequest)
         {
             var result = await _httpClient.PutAsJsonAsync($"api/article/{id}",arRequest);
             return result.IsSuccessStatusCode;

@@ -6,7 +6,7 @@
 @inject NavigationManager uriHelper
 <h3>Edit Article</h3>
 
-<RadzenTemplateForm TItem="Article" Data="@article" Submit=@UpdateArticle>
+<RadzenTemplateForm TItem="ArticleCreateRequest" Data="@article" Submit=@UpdateArticle>
 
 
     <div class="row">
@@ -104,7 +104,7 @@
 </RadzenTemplateForm>
 
 @code {
-    Article article = new Article();
+    ArticleCreateRequest article = new ArticleCreateRequest();
     [Parameter]
     public long articleId { set; get; }
     private List<ArListRepositorie> Articles;

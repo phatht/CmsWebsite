@@ -12,7 +12,7 @@
     Submit: truyền 1 function
 *@
 
-<RadzenTemplateForm TItem="Article" Data="@article" Submit=@CreateArticle>
+<RadzenTemplateForm TItem="ArticleCreateRequest" Data="@article" Submit=@CreateArticle>
     <div class="row">
         <RadzenFieldset>
             <div class="row">
@@ -106,7 +106,7 @@
 
 @code {
     //[Inject] private IArticleService _client { get; set; }
-    Article article = new Article()
+    ArticleCreateRequest article = new ArticleCreateRequest()
         {
             PublishDate = DateTime.Now,
         };
