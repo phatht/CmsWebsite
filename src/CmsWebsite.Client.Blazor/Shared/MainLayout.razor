@@ -11,15 +11,31 @@
         <NavMenu />
     </div>
 
-    <div class="col-md-7 main">
+    <div class="col-md-@col main">
         <div class="top-row px-4">
             @DateTime.Now.ToString("dd/MM/yyy HH:mm") | Hotline:  <span style="color:red"> 08046154</span> | Liên hệ
             <button type="button" class="btn btn-link ml-md-auto"><RadzenIcon Icon="facebook" /> Facebook</button>
             <button type="button" class="btn btn-link ml-md-auto"><RadzenIcon Icon="call" />Mobile</button>
             <button type="button" class="btn btn-link ml-md-auto"><RadzenIcon Icon="mark_email_read" />Email</button>
+            <AuthorizeView>
+                <Authorized>
+                    <NavLink class="nav-link" href="logout" style="float:right">
+                        Xin chào @context.User.Identity.Name !  Thoát <span class="oi oi-power-standby"></span>
+                    </NavLink>
+                </Authorized>
+                <NotAuthorized>
+                    <NavLink class="nav-link" href="login" style="float:right">
+                        Đăng nhập <span class="oi oi-power-standby"></span>
+                    </NavLink>
+                </NotAuthorized>
+            </AuthorizeView>
         </div>
         <div class="m-2">
-            <TinMoi />
+            <AuthorizeView>
+                <NotAuthorized>
+                    <TinMoi />
+                </NotAuthorized>
+            </AuthorizeView>
         </div>
 
         <div class="content px-4">
@@ -27,24 +43,35 @@
         </div>
 
     </div>
-    <div class="col-md-3">
-        <LienKetWebsite></LienKetWebsite>
-        <DanhSachMatTran></DanhSachMatTran>
-        <VanBanPhapLuat></VanBanPhapLuat>
-    </div>
+
+
+    <AuthorizeView>
+        <NotAuthorized>
+            <div class="col-md-3">
+                <LienKetWebsite></LienKetWebsite>
+                <DanhSachMatTran></DanhSachMatTran>
+                <VanBanPhapLuat></VanBanPhapLuat>
+            </div>
+        </NotAuthorized>
+    </AuthorizeView>
+
+
 </div>
 <Footer></Footer>
 
 @functions {
 
-    //[CascadingParameter]
-    //Task<AuthenticationState> AuthenticationState { get; set; }
+    int col = 10;
 
-    //protected override async Task OnParametersSetAsync()
-    //{
-    //    if (!(await AuthenticationState).User.Identity.IsAuthenticated)
-    //    {
-    //        navigationManager.NavigateTo("/login");
-    //    }
-    //}
+    [CascadingParameter]
+    Task<AuthenticationState> AuthenticationState { get; set; }
+
+    protected override async Task OnParametersSetAsync()
+    {
+        if (!(await AuthenticationState).User.Identity.IsAuthenticated)
+        {
+            //navigationManager.NavigateTo("/login");
+            col = 7;
+        }
+    }
 }
