@@ -23,7 +23,11 @@ namespace CmsWebsite.Client.Blazor.Services
         {
             var loginResponse = await _httpClient.PostAsJsonAsync("api/auth/login", loginRequest);
 
-            if (loginResponse.StatusCode == System.Net.HttpStatusCode.BadRequest) throw new Exception(await loginResponse.Content.ReadAsStringAsync());
+            if (loginResponse.StatusCode == System.Net.HttpStatusCode.BadRequest)
+            {
+                var contentBadRequest = await loginResponse.Content.ReadAsStringAsync();
+                return JsonSerializer.Deserialize<LoginResponse>(contentBadRequest);
+            }
 
             var content = await loginResponse.Content.ReadAsStringAsync();
 
