@@ -69,3 +69,7 @@ a, .btn-link {
 .category {
     color: #007bff
 }
+
+form .row {
+    margin-bottom: 16px;
+}

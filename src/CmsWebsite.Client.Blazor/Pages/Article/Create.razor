@@ -4,45 +4,104 @@
 @inject NavigationManager uriHelper
 @inject CmsWebsite.Client.Blazor.Services.IArticleService _client
 @inject NotificationService NotificationService
-<h3>Create</h3>
+<h3>Create Article</h3>
+
 @*
     TItem: truyền 1 class, đối tượng request để hiển thị dữ liệu
     Data: truyền 1 biến object để bind dữ liệu
     Submit: truyền 1 function
 *@
+
 <RadzenTemplateForm TItem="Article" Data="@article" Submit=@CreateArticle>
-    <p>
-        <RadzenLabel Component="ImageFile" Text="ImageFile" />
-        <RadzenFileInput TValue="string" @bind-Value="@article.ImageFile" Class="w-100" />
-    </p><p>
-        <RadzenLabel Component="Title" Text="Title" />
-        <RadzenTextBox Name="Title" @bind-Value="@article.Title" />
-    </p>
-    <p>
-        <RadzenLabel Component="Description" Text="Description" />
-        <RadzenTextBox Name="Description" @bind-Value="@article.Description" />
-    </p>
-    <p>
-        <RadzenLabel Component="SummaryArticle" Text="Summary Article" />
-        <RadzenTextBox Name="SummaryArticle" @bind-Value="@article.SummaryArticle" />
-    </p>
-    <p>
-        <RadzenLabel Component="KeyWords" Text="KeyWords" />
-        <RadzenTextBox Name="KeyWords" @bind-Value="@article.KeyWords" />
-    </p>
-    <p>
-        <RadzenLabel Component="SubHead" Text="SubHead" />
-        <RadzenTextBox Name="SubHead" @bind-Value="@article.SubHead" />
-    </p>
-    <p>
-        <RadzenDatePicker @bind-Value=@article.PublishDate TValue="DateTime" ShowTime="true" ShowSeconds="true"
-                          HoursStep="1.5" MinutesStep="5" SecondsStep="10" DateFormat="MM/dd/yyyy HH:mm">
-            <FooterTemplate>
-                <RadzenButton Click=@OnTodayClick Text="Today" />
-            </FooterTemplate>
-        </RadzenDatePicker>
-        <RadzenButton ButtonType="ButtonType.Submit" Text="Save" />
-    </p>
+    <div class="row">
+        <RadzenFieldset>
+            <div class="row">
+                <div class="col-md-3 align-items-center d-flex">
+                    <RadzenLabel Component="ImageFile" Text="ImageFile" />
+                </div>
+                <div class="col-md-9">
+                    <RadzenFileInput TValue="string" @bind-Value="@article.ImageFile" Class="w-100" />
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-3 align-items-center d-flex">
+                    <RadzenLabel Component="Title" Text="Title" />
+                </div>
+                <div class="col-md-9">
+                    <RadzenTextBox Name="Title" @bind-Value="@article.Title" />
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-3 align-items-center d-flex">
+                    <RadzenLabel Component="Description" Text="Description" />
+                </div>
+                <div class="col-md-9">
+                    <RadzenTextBox Name="Description" @bind-Value="@article.Description" />
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-3 align-items-center d-flex">
+                    <RadzenLabel Component="SummaryArticle" Text="Summary Article" />
+                </div>
+                <div class="col-md-9">
+                    <RadzenHtmlEditor Name="SummaryArticle" @bind-Value=@article.SummaryArticle style="height: 500px; margin-bottom: 1rem;" UploadUrl="upload/image">
+                        <RadzenHtmlEditorUndo />
+                        <RadzenHtmlEditorRedo />
+                        <RadzenHtmlEditorSeparator />
+                        <RadzenHtmlEditorBold />
+                        <RadzenHtmlEditorItalic />
+                        <RadzenHtmlEditorUnderline />
+                        <RadzenHtmlEditorStrikeThrough />
+                        <RadzenHtmlEditorSeparator />
+                        <RadzenHtmlEditorColor />
+                        <RadzenHtmlEditorBackground />
+                        <RadzenHtmlEditorRemoveFormat />
+                    </RadzenHtmlEditor>
+                    @*<RadzenTextBox Name="SummaryArticle" @bind-Value="@article.SummaryArticle" />*@
+                </div>
+            </div>
+
+
+            <div class="row">
+                <div class="col-md-3 align-items-center d-flex">
+                    <RadzenLabel Component="KeyWords" Text="KeyWords" />
+                </div>
+                <div class="col-md-9">
+                    <RadzenTextBox Name="KeyWords" @bind-Value="@article.KeyWords" />
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-3 align-items-center d-flex">
+                    <RadzenLabel Component="SubHead" Text="SubHead" />
+                </div>
+                <div class="col-md-9">
+                    <RadzenTextBox Name="SubHead" @bind-Value="@article.SubHead" />
+                </div>
+            </div>
+
+
+            <div class="row">
+                <div class="col-md-3 align-items-center d-flex">
+                    <RadzenLabel Component="PublishDate" Text="PublishDate" />
+                </div>
+                <div class="col-md-9">
+                    <RadzenDatePicker @bind-Value=@article.PublishDate TValue="DateTime" ShowTime="true" ShowSeconds="true"
+                                      HoursStep="1.5" MinutesStep="5" SecondsStep="10" DateFormat="MM/dd/yyyy HH:mm">
+                        <FooterTemplate>
+                            <RadzenButton Click=@OnTodayClick Text="Today" />
+                        </FooterTemplate>
+                    </RadzenDatePicker>
+                </div>
+            </div>
+
+            <div class="row align-items-end justify-content-center">
+                <RadzenButton ButtonType="ButtonType.Submit" Text="Save" />
+            </div>
+        </RadzenFieldset>
+    </div>
 </RadzenTemplateForm>
 
 @code {
@@ -63,7 +122,13 @@
         if (result)
         {
             Console.WriteLine("OK");
-            NotificationService.Notify(new NotificationMessage { Severity = NotificationSeverity.Success, Summary = "Thông báo sự kiện", Detail = "Thêm thành công", Duration = 4000 });
+            NotificationService.Notify(new NotificationMessage
+                {
+                    Severity = NotificationSeverity.Success,
+                    Summary = "Thông báo sự kiện",
+                    Detail = "Thêm thành công",
+                    Duration = 4000,
+                });
             uriHelper.NavigateTo("/article");
         }
         else

@@ -6,6 +6,7 @@
 @inject NavigationManager uriHelper
 @inject DialogService DialogService
 @inject NotificationService NotificationService
+
 @if (Articles is null)
 {
     <p> Loading Articles</p>
@@ -40,13 +41,13 @@ else
                               Title="Number Of Views" />
         <RadzenDataGridColumn Width="140px" TItem="ArListDTO" Property="Status"
                               Title="Status" />
-        <RadzenDataGridColumn TItem="ArListDTO" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="120px">
+        <RadzenDataGridColumn TItem="ArListDTO" Filterable="false" Sortable="false" Property="Edit" TextAlign="TextAlign.Center" Width="120px">
             <Template Context="data">
                 <RadzenButton Class="m-1" ButtonStyle="Radzen.ButtonStyle.Secondary" Icon="edit"
                               Click="@((args) => EditRow(data.ArticleID))" @onclick:stopPropagation="true" />
             </Template>
         </RadzenDataGridColumn>
-        <RadzenDataGridColumn TItem="ArListDTO" Context="order" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="60px">
+        <RadzenDataGridColumn TItem="ArListDTO" Context="order" Filterable="false" Property="Delete" Sortable="false" TextAlign="TextAlign.Center" Width="60px">
             <Template Context="data">
                 <RadzenButton Class="m-1" ButtonStyle="ButtonStyle.Danger" Icon="delete"
                               Click="@((args) => DeleteRow(data.ArticleID))" @onclick:stopPropagation="true" />
@@ -68,10 +69,7 @@ else
     protected RadzenDataGrid<ArListDTO> grid0;
     protected override async Task OnInitializedAsync()
     {
-        Articles = await _client.GetListArticle();
-        //Console.WriteLine(JsonSerializer.Serialize(Articles, new JsonSerializerOptions() { WriteIndented = true }));
-
-
+        Articles = await _client.GetListArticle(); 
     }
     protected void EditRow(long id) => uriHelper.NavigateTo($"article/edit/{id}");
     protected async Task DeleteRow(long id)
