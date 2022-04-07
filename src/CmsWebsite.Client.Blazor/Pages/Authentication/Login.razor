@@ -1,7 +1,7 @@
 ﻿@page "/login"
 @layout AuthLayout
 @inject NavigationManager navigationManager
-@inject CustomStateProvider authStateProvider
+@inject IAuthService auth
 
 <div class="col-md-4 offset-md-4">
 
@@ -35,19 +35,22 @@
 </div>
 @code {
     LoginRequest loginRequest { get; set; } = new LoginRequest();
-    string error { get; set; }
-
+    private string error { get; set; }
+    private bool ShowErrors;
     async Task OnSubmit()
     {
         error = null;
-        try
+        ShowErrors = false;
+        var result = await auth.Login(loginRequest);
+        if (result.Successful)
         {
-            await authStateProvider.Login(loginRequest);
             navigationManager.NavigateTo("");
         }
-        catch (Exception ex)
+        else
         {
-            error = ex.Message;
+            ShowErrors = true;
+            error = result.Error;
         }
+
     }
 }

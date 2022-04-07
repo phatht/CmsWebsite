@@ -1,34 +1,53 @@
-﻿using CmsWebsite.Share.Models.Authentication;
+﻿using Blazored.LocalStorage;
+using CmsWebsite.Share.Models.Authentication;
+using Microsoft.AspNetCore.Components.Authorization;
+using System.Net.Http.Headers;
 using System.Net.Http.Json;
+using System.Text.Json;
 
 namespace CmsWebsite.Client.Blazor.Services
 {
     public class AuthService : IAuthService
     {
         private readonly HttpClient _httpClient;
-
-        public AuthService(HttpClient httpClient)
+        private readonly ILocalStorageService _localStorage;
+        private readonly AuthenticationStateProvider _authenticationStateProvider;
+        public AuthService(HttpClient httpClient, ILocalStorageService localStorage, AuthenticationStateProvider authenticationStateProvider)
         {
             _httpClient = httpClient;
+            _localStorage = localStorage;
+            _authenticationStateProvider = authenticationStateProvider;
         }
 
-        public async Task<CurrentUser> CurrentUserInfo()
+        public async Task<LoginResponse> Login(LoginRequest loginRequest)
         {
-            var result = await _httpClient.GetFromJsonAsync<CurrentUser>("api/auth/currentuserinfo");
+            var loginResponse = await _httpClient.PostAsJsonAsync("api/auth/login", loginRequest);
+
+            if (loginResponse.StatusCode == System.Net.HttpStatusCode.BadRequest) throw new Exception(await loginResponse.Content.ReadAsStringAsync());
+
+            var content = await loginResponse.Content.ReadAsStringAsync();
+
+            var result = JsonSerializer.Deserialize<LoginResponse>(content,
+                new JsonSerializerOptions()
+                {
+                    PropertyNameCaseInsensitive = true
+                });
+            //lưu vào local stogared của client
+            await _localStorage.SetItemAsync("authToken", result.Token);
+            //đánh dấu trang thái authenticated
+            ((CustomStateProvider)_authenticationStateProvider).MarkUserAsAuthenticated(loginRequest.UserName);
+            //gán vào http
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", result.Token);
+
             return result;
-        }
 
-        public async Task Login(LoginRequest loginRequest)
-        {
-            var result = await _httpClient.PostAsJsonAsync("api/auth/login", loginRequest);
-            if (result.StatusCode == System.Net.HttpStatusCode.BadRequest) throw new Exception(await result.Content.ReadAsStringAsync());
-            result.EnsureSuccessStatusCode();
         }
 
         public async Task Logout()
         {
-            var result = await _httpClient.PostAsync("api/auth/logout", null);
-            result.EnsureSuccessStatusCode();
+            await _localStorage.RemoveItemAsync("authToken");
+            ((CustomStateProvider)_authenticationStateProvider).MarkUserAsLoggedOut();
+            _httpClient.DefaultRequestHeaders.Authorization = null;
         }
 
         public async Task Register(RegisterRequest registerRequest)

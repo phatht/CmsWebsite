@@ -1,9 +1,20 @@
 ﻿
-<NavLink class="nav-link" href="login" style="float:right">
-   Đăng nhập <span class="oi oi-power-standby"></span>
-</NavLink>
 
-<RadzenTextBox Class="w-100"  Placeholder="Tìm kiếm thông tin" />
+<AuthorizeView>
+    <Authorized>
+        Hello, @context.User.Identity.Name!
+        <a href="logout">Log out</a>
+    </Authorized>
+    <NotAuthorized>
+        <NavLink class="nav-link" href="login" style="float:right">
+            Đăng nhập <span class="oi oi-power-standby"></span>
+        </NavLink>
+        <NavLink class="nav-link" href="register" style="float:right">
+            Đăng kí <span class="oi oi-power-standby"></span>
+        </NavLink>
+    </NotAuthorized>
+</AuthorizeView>
+<RadzenTextBox Class="w-100" Placeholder="Tìm kiếm thông tin" />
 
 <RadzenCard class="m-1">
     <h6 class="category">LIÊN KẾT WEBSITE</h6>

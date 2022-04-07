@@ -1,9 +1,23 @@
 ﻿@page "/"
 
 <PageTitle>Giởi thiệu chung</PageTitle>
-
 <h1>Hello, world!</h1>
- 
+<AuthorizeView>
+    <Authorized>
+        <div>
+            Hi @(context.User.Identity.Name), this offer can claim by users with role either 'superadmin' or'admin'
+        </div>
+        Auth: @(context.User.Identity.IsAuthenticated)
+    </Authorized>
+    <NotAuthorized>
+        Not Authorized
+    </NotAuthorized>
+    <Authorizing>
+        <h1>Loading ...</h1>
+    </Authorizing>
+</AuthorizeView>
+@*<AuthorizeView Roles="superadmin, admin">
+</AuthorizeView>*@
 Welcome to your new app.
 
 
