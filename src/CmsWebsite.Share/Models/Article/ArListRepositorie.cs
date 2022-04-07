@@ -1,6 +1,6 @@
 ﻿namespace CmsWebsite.Share.Models.Article
 {
-    public class ArListDTO
+    public class ArListRepositorie
     {
         public long ArticleID { get; set; }
         public DateTime CreatedDate { get; set; }

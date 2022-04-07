@@ -29,9 +29,9 @@ namespace CmsWebsite.Client.Blazor.Services
             return result;
         }
 
-        public async Task<List<ArListDTO>> GetListArticle()
+        public async Task<List<ArListRepositorie>> GetListArticle()
         {
-            var result = await _httpClient.GetFromJsonAsync<List<ArListDTO>>("api/article");
+            var result = await _httpClient.GetFromJsonAsync<List<ArListRepositorie>>("api/article");
             return result;
         }
 

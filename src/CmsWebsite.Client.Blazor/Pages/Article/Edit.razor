@@ -107,7 +107,7 @@
     Article article = new Article();
     [Parameter]
     public long articleId { set; get; }
-    private List<ArListDTO> Articles;
+    private List<ArListRepositorie> Articles;
     protected async override Task OnParametersSetAsync()
     {
         article = await _client.GetArticle(articleId);
