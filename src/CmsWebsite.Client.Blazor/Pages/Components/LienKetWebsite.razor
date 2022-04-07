@@ -1,5 +1,18 @@
 ﻿
+<AuthorizeView>
+    <Authorized> 
+        <NavLink class="nav-link" href="logout" style="float:right">
+          Xin chào @context.User.Identity.Name !  Thoát <span class="oi oi-power-standby"></span>
+        </NavLink>
+    </Authorized>
+    <NotAuthorized>
+        <NavLink class="nav-link" href="login" style="float:right">
+            Đăng nhập <span class="oi oi-power-standby"></span>
+        </NavLink>
+    </NotAuthorized>
+</AuthorizeView>
 
+@*
 <AuthorizeView>
     <Authorized>
         Hello, @context.User.Identity.Name!
@@ -13,7 +26,8 @@
             Đăng kí <span class="oi oi-power-standby"></span>
         </NavLink>
     </NotAuthorized>
-</AuthorizeView>
+</AuthorizeView>*@
+
 <RadzenTextBox Class="w-100" Placeholder="Tìm kiếm thông tin" />
 
 <RadzenCard class="m-1">
@@ -42,4 +56,6 @@
         public string Name { get; set; }
 
     }
+
+    
 }
