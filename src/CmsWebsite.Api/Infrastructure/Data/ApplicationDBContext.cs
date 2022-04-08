@@ -37,8 +37,12 @@ namespace CmsWebsite.Api.Infrastructure.Data
         {
             entity.ToTable("CmsArticleCategories");
             entity.HasKey(ac => new { ac.ArticleID, ac.CategoryID });
-            entity.HasOne(ac => ac.Article).WithMany(a => a.ArticleCategories).HasForeignKey(ac => ac.ArticleID);
-            entity.HasOne(ac => ac.Category).WithMany(c => c.ArticleCategories).HasForeignKey(ac => ac.CategoryID);
+            entity.HasOne(ac => ac.Article)
+                .WithMany(a => a.ArticleCategories)
+                .HasForeignKey(ac => ac.ArticleID);
+            entity.HasOne(ac => ac.Category)
+                .WithMany(c => c.ArticleCategories)
+                .HasForeignKey(ac => ac.CategoryID);
         }
 
         private void ConfigureCategories(EntityTypeBuilder<Category> entity)

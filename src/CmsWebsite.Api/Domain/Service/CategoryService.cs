@@ -15,7 +15,7 @@ namespace CmsWebsite.Api.Domain.Service
 
         Task<Category> DeleteCategory(long id);
 
-        Task<Category> PutCategoryAsync(long id, CategoryUpdateRequest request);
+        Task<Category> PutCategoryAsync(long id, CategoryDTO category);
     }
     public class CategoryService : ICategoryService
     {
@@ -65,7 +65,7 @@ namespace CmsWebsite.Api.Domain.Service
             }
         }
 
-        public async Task<Category> PutCategoryAsync(long id, CategoryUpdateRequest request)
+        public async Task<Category> PutCategoryAsync(long id, CategoryDTO category)
         {
             var existingCategory = await _unitOfWork.CategoryRepository.FindAsync(id);
 
@@ -74,11 +74,11 @@ namespace CmsWebsite.Api.Domain.Service
                 throw new NotFoundException($"Article {id} is not found.");
             }
 
-            existingCategory.ParentCategoryId = request.ParentCategoryId;
-            existingCategory.CategoryName = request.CategoryName;
-            existingCategory.Abbreviation = request.Abbreviation;
-            existingCategory.IconFile = request.IconFile;
-            existingCategory.Level = (int)request.Level;
+            existingCategory.ParentCategoryId = category.ParentCategoryId;
+            existingCategory.CategoryName = category.CategoryName;
+            existingCategory.Abbreviation = category.Abbreviation;
+            existingCategory.IconFile = category.IconFile;
+            existingCategory.Level = category.Level;
 
             try
             {

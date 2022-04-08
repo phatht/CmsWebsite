@@ -1,0 +1,86 @@
+﻿@page "/category"
+@layout MainLayout;
+@using CmsWebsite.Client.Blazor.Services.Category
+@using CmsWebsite.Share.Models.Category
+@using System.Text.Json
+@inject ICategoryService _client
+@inject NavigationManager uriHelper
+@inject DialogService DialogService
+@inject NotificationService NotificationService
+@if(Categories == null)
+{
+    <p>Loading Categories</p>
+}
+else
+{
+    <RadzenDataGrid @ref="grid0" AllowFiltering="true" AllowColumnResize="true"
+                FilterMode="FilterMode.Simple" AllowSorting="true" PageSize="10"
+                AllowPaging="true" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive"
+                ShowPagingSummary="true"
+                Data="@Categories" TItem="CategoryDTO" LogicalFilterOperator="LogicalFilterOperator.Or">
+    <Columns>
+        <RadzenDataGridColumn TItem="CategoryDTO" Title="Icon" Width="80px">
+            <Template Context="data">
+                <RadzenImage Path="@data.IconFile" style="width: 40px; height: 40px; border-radius: 8px;" />
+            </Template>
+        </RadzenDataGridColumn>
+        <RadzenDataGridColumn TItem="CategoryDTO" Property="CategoryName"
+                              Title="Name" Width="140px" />
+        <RadzenDataGridColumn TItem="CategoryDTO" Property="ParentCategoryId"
+                              Title="Parent" Width="140px" />
+        <RadzenDataGridColumn TItem="CategoryDTO" Property="Abbreviation"
+                              Title="Abbreviation" Width="140px" />
+        <RadzenDataGridColumn TItem="CategoryDTO" Property="Level"
+                              Title="Level" Width="140px"/>
+        <RadzenDataGridColumn TItem="CategoryDTO" Filterable="false" Sortable="false" Property="Edit" TextAlign="TextAlign.Center" Width="120px">
+            <Template Context="data">
+                <RadzenButton Class="m-1" ButtonStyle="Radzen.ButtonStyle.Secondary" Icon="edit"
+                              Click="@((args) => EditRow(data.CategoryId))" @onclick:stopPropagation="true" />
+            </Template>
+        </RadzenDataGridColumn>
+        <RadzenDataGridColumn TItem="CategoryDTO" Context="order" Filterable="false" Property="Delete" Sortable="false" TextAlign="TextAlign.Center" Width="60px">
+            <Template Context="data">
+                <RadzenButton Class="m-1" ButtonStyle="ButtonStyle.Danger" Icon="delete"
+                              Click="@((args) => DeleteRow(data.CategoryId))" @onclick:stopPropagation="true" />
+            </Template>
+        </RadzenDataGridColumn>
+
+    </Columns>
+</RadzenDataGrid>
+}
+@code {
+    protected List<CategoryDTO> Categories { get; set; }
+    protected RadzenDataGrid<CategoryDTO> grid0;
+    protected override async Task OnInitializedAsync()
+    {
+        Categories = await _client.GetListCategory(); 
+    }
+    protected void EditRow(long id) => uriHelper.NavigateTo($"category/edit/{id}");
+    protected async Task DeleteRow(long id)
+    {
+        try
+        {
+            var confirmed = await DialogService.Confirm(
+               "Bạn có chắc muốn xoá?", "Xoá loại bài viết", options: new ConfirmOptions()
+                   {
+                       OkButtonText = "Đồng ý",
+                       CancelButtonText = "Không"
+                   });
+            if (confirmed == true)
+            {
+                var result = await _client.DeleteCategory(id);
+                if (result != null)
+                {
+                    var itemToRemove = Categories.Single(r => r.CategoryId == id);
+                    Categories.Remove(itemToRemove);
+                    await grid0.Reload();
+                    NotificationService.Notify(new NotificationMessage { Severity = NotificationSeverity.Success, Summary = "Thông báo sự kiện", Detail = "Đã xoá thành công", Duration = 4000 });
+                }
+            }
+        }
+        catch (System.Exception exception)
+        {
+            NotificationService.Notify(new NotificationMessage { Severity = NotificationSeverity.Error, Summary = "Thông báo sự kiện", Detail = $"{exception}", Duration = 4000 });
+        }
+    }
+}

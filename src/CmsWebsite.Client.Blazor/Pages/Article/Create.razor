@@ -1,8 +1,9 @@
 ﻿@page "/article/create"
+@using CmsWebsite.Client.Blazor.Services.Article
 @using CmsWebsite.Share.Models.Article
 @using System.Text.Json
 @inject NavigationManager uriHelper
-@inject CmsWebsite.Client.Blazor.Services.IArticleService _client
+@inject IArticleService _client
 @inject NotificationService NotificationService
 <h3>Create Article</h3>
 
@@ -107,10 +108,10 @@
 @code {
     //[Inject] private IArticleService _client { get; set; }
     ArticleCreateRequest article = new ArticleCreateRequest()
-        {
-            PublishDate = DateTime.Now,
-        };
-    private List<ArListRepositorie> Articles;
+    {
+        PublishDate = DateTime.Now,
+    };
+    private List<ArticleDTO> Articles;
     protected override async Task OnInitializedAsync()
     {
 

@@ -28,6 +28,21 @@
                         </ul>
                     }
                 </li>
+                <li class="nav-item">
+                    <NavLink class="nav-link" href="category" @onclick="()=>expandSubMenu= !expandSubMenu">
+                        Loại bài viết
+                    </NavLink>
+                    @if (expandSubMenu)
+                    {
+                        <ul class="nav flex-column">
+                            <li class="nav-item">
+                                <NavLink class="nav-link" href="category/create">
+                                    Thêm loại bài viết
+                                </NavLink>
+                            </li>
+                        </ul>
+                    }
+                </li>
             </Authorized>
             <NotAuthorized>
                 <li class="nav-item">

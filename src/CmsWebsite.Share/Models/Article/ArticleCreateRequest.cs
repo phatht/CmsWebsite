@@ -12,7 +12,6 @@
         public DateTime PublishDate { get; set; }
         public int NumberOfViews { get; set; }
         public DateTime ExpireDate { get; set; }
-        public DateTime LastModifiedDate { get; set; }
         public string KeyWords { get; set; }
         public string SubHead { get; set; }
         public int Status { get; set; }

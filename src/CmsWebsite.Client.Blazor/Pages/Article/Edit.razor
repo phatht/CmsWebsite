@@ -1,12 +1,13 @@
 ﻿@page "/article/edit/{articleId:long}"
+@using CmsWebsite.Client.Blazor.Services.Article
 @using CmsWebsite.Share.Models.Article
 @using System.Text.Json
 
-@inject CmsWebsite.Client.Blazor.Services.IArticleService _client
+@inject IArticleService _client
 @inject NavigationManager uriHelper
 <h3>Edit Article</h3>
 
-<RadzenTemplateForm TItem="ArticleCreateRequest" Data="@article" Submit=@UpdateArticle>
+<RadzenTemplateForm TItem="ArticleDTO" Data="@existingArticle" Submit=@UpdateArticle>
 
 
     <div class="row">
@@ -16,7 +17,7 @@
                     <RadzenLabel Component="ImageFile" Text="ImageFile" />
                 </div>
                 <div class="col-md-9">
-                    <RadzenFileInput TValue="string" @bind-Value="@article.ImageFile" Class="w-100" />
+                    <RadzenFileInput TValue="string" @bind-Value="@existingArticle.ImageFile" Class="w-100" />
                 </div>
             </div>
             <div class="row">
@@ -24,7 +25,7 @@
                     <RadzenLabel Component="Title" Text="Title" />
                 </div>
                 <div class="col-md-9">
-                    <RadzenTextBox Name="Title" @bind-Value="@article.Title" />
+                    <RadzenTextBox Name="Title" @bind-Value="@existingArticle.Title" />
                 </div>
             </div>
 
@@ -33,7 +34,7 @@
                     <RadzenLabel Component="Description" Text="Description" />
                 </div>
                 <div class="col-md-9">
-                    <RadzenTextBox Name="Description" @bind-Value="@article.Description" />
+                    <RadzenTextBox Name="Description" @bind-Value="@existingArticle.Description" />
                 </div>
             </div>
 
@@ -42,7 +43,7 @@
                     <RadzenLabel Component="SummaryArticle" Text="Summary Article" />
                 </div>
                 <div class="col-md-9">
-                     <RadzenHtmlEditor Name="SummaryArticle" @bind-Value=@article.SummaryArticle style="height: 500px; margin-bottom: 1rem;" UploadUrl="upload/image">
+                     <RadzenHtmlEditor Name="SummaryArticle" @bind-Value=@existingArticle.SummaryArticle style="height: 500px; margin-bottom: 1rem;" UploadUrl="upload/image">
                         <RadzenHtmlEditorUndo />
                         <RadzenHtmlEditorRedo />
                         <RadzenHtmlEditorSeparator />
@@ -65,7 +66,7 @@
                     <RadzenLabel Component="KeyWords" Text="KeyWords" />
                 </div>
                 <div class="col-md-9">
-                    <RadzenTextBox Name="KeyWords" @bind-Value="@article.KeyWords" />
+                    <RadzenTextBox Name="KeyWords" @bind-Value="@existingArticle.KeyWords" />
                 </div>
             </div>
 
@@ -74,7 +75,7 @@
                     <RadzenLabel Component="SubHead" Text="SubHead" />
                 </div>
                 <div class="col-md-9">
-                    <RadzenTextBox Name="SubHead" @bind-Value="@article.SubHead" />
+                    <RadzenTextBox Name="SubHead" @bind-Value="@existingArticle.SubHead" />
                 </div>
             </div>
 
@@ -84,7 +85,7 @@
                     <RadzenLabel Component="PublishDate" Text="PublishDate" />
                 </div>
                 <div class="col-md-9">
-                    <RadzenDatePicker @bind-Value=@article.PublishDate TValue="DateTime" ShowTime="true" ShowSeconds="true"
+                    <RadzenDatePicker @bind-Value=@existingArticle.PublishDate TValue="DateTime" ShowTime="true" ShowSeconds="true"
                                       HoursStep="1.5" MinutesStep="5" SecondsStep="10" DateFormat="MM/dd/yyyy HH:mm">
                         <FooterTemplate>
                             <RadzenButton Click=@OnTodayClick Text="Today" />
@@ -104,30 +105,29 @@
 </RadzenTemplateForm>
 
 @code {
-    ArticleCreateRequest article = new ArticleCreateRequest();
+    private ArticleDTO existingArticle { get; set; } = new ArticleDTO();
+    
     [Parameter]
     public long articleId { set; get; }
-    private List<ArListRepositorie> Articles;
     protected async override Task OnParametersSetAsync()
     {
-        article = await _client.GetArticle(articleId);
+        existingArticle = await _client.GetArticle(articleId);
     }
     async Task UpdateArticle()
     {
-        article.UserId = "string";
-        var result = await _client.UpdateArticle(articleId, article);
+        var result = await _client.UpdateArticle(articleId, existingArticle);
         if (result)
         {
             uriHelper.NavigateTo("article");
         }
         else
         {
-            Console.WriteLine(JsonSerializer.Serialize(article, new JsonSerializerOptions() { WriteIndented = true }));
+            Console.WriteLine(JsonSerializer.Serialize(existingArticle, new JsonSerializerOptions() { WriteIndented = true }));
         }
     }
     void OnTodayClick()
     {
-        article.PublishDate = DateTime.Now;
+        existingArticle.PublishDate = DateTime.Now;
     }
     void Back()
     {

@@ -1,5 +1,6 @@
 ﻿@page "/article"
 @layout MainLayout;
+@using CmsWebsite.Client.Blazor.Services.Article
 @using CmsWebsite.Share.Models.Article
 @using System.Text.Json
 @inject IArticleService _client
@@ -14,40 +15,40 @@
 else
 {
 <RadzenDataGrid @ref="grid0" AllowFiltering="true" AllowColumnResize="true"
-                FilterMode="FilterMode.Simple" AllowSorting="true" PageSize="5"
+                FilterMode="FilterMode.Simple" AllowSorting="true" PageSize="10"
                 AllowPaging="true" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive"
                 ShowPagingSummary="true"
-                Data="@Articles" TItem="ArListRepositorie" LogicalFilterOperator="LogicalFilterOperator.Or">
+                Data="@Articles" TItem="ArticleDTO" LogicalFilterOperator="LogicalFilterOperator.Or">
     <Columns>
-        <RadzenDataGridColumn TItem="ArListRepositorie" Title="Photo" Width="80px">
+        <RadzenDataGridColumn TItem="ArticleDTO" Title="Photo" Width="80px">
             <Template Context="data">
                 <RadzenImage Path="@data.ImageFile" style="width: 40px; height: 40px; border-radius: 8px;" />
             </Template>
         </RadzenDataGridColumn>
-        <RadzenDataGridColumn TItem="ArListRepositorie" Property="Title"
+        <RadzenDataGridColumn TItem="ArticleDTO" Property="Title"
                               Title="Title" Width="140px" />
-        <RadzenDataGridColumn TItem="ArListRepositorie" Property="Description"
+        <RadzenDataGridColumn TItem="ArticleDTO" Property="Description"
                               Title="Description" Width="140px" />
-        <RadzenDataGridColumn TItem="ArListRepositorie" Property="SummaryArticle"
+        <RadzenDataGridColumn TItem="ArticleDTO" Property="SummaryArticle"
                               Title="Summary Article" Width="140px" />
 
-        <RadzenDataGridColumn TItem="ArListRepositorie" Property="CreatedDate"
+        <RadzenDataGridColumn TItem="ArticleDTO" Property="CreatedDate"
                               Title="Created Date" Width="140px" FormatString="{0:d}" />
-        <RadzenDataGridColumn TItem="ArListRepositorie" Property="PublishDate"
+        <RadzenDataGridColumn TItem="ArticleDTO" Property="PublishDate"
                               Title="Publish Date" Width="140px" FormatString="{0:d}" />
-        <RadzenDataGridColumn TItem="ArListRepositorie" Property="LastModifiedDate"
+        <RadzenDataGridColumn TItem="ArticleDTO" Property="LastModifiedDate"
                               Title="Last Modified Date" Width="160px" FormatString="{0:d}" />
-        <RadzenDataGridColumn TItem="ArListRepositorie" Property="NumberOfViews"
+        <RadzenDataGridColumn TItem="ArticleDTO" Property="NumberOfViews"
                               Title="Number Of Views" />
-        <RadzenDataGridColumn Width="140px" TItem="ArListRepositorie" Property="Status"
+        <RadzenDataGridColumn Width="140px" TItem="ArticleDTO" Property="Status"
                               Title="Status" />
-        <RadzenDataGridColumn TItem="ArListRepositorie" Filterable="false" Sortable="false" Property="Edit" TextAlign="TextAlign.Center" Width="120px">
+        <RadzenDataGridColumn TItem="ArticleDTO" Filterable="false" Sortable="false" Property="Edit" TextAlign="TextAlign.Center" Width="120px">
             <Template Context="data">
                 <RadzenButton Class="m-1" ButtonStyle="Radzen.ButtonStyle.Secondary" Icon="edit"
                               Click="@((args) => EditRow(data.ArticleID))" @onclick:stopPropagation="true" />
             </Template>
         </RadzenDataGridColumn>
-        <RadzenDataGridColumn TItem="ArListRepositorie" Context="order" Filterable="false" Property="Delete" Sortable="false" TextAlign="TextAlign.Center" Width="60px">
+        <RadzenDataGridColumn TItem="ArticleDTO" Context="order" Filterable="false" Property="Delete" Sortable="false" TextAlign="TextAlign.Center" Width="60px">
             <Template Context="data">
                 <RadzenButton Class="m-1" ButtonStyle="ButtonStyle.Danger" Icon="delete"
                               Click="@((args) => DeleteRow(data.ArticleID))" @onclick:stopPropagation="true" />
@@ -65,8 +66,8 @@ else
 
 
 @code {
-    protected List<ArListRepositorie> Articles { get; set; }
-    protected RadzenDataGrid<ArListRepositorie> grid0;
+    protected List<ArticleDTO> Articles { get; set; }
+    protected RadzenDataGrid<ArticleDTO> grid0;
     protected override async Task OnInitializedAsync()
     {
         Articles = await _client.GetListArticle(); 

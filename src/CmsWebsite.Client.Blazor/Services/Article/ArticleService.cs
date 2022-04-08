@@ -1,7 +1,7 @@
 ﻿using CmsWebsite.Share.Models.Article;
 using System.Net.Http.Json;
 
-namespace CmsWebsite.Client.Blazor.Services
+namespace CmsWebsite.Client.Blazor.Services.Article
 {
     public class ArticleService : IArticleService
     {
@@ -13,7 +13,7 @@ namespace CmsWebsite.Client.Blazor.Services
 
         public async Task<bool> CreateArticle(ArticleCreateRequest arRequest)
         {
-            var result = await _httpClient.PostAsJsonAsync("api/article",arRequest);
+            var result = await _httpClient.PostAsJsonAsync("api/article", arRequest);
             return result.IsSuccessStatusCode;
         }
 
@@ -23,21 +23,21 @@ namespace CmsWebsite.Client.Blazor.Services
             return result.IsSuccessStatusCode;
         }
 
-        public async Task<ArticleCreateRequest> GetArticle(long id)
+        public async Task<ArticleDTO> GetArticle(long id)
         {
-            var result = await _httpClient.GetFromJsonAsync<ArticleCreateRequest>($"api/article/{id}");
+            var result = await _httpClient.GetFromJsonAsync<ArticleDTO>($"api/article/{id}");
             return result;
         }
 
-        public async Task<List<ArListRepositorie>> GetListArticle()
+        public async Task<List<ArticleDTO>> GetListArticle()
         {
-            var result = await _httpClient.GetFromJsonAsync<List<ArListRepositorie>>("api/article");
+            var result = await _httpClient.GetFromJsonAsync<List<ArticleDTO>>("api/article");
             return result;
         }
 
-        public async Task<bool> UpdateArticle(long id, ArticleCreateRequest arRequest)
+        public async Task<bool> UpdateArticle(long id, ArticleDTO article)
         {
-            var result = await _httpClient.PutAsJsonAsync($"api/article/{id}",arRequest);
+            var result = await _httpClient.PutAsJsonAsync($"api/article/{id}", article);
             return result.IsSuccessStatusCode;
         }
     }
