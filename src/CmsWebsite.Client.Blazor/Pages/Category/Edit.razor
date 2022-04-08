@@ -57,7 +57,7 @@
                 </div>
                 <div class="col-md-9">
                     <RadzenDropDown Name="Level" Data="@MyLevels" TextProperty="EnumName" ValueProperty="EnumValue"
-                                    TValue="string" Placeholder="Select Level..." />
+                                     @bind-Value=@existingCategory.Level Placeholder="Select Level..." />
 
                 </div>
             </div>
