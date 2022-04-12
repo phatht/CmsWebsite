@@ -12,6 +12,7 @@ namespace CmsWebsite.Client.Blazor.Services
         private readonly HttpClient _httpClient;
         private readonly ILocalStorageService _localStorage;
         private readonly AuthenticationStateProvider _authenticationStateProvider;
+
         public AuthService(HttpClient httpClient, ILocalStorageService localStorage, AuthenticationStateProvider authenticationStateProvider)
         {
             _httpClient = httpClient;
@@ -61,5 +62,9 @@ namespace CmsWebsite.Client.Blazor.Services
             result.EnsureSuccessStatusCode();
         }
 
+        public async Task<CurrentUser> CurrentUserInfo()
+        {
+            return await _httpClient.GetFromJsonAsync<CurrentUser>("api/auth/CurrentUserInfo");
+        }
     }
 }

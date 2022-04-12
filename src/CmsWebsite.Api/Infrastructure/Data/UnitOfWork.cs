@@ -9,7 +9,7 @@ namespace CmsWebsite.Api.Infrastructure.Data
 
         public IArticleRepository _articleRepository;
         public ICategoryRepository _categoryRepository;
-
+        public IArticleCategoryRepository _articleCategoryRepository;
 
         public IArticleRepository ArticleRepository
         {
@@ -26,7 +26,13 @@ namespace CmsWebsite.Api.Infrastructure.Data
                 return _categoryRepository = _categoryRepository ?? new CategoryRepository(_context);
             }
         }
-
+        public IArticleCategoryRepository ArticleCategoryRepository
+        {
+            get
+            {
+                return _articleCategoryRepository = _articleCategoryRepository ?? new ArticleCategoryRepository(_context);
+            }
+        }
         public UnitOfWork(ApplicationDbContext context)
         {
             _context = context;

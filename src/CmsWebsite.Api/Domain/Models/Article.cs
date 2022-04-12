@@ -1,4 +1,6 @@
-﻿namespace CmsWebsite.Api.Domain.Models
+﻿using System.Text.Json.Serialization;
+
+namespace CmsWebsite.Api.Domain.Models
 {
     public class Article
     {

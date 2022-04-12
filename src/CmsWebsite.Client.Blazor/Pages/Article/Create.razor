@@ -1,12 +1,21 @@
 ﻿@page "/article/create"
 @using CmsWebsite.Client.Blazor.Services.Article
+@using CmsWebsite.Client.Blazor.Services.Category
+@using CmsWebsite.Client.Blazor.Services.ArticleCategory
+@using System.Security.Claims
 @using CmsWebsite.Share.Models.Article
+@using CmsWebsite.Share.Models.ArticleCategory
+@using CmsWebsite.Share.Models.Category
 @using System.Text.Json
-@inject NavigationManager uriHelper
-@inject IArticleService _client
-@inject NotificationService NotificationService
-<h3>Create Article</h3>
 
+@inject NavigationManager uriHelper
+@inject IArticleService _articleService
+@inject ICategoryService _categoryService
+@inject IArticleCategoryService _acService
+
+@inject NotificationService NotificationService
+@inject AuthenticationStateProvider AuthenticationStateProvider
+<h3>Create Article</h3>
 @*
     TItem: truyền 1 class, đối tượng request để hiển thị dữ liệu
     Data: truyền 1 biến object để bind dữ liệu
@@ -82,7 +91,16 @@
                     <RadzenTextBox Name="SubHead" @bind-Value="@article.SubHead" />
                 </div>
             </div>
+            <div class="row">
+                <div class="col-md-3 align-items-center d-flex">
+                    <RadzenLabel Component="Categories" Text="Categories" />
+                </div>
+                <div class="col-md-9">
+                    <RadzenDropDown AllowClear=true Name="Level" Data="@Categories" TextProperty="CategoryName" ValueProperty="CategoryId"
+                                    @bind-Value=@ac.CategoryID Placeholder="Select Category..." />
 
+                </div>
+            </div>
 
             <div class="row">
                 <div class="col-md-3 align-items-center d-flex">
@@ -106,47 +124,54 @@
 </RadzenTemplateForm>
 
 @code {
-    //[Inject] private IArticleService _client { get; set; }
-    ArticleCreateRequest article = new ArticleCreateRequest()
-    {
-        PublishDate = DateTime.Now,
-    };
-    private List<ArticleDTO> Articles;
+    private ArticleCreateRequest article = new ArticleCreateRequest()
+        {
+            PublishDate = DateTime.Now,
+        };
+    private ArticleCategoryCreateRequest ac = new ArticleCategoryCreateRequest();
+    private List<CategoryDTO> Categories { get; set; } = new List<CategoryDTO>();
     protected override async Task OnInitializedAsync()
     {
-
+        article.UserId = await getUserId();
+        Categories = await _categoryService.GetListCategory();
     }
     async Task CreateArticle()
     {
-        article.UserId = "string";
-        var result = await _client.CreateArticle(article);
-        if (result)
+
+        var newArticle = await _articleService.CreateArticle(article);
+        if (newArticle != null)
         {
-            Console.WriteLine("OK");
-            NotificationService.Notify(new NotificationMessage
-                {
-                    Severity = NotificationSeverity.Success,
-                    Summary = "Thông báo sự kiện",
-                    Detail = "Thêm thành công",
-                    Duration = 4000,
-                });
-            uriHelper.NavigateTo("/article");
+            ac.ArticleID = newArticle;
+            var result = await _acService.CreateArticleCategory(ac);
+            if (result != null)
+            {
+                NotificationService.Notify(new NotificationMessage
+                    {
+                        Severity = NotificationSeverity.Success,
+                        Summary = "Thông báo sự kiện",
+                        Detail = "Thêm thành công",
+                        Duration = 4000,
+                    });
+                uriHelper.NavigateTo("/article");
+            }
+            else
+            {
+                Console.WriteLine(JsonSerializer.Serialize(result, new JsonSerializerOptions() { WriteIndented = true }));
+            }
         }
         else
         {
             Console.WriteLine(JsonSerializer.Serialize(article, new JsonSerializerOptions() { WriteIndented = true }));
         }
     }
-    //void OnChange(string value, string name)
-    //{
-    //}
-
-    //void OnError(UploadErrorEventArgs args, string name)
-    //{
-    //}
-
     void OnTodayClick()
     {
         article.PublishDate = DateTime.Now;
+    }
+    async Task<string> getUserId()
+    {
+        var user = (await AuthenticationStateProvider.GetAuthenticationStateAsync()).User;
+        return user.FindFirst(u => u.Type.Contains("UserId"))?.Value;
+
     }
 }

@@ -2,6 +2,7 @@ using Blazored.LocalStorage;
 using CmsWebsite.Client.Blazor;
 using CmsWebsite.Client.Blazor.Services;
 using CmsWebsite.Client.Blazor.Services.Article;
+using CmsWebsite.Client.Blazor.Services.ArticleCategory;
 using CmsWebsite.Client.Blazor.Services.Category;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Web;
@@ -24,6 +25,8 @@ builder.Services.AddAuthorizationCore();
 builder.Services.AddScoped<AuthenticationStateProvider, CustomStateProvider>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IArticleService, ArticleService>();
+builder.Services.AddScoped<IArticleCategoryService, ArticleCategoryService>();
+
 builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<DialogService>();
 builder.Services.AddScoped<NotificationService>();

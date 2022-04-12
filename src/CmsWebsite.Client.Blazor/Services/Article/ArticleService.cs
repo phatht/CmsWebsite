@@ -11,10 +11,11 @@ namespace CmsWebsite.Client.Blazor.Services.Article
             _httpClient = httpClient;
         }
 
-        public async Task<bool> CreateArticle(ArticleCreateRequest arRequest)
+        public async Task<long> CreateArticle(ArticleCreateRequest arRequest)
         {
-            var result = await _httpClient.PostAsJsonAsync("api/article", arRequest);
-            return result.IsSuccessStatusCode;
+            var response = await _httpClient.PostAsJsonAsync("api/article", arRequest);
+            long result = await response.Content.ReadFromJsonAsync<long>();
+            return result;
         }
 
         public async Task<bool> DeleteArticle(long id)

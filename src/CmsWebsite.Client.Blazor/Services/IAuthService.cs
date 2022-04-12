@@ -7,5 +7,6 @@ namespace CmsWebsite.Client.Blazor.Services
         Task<LoginResponse> Login(LoginRequest loginRequest);
         Task Register(RegisterRequest registerRequest);
         Task Logout();
+        Task<CurrentUser> CurrentUserInfo();
     }
 }

@@ -6,7 +6,7 @@ namespace CmsWebsite.Client.Blazor.Services.Article
     {
         Task<List<ArticleDTO>> GetListArticle();
         Task<ArticleDTO> GetArticle(long id);
-        Task<bool> CreateArticle(ArticleCreateRequest arRequest);
+        Task<long> CreateArticle(ArticleCreateRequest arRequest);
         Task<bool> UpdateArticle(long id, ArticleDTO article);
         Task<bool> DeleteArticle(long id);
     }

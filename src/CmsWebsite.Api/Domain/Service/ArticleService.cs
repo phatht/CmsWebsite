@@ -11,7 +11,7 @@ namespace CmsWebsite.Api.Domain.Service
 
         Task<Article> GetArticleAsync(long id);
         //create
-        Task<Article> PutArticleAsync(ArticleCreateRequest request);
+        Task<long> PutArticleAsync(ArticleCreateRequest request);
 
         Task<Article> DeleteArticle(long id);
 
@@ -39,7 +39,7 @@ namespace CmsWebsite.Api.Domain.Service
             return await _unitOfWork.ArticleRepository.FindAsync(id);
         }
 
-        public async Task<Article> PutArticleAsync(ArticleCreateRequest request)
+        public async Task<long> PutArticleAsync(ArticleCreateRequest request)
         {
             try
             {
@@ -61,7 +61,7 @@ namespace CmsWebsite.Api.Domain.Service
                 var result = await _unitOfWork.ArticleRepository.AddAsync(article);
                 await _unitOfWork.CommitAsync();
 
-                return result;
+                return result.ArticleID;
             }
             catch (Exception ex)
             {

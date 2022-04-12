@@ -34,7 +34,8 @@ namespace CmsWebsite.Api.Controllers
 
             var claims = new[]
             {
-                new Claim(ClaimTypes.Name,request.UserName)
+                new Claim("UserName",request.UserName),
+                new Claim("UserId",user.Id)
             };
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Token:SecurityKey"]));

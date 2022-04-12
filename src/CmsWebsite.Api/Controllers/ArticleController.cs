@@ -58,10 +58,11 @@ namespace CmsWebsite.Api.Controllers
 
         // POST: api/article
         [HttpPost]
-        public async Task<ActionResult<Article>> PostArticle(ArticleCreateRequest article)
+        public async Task<ActionResult<long>> PostArticle(ArticleCreateRequest article)
         {
             var result = await _articleService.PutArticleAsync(article);
-            return CreatedAtAction("GetArticle", new { id = result.ArticleID }, article);
+            //return CreatedAtAction("GetArticle", new { id = result.ArticleID }, article);
+            return result;
         }
 
         // DELETE: api/article/5

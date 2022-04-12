@@ -4,7 +4,7 @@
     {
         IArticleRepository ArticleRepository { get; }
         ICategoryRepository CategoryRepository { get; }
-
+        IArticleCategoryRepository ArticleCategoryRepository { get; }
         Task CommitAsync();
         Task RollbackAsync();
     }
