@@ -14,49 +14,52 @@
 }
 else
 {
-<RadzenDataGrid @ref="grid0" AllowFiltering="true" AllowColumnResize="true"
+    <NavLink class="nav-link" href="article/create">
+        Thêm bài viết
+    </NavLink>
+    <RadzenDataGrid @ref="grid0" AllowFiltering="true" AllowColumnResize="true"
                 FilterMode="FilterMode.Simple" AllowSorting="true" PageSize="10"
                 AllowPaging="true" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive"
                 ShowPagingSummary="true"
                 Data="@Articles" TItem="ArticleDTO" LogicalFilterOperator="LogicalFilterOperator.Or">
-    <Columns>
-        <RadzenDataGridColumn TItem="ArticleDTO" Title="Photo" Width="80px">
-            <Template Context="data">
-                <RadzenImage Path="@data.ImageFile" style="width: 40px; height: 40px; border-radius: 8px;" />
-            </Template>
-        </RadzenDataGridColumn>
-        <RadzenDataGridColumn TItem="ArticleDTO" Property="Title"
+        <Columns>
+            <RadzenDataGridColumn TItem="ArticleDTO" Title="Photo" Width="80px">
+                <Template Context="data">
+                    <RadzenImage Path="@data.ImageFile" style="width: 40px; height: 40px; border-radius: 8px;" />
+                </Template>
+            </RadzenDataGridColumn>
+            <RadzenDataGridColumn TItem="ArticleDTO" Property="Title"
                               Title="Title" Width="140px" />
-        <RadzenDataGridColumn TItem="ArticleDTO" Property="Description"
+            <RadzenDataGridColumn TItem="ArticleDTO" Property="Description"
                               Title="Description" Width="140px" />
-        <RadzenDataGridColumn TItem="ArticleDTO" Property="SummaryArticle"
+            <RadzenDataGridColumn TItem="ArticleDTO" Property="SummaryArticle"
                               Title="Summary Article" Width="140px" />
 
-        <RadzenDataGridColumn TItem="ArticleDTO" Property="CreatedDate"
+            <RadzenDataGridColumn TItem="ArticleDTO" Property="CreatedDate"
                               Title="Created Date" Width="140px" FormatString="{0:d}" />
-        <RadzenDataGridColumn TItem="ArticleDTO" Property="PublishDate"
+            <RadzenDataGridColumn TItem="ArticleDTO" Property="PublishDate"
                               Title="Publish Date" Width="140px" FormatString="{0:d}" />
-        <RadzenDataGridColumn TItem="ArticleDTO" Property="LastModifiedDate"
+            <RadzenDataGridColumn TItem="ArticleDTO" Property="LastModifiedDate"
                               Title="Last Modified Date" Width="160px" FormatString="{0:d}" />
-        <RadzenDataGridColumn TItem="ArticleDTO" Property="NumberOfViews"
+            <RadzenDataGridColumn TItem="ArticleDTO" Property="NumberOfViews"
                               Title="Number Of Views" />
-        <RadzenDataGridColumn Width="140px" TItem="ArticleDTO" Property="Status"
+            <RadzenDataGridColumn Width="140px" TItem="ArticleDTO" Property="Status"
                               Title="Status" />
-        <RadzenDataGridColumn TItem="ArticleDTO" Filterable="false" Sortable="false" Property="Edit" TextAlign="TextAlign.Center" Width="120px">
-            <Template Context="data">
-                <RadzenButton Class="m-1" ButtonStyle="Radzen.ButtonStyle.Secondary" Icon="edit"
+            <RadzenDataGridColumn TItem="ArticleDTO" Filterable="false" Sortable="false" Property="Edit" TextAlign="TextAlign.Center" Width="120px">
+                <Template Context="data">
+                    <RadzenButton Class="m-1" ButtonStyle="Radzen.ButtonStyle.Secondary" Icon="edit"
                               Click="@((args) => EditRow(data.ArticleID))" @onclick:stopPropagation="true" />
-            </Template>
-        </RadzenDataGridColumn>
-        <RadzenDataGridColumn TItem="ArticleDTO" Context="order" Filterable="false" Property="Delete" Sortable="false" TextAlign="TextAlign.Center" Width="60px">
-            <Template Context="data">
-                <RadzenButton Class="m-1" ButtonStyle="ButtonStyle.Danger" Icon="delete"
+                </Template>
+            </RadzenDataGridColumn>
+            <RadzenDataGridColumn TItem="ArticleDTO" Context="order" Filterable="false" Property="Delete" Sortable="false" TextAlign="TextAlign.Center" Width="60px">
+                <Template Context="data">
+                    <RadzenButton Class="m-1" ButtonStyle="ButtonStyle.Danger" Icon="delete"
                               Click="@((args) => DeleteRow(data.ArticleID))" @onclick:stopPropagation="true" />
-            </Template>
-        </RadzenDataGridColumn>
+                </Template>
+            </RadzenDataGridColumn>
 
-    </Columns>
-</RadzenDataGrid>
+        </Columns>
+    </RadzenDataGrid>
 }
 
 
@@ -70,7 +73,7 @@ else
     protected RadzenDataGrid<ArticleDTO> grid0;
     protected override async Task OnInitializedAsync()
     {
-        Articles = await _client.GetListArticle(); 
+        Articles = await _client.GetListArticle();
     }
     protected void EditRow(long id) => uriHelper.NavigateTo($"article/edit/{id}");
     protected async Task DeleteRow(long id)

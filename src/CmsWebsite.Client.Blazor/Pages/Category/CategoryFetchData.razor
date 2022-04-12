@@ -7,53 +7,56 @@
 @inject NavigationManager uriHelper
 @inject DialogService DialogService
 @inject NotificationService NotificationService
-@if(Categories == null)
+@if (Categories == null)
 {
     <p>Loading Categories</p>
 }
 else
 {
+    <NavLink class="nav-link" href="category/create">
+        Thêm loại bài viết
+    </NavLink>
     <RadzenDataGrid @ref="grid0" AllowFiltering="true" AllowColumnResize="true"
                 FilterMode="FilterMode.Simple" AllowSorting="true" PageSize="10"
                 AllowPaging="true" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive"
                 ShowPagingSummary="true"
                 Data="@Categories" TItem="CategoryDTO" LogicalFilterOperator="LogicalFilterOperator.Or">
-    <Columns>
-        <RadzenDataGridColumn TItem="CategoryDTO" Title="Icon" Width="80px">
-            <Template Context="data">
-                <RadzenImage Path="@data.IconFile" style="width: 40px; height: 40px; border-radius: 8px;" />
-            </Template>
-        </RadzenDataGridColumn>
-        <RadzenDataGridColumn TItem="CategoryDTO" Property="CategoryName"
+        <Columns>
+            <RadzenDataGridColumn TItem="CategoryDTO" Title="Icon" Width="80px">
+                <Template Context="data">
+                    <RadzenImage Path="@data.IconFile" style="width: 40px; height: 40px; border-radius: 8px;" />
+                </Template>
+            </RadzenDataGridColumn>
+            <RadzenDataGridColumn TItem="CategoryDTO" Property="CategoryName"
                               Title="Name" Width="140px" />
-        <RadzenDataGridColumn TItem="CategoryDTO" Property="ParentCategoryId"
+            <RadzenDataGridColumn TItem="CategoryDTO" Property="ParentCategoryId"
                               Title="Parent" Width="140px" />
-        <RadzenDataGridColumn TItem="CategoryDTO" Property="Abbreviation"
+            <RadzenDataGridColumn TItem="CategoryDTO" Property="Abbreviation"
                               Title="Abbreviation" Width="140px" />
-        <RadzenDataGridColumn TItem="CategoryDTO" Property="Level"
-                              Title="Level" Width="140px"/>
-        <RadzenDataGridColumn TItem="CategoryDTO" Filterable="false" Sortable="false" Property="Edit" TextAlign="TextAlign.Center" Width="120px">
-            <Template Context="data">
-                <RadzenButton Class="m-1" ButtonStyle="Radzen.ButtonStyle.Secondary" Icon="edit"
+            <RadzenDataGridColumn TItem="CategoryDTO" Property="Level"
+                              Title="Level" Width="140px" />
+            <RadzenDataGridColumn TItem="CategoryDTO" Filterable="false" Sortable="false" Property="Edit" TextAlign="TextAlign.Center" Width="120px">
+                <Template Context="data">
+                    <RadzenButton Class="m-1" ButtonStyle="Radzen.ButtonStyle.Secondary" Icon="edit"
                               Click="@((args) => EditRow(data.CategoryId))" @onclick:stopPropagation="true" />
-            </Template>
-        </RadzenDataGridColumn>
-        <RadzenDataGridColumn TItem="CategoryDTO" Context="order" Filterable="false" Property="Delete" Sortable="false" TextAlign="TextAlign.Center" Width="60px">
-            <Template Context="data">
-                <RadzenButton Class="m-1" ButtonStyle="ButtonStyle.Danger" Icon="delete"
+                </Template>
+            </RadzenDataGridColumn>
+            <RadzenDataGridColumn TItem="CategoryDTO" Context="order" Filterable="false" Property="Delete" Sortable="false" TextAlign="TextAlign.Center" Width="60px">
+                <Template Context="data">
+                    <RadzenButton Class="m-1" ButtonStyle="ButtonStyle.Danger" Icon="delete"
                               Click="@((args) => DeleteRow(data.CategoryId))" @onclick:stopPropagation="true" />
-            </Template>
-        </RadzenDataGridColumn>
+                </Template>
+            </RadzenDataGridColumn>
 
-    </Columns>
-</RadzenDataGrid>
+        </Columns>
+    </RadzenDataGrid>
 }
 @code {
     protected List<CategoryDTO> Categories { get; set; }
     protected RadzenDataGrid<CategoryDTO> grid0;
     protected override async Task OnInitializedAsync()
     {
-        Categories = await _client.GetListCategory(); 
+        Categories = await _client.GetListCategory();
     }
     protected void EditRow(long id) => uriHelper.NavigateTo($"category/edit/{id}");
     protected async Task DeleteRow(long id)

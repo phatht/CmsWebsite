@@ -36,13 +36,14 @@ namespace CmsWebsite.Api.Infrastructure.Data
         private void ConfigureArticleCategories(EntityTypeBuilder<ArticleCategories> entity)
         {
             entity.ToTable("CmsArticleCategories");
-            entity.HasKey(ac => new { ac.ArticleID, ac.CategoryID });
-            entity.HasOne(ac => ac.Article)
-                .WithMany(a => a.ArticleCategories)
-                .HasForeignKey(ac => ac.ArticleID);
-            entity.HasOne(ac => ac.Category)
-                .WithMany(c => c.ArticleCategories)
-                .HasForeignKey(ac => ac.CategoryID);
+            entity.HasKey(ac => ac.ID);
+            //entity.HasKey(ac => new { ac.ArticleID, ac.CategoryID });
+            //entity.HasOne(ac => ac.Article)
+            //    .WithMany(a => a.ArticleCategories)
+            //    .HasForeignKey(ac => ac.ArticleID);
+            //entity.HasOne(ac => ac.Category)
+            //    .WithMany(c => c.ArticleCategories)
+            //    .HasForeignKey(ac => ac.CategoryID);
         }
 
         private void ConfigureCategories(EntityTypeBuilder<Category> entity)

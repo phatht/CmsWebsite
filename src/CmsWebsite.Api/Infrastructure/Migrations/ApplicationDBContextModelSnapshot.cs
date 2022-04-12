@@ -151,13 +151,21 @@ namespace CmsWebsite.Api.Migrations
 
             modelBuilder.Entity("CmsWebsite.Api.Domain.Models.ArticleCategories", b =>
                 {
+                    b.Property<long>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("ID"), 1L, 1);
+
                     b.Property<long>("ArticleID")
                         .HasColumnType("bigint");
 
                     b.Property<long>("CategoryID")
                         .HasColumnType("bigint");
 
-                    b.HasKey("ArticleID", "CategoryID");
+                    b.HasKey("ID");
+
+                    b.HasIndex("ArticleID");
 
                     b.HasIndex("CategoryID");
 
@@ -191,8 +199,6 @@ namespace CmsWebsite.Api.Migrations
                         .HasColumnType("bigint");
 
                     b.HasKey("CategoryId");
-
-                    b.HasIndex("ParentCategoryId");
 
                     b.ToTable("CmsCategories", (string)null);
                 });
@@ -349,17 +355,6 @@ namespace CmsWebsite.Api.Migrations
                     b.Navigation("Category");
                 });
 
-            modelBuilder.Entity("CmsWebsite.Api.Domain.Models.Category", b =>
-                {
-                    b.HasOne("CmsWebsite.Api.Domain.Models.Category", "Parent")
-                        .WithMany("Children")
-                        .HasForeignKey("ParentCategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Parent");
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -419,8 +414,6 @@ namespace CmsWebsite.Api.Migrations
             modelBuilder.Entity("CmsWebsite.Api.Domain.Models.Category", b =>
                 {
                     b.Navigation("ArticleCategories");
-
-                    b.Navigation("Children");
                 });
 #pragma warning restore 612, 618
         }
