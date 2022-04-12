@@ -1,14 +1,15 @@
-﻿<div class="row">
+﻿@using CmsWebsite.Share.Models.Article
+<div class="row">
 
-    @if (Data != null)
+    @if (dataTinMoi != null)
     {
-        foreach (var item in Data)
+        foreach (var item in dataTinMoi)
         {
             <RadzenCard Style="width:33%">
                 <div class="d-flex flex-row">
-                    <img src=@item.UrlImage class="rounded-circle float-left mr-3" style="width: 80px; height: 80px;">
+                    <img  src=@item.ImageFile class="rounded-circle float-left mr-3" style="width: 80px; height: 80px;">
                     <div>
-                        <span style="font-size:13px">@item.Content</span>
+                        <span style="font-size:13px">@item.Description</span>
                     </div>
                 </div>
             </RadzenCard>
@@ -19,23 +20,23 @@
 @code {
 
     [Parameter]
-    public List<Item>? data { get; set; }
+    public List<ArListRepositorie>? dataTinMoi { get; set; }
 
-    List<Item> Data = new List<Item>() {
-        new Item ("img/empty.jpg", "Cổng thông tin điện tử chính phủ"),
-        new Item ("img/empty.jpg", "Sáng 31/3, phiên trọng thể Đại hội Hội Doanh nhân trẻ Việt Nam lần thứ VII"),
-        new Item ("img/empty.jpg", "Ngày bầu cử đại biểu Quốc hội khóa XV và đại biểu Hội đồng nhân dân các cấp nhiệm kỳ 2021-2026")
-    };
+    //List<Item> Data = new List<Item>() {
+    //    new Item ("img/empty.jpg", "Cổng thông tin điện tử chính phủ"),
+    //    new Item ("img/empty.jpg", "Sáng 31/3, phiên trọng thể Đại hội Hội Doanh nhân trẻ Việt Nam lần thứ VII"),
+    //    new Item ("img/empty.jpg", "Ngày bầu cử đại biểu Quốc hội khóa XV và đại biểu Hội đồng nhân dân các cấp nhiệm kỳ 2021-2026")
+    //};
 
-    public class Item
-    {
-        public Item(string urlImage, string content)
-        {
-            UrlImage = urlImage;
-            Content = content;
-        }
-        public string UrlImage { get; set; }
-        public string Content { get; set; }
-    }
+    //public class Item
+    //{
+    //    public Item(string urlImage, string content)
+    //    {
+    //        UrlImage = urlImage;
+    //        Content = content;
+    //    }
+    //    public string UrlImage { get; set; }
+    //    public string Content { get; set; }
+    //}
 
 }

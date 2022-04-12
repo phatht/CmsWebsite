@@ -22,7 +22,7 @@
 
         </div>
 
-        <button class="btn btn-lg btn-primary btn-block m-2" style="width:100%" type="submit">Đăng nhập</button>
+        <button class="btn btn-lg btn-primary btn-block m-2" style="width:100%" type="submit">@busyText</button>
 
         <NavLink href="register">
             <h6 class="font-weight-normal text-center" style="float:right">Tạo tài khoản !</h6>
@@ -34,11 +34,13 @@
 
 </div>
 @code {
+    private string busyText { get; set; } = "Đăng nhập";
     LoginRequest loginRequest { get; set; } = new LoginRequest();
     private string error { get; set; }
     private bool ShowErrors;
     async Task OnSubmit()
     {
+        busyText = "Đang đăng nhập...";
         error = null;
         ShowErrors = false;
         var result = await auth.Login(loginRequest);
@@ -48,6 +50,7 @@
         }
         else
         {
+            busyText = "Đăng nhập";
             ShowErrors = true;
             error = result.Error;
         }

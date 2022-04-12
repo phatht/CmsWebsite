@@ -1,23 +1,19 @@
 ﻿@page "/"
 
 
-<PageTitle>Giởi thiệu chung</PageTitle>
-<h1>Hello, world!</h1>
+<PageTitle>Trang quản trị hệ thống</PageTitle>
+
 <AuthorizeView>
-    <Authorized>
-        <div>
-            Hi @(context.User.Identity.Name), this offer can claim by users with role either 'superadmin' or'admin'
-        </div>
-        Auth: @(context.User.Identity.IsAuthenticated)
+    <Authorized> 
+        <p style="text-align:center">Xin chào @(context.User.Identity.Name), bạn đã vào trang quản trị hệ thống !</p>
     </Authorized>
     <NotAuthorized>
-        Not Authorized
+       Không có quyền truy cập
     </NotAuthorized>
     <Authorizing>
-        <h1>Loading ...</h1>
+        <h1>Đang truyền dữ liệu ...</h1>
     </Authorizing>
 </AuthorizeView>
 
-Welcome to your new app.
 
 

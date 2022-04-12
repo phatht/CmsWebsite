@@ -14,19 +14,9 @@
         <AuthorizeView>
             <Authorized>
                 <li class="nav-item">
-                    <NavLink class="nav-link" href="article" @onclick="()=>expandSubMenu= !expandSubMenu">
+                    <NavLink class="nav-link" href="article">
                         Bài viết
-                    </NavLink>
-                    @if (expandSubMenu)
-                    {
-                        <ul class="nav flex-column">
-                            <li class="nav-item">
-                                <NavLink class="nav-link" href="article/create">
-                                    Thêm bài viết
-                                </NavLink>
-                            </li>
-                        </ul>
-                    }
+                    </NavLink> 
                 </li>
                 <li class="nav-item">
                     <NavLink class="nav-link" href="category" @onclick="()=>expandSubMenu= !expandSubMenu">
@@ -68,8 +58,7 @@
 
 @code {
     private bool collapseNavMenu = false;
-    private bool expandSubMenu;//add
-
+     
     private string NavMenuCssClass => collapseNavMenu ? "collapse" : null;
 
     private void ToggleNavMenu()
