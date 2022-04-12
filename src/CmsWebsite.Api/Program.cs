@@ -19,9 +19,9 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 // CẤU HÌNH KẾT NỐI VỚI DATABASE
-builder.Services.AddDbContext<ApplicationDBContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
-    .AddEntityFrameworkStores<ApplicationDBContext>();
+    .AddEntityFrameworkStores<ApplicationDbContext>();
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
@@ -39,7 +39,11 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 // DI
 
 builder.Services.AddScoped<IArticleRepository, ArticleRepository>();
+builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
+
 builder.Services.AddScoped<IArticleService, ArticleService>();
+builder.Services.AddScoped<ICategoryService, CategoryService>();
+
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
 //builder.Services.ConfigureApplicationCookie(options =>

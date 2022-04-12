@@ -4,9 +4,9 @@ namespace CmsWebsite.Api.Infrastructure.Repositories
 {
     public abstract class BaseRepository
     {
-        protected readonly ApplicationDBContext _context;
+        protected readonly ApplicationDbContext _context;
 
-        public BaseRepository(ApplicationDBContext context)
+        public BaseRepository(ApplicationDbContext context)
         {
             _context = context ?? throw new ArgumentNullException(nameof(context));
         }

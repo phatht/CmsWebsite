@@ -17,6 +17,6 @@
         public string SubHead { get; set; }
         public int Status { get; set; }
         public bool taked { get; set; }
-
+        public List<ArticleCategories> ArticleCategories { get; set; }
     }
 }

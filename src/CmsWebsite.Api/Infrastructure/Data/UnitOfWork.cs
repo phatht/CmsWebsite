@@ -5,9 +5,11 @@ namespace CmsWebsite.Api.Infrastructure.Data
 {
     public class UnitOfWork : IUnitOfWork
     {
-        private readonly ApplicationDBContext _context;
+        private readonly ApplicationDbContext _context;
 
         public IArticleRepository _articleRepository;
+        public ICategoryRepository _categoryRepository;
+
 
         public IArticleRepository ArticleRepository
         {
@@ -17,7 +19,15 @@ namespace CmsWebsite.Api.Infrastructure.Data
             }
         }
 
-        public UnitOfWork(ApplicationDBContext context)
+        public ICategoryRepository CategoryRepository
+        {
+            get
+            {
+                return _categoryRepository = _categoryRepository ?? new CategoryRepository(_context);
+            }
+        }
+
+        public UnitOfWork(ApplicationDbContext context)
         {
             _context = context;
         }
@@ -31,5 +41,6 @@ namespace CmsWebsite.Api.Infrastructure.Data
         {
             await _context.DisposeAsync();
         }
+
     }
 }

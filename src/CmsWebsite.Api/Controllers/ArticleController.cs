@@ -1,5 +1,6 @@
 ﻿using CmsWebsite.Api.Domain.Models;
 using CmsWebsite.Api.Domain.Service;
+using CmsWebsite.Share.Models.Article;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CmsWebsite.Api.Controllers
@@ -37,11 +38,11 @@ namespace CmsWebsite.Api.Controllers
 
         // PUT: api/article/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutArticle(long id, Article article)
+        public async Task<IActionResult> PutArticle(long id, ArticleDTO article)
         {
             if (id != article.ArticleID)
             {
-                return BadRequest();
+                return BadRequest($"Not found {id}");
             }
             try
             {
@@ -57,10 +58,10 @@ namespace CmsWebsite.Api.Controllers
 
         // POST: api/article
         [HttpPost]
-        public async Task<ActionResult<Article>> PostArticle(Article article)
+        public async Task<ActionResult<Article>> PostArticle(ArticleCreateRequest article)
         {
-            await _articleService.PutArticleAsync(article);
-            return CreatedAtAction("GetArticle", new { id = article.ArticleID }, article);
+            var result = await _articleService.PutArticleAsync(article);
+            return CreatedAtAction("GetArticle", new { id = result.ArticleID }, article);
         }
 
         // DELETE: api/article/5

@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace CmsWebsite.Api.Migrations
 {
-    [DbContext(typeof(ApplicationDBContext))]
+    [DbContext(typeof(ApplicationDbContext))]
     partial class ApplicationDBContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)
@@ -151,24 +151,20 @@ namespace CmsWebsite.Api.Migrations
 
             modelBuilder.Entity("CmsWebsite.Api.Domain.Models.ArticleCategories", b =>
                 {
-                    b.Property<long>("ID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("ID"), 1L, 1);
-
                     b.Property<long>("ArticleID")
                         .HasColumnType("bigint");
 
                     b.Property<long>("CategoryID")
                         .HasColumnType("bigint");
 
-                    b.HasKey("ID");
+                    b.HasKey("ArticleID", "CategoryID");
+
+                    b.HasIndex("CategoryID");
 
                     b.ToTable("CmsArticleCategories", (string)null);
                 });
 
-            modelBuilder.Entity("CmsWebsite.Api.Domain.Models.Categories", b =>
+            modelBuilder.Entity("CmsWebsite.Api.Domain.Models.Category", b =>
                 {
                     b.Property<long>("CategoryId")
                         .ValueGeneratedOnAdd()
@@ -195,6 +191,8 @@ namespace CmsWebsite.Api.Migrations
                         .HasColumnType("bigint");
 
                     b.HasKey("CategoryId");
+
+                    b.HasIndex("ParentCategoryId");
 
                     b.ToTable("CmsCategories", (string)null);
                 });
@@ -332,6 +330,36 @@ namespace CmsWebsite.Api.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("CmsWebsite.Api.Domain.Models.ArticleCategories", b =>
+                {
+                    b.HasOne("CmsWebsite.Api.Domain.Models.Article", "Article")
+                        .WithMany("ArticleCategories")
+                        .HasForeignKey("ArticleID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("CmsWebsite.Api.Domain.Models.Category", "Category")
+                        .WithMany("ArticleCategories")
+                        .HasForeignKey("CategoryID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Article");
+
+                    b.Navigation("Category");
+                });
+
+            modelBuilder.Entity("CmsWebsite.Api.Domain.Models.Category", b =>
+                {
+                    b.HasOne("CmsWebsite.Api.Domain.Models.Category", "Parent")
+                        .WithMany("Children")
+                        .HasForeignKey("ParentCategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Parent");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -381,6 +409,18 @@ namespace CmsWebsite.Api.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("CmsWebsite.Api.Domain.Models.Article", b =>
+                {
+                    b.Navigation("ArticleCategories");
+                });
+
+            modelBuilder.Entity("CmsWebsite.Api.Domain.Models.Category", b =>
+                {
+                    b.Navigation("ArticleCategories");
+
+                    b.Navigation("Children");
                 });
 #pragma warning restore 612, 618
         }

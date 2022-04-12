@@ -1,6 +1,7 @@
 ﻿using CmsWebsite.Api.Domain.Exceptions;
 using CmsWebsite.Api.Domain.Interfaces;
 using CmsWebsite.Api.Domain.Models;
+using CmsWebsite.Share.Models.Article;
 
 namespace CmsWebsite.Api.Domain.Service
 {
@@ -10,11 +11,11 @@ namespace CmsWebsite.Api.Domain.Service
 
         Task<Article> GetArticleAsync(long id);
         //create
-        Task<Article> PutArticleAsync(Article article);
+        Task<Article> PutArticleAsync(ArticleCreateRequest request);
 
         Task<Article> DeleteArticle(long id);
 
-        Task<Article> PutArticleAsync(long id, Article article);
+        Task<Article> PutArticleAsync(long id, ArticleDTO article);
     }
 
     public class ArticleService : IArticleService
@@ -38,10 +39,25 @@ namespace CmsWebsite.Api.Domain.Service
             return await _unitOfWork.ArticleRepository.FindAsync(id);
         }
 
-        public async Task<Article> PutArticleAsync(Article article)
+        public async Task<Article> PutArticleAsync(ArticleCreateRequest request)
         {
             try
             {
+                var article = new Article()
+                {
+                    UserId = request.UserId,
+                    CreatedDate = DateTime.Now,
+                    Title = request.Title,
+                    Description = request.Description,
+                    SummaryArticle = request.SummaryArticle,
+                    ImageFile = request.ImageFile,
+                    PublishDate = request.PublishDate,
+                    ExpireDate = request.ExpireDate,
+                    KeyWords = request.KeyWords,
+                    SubHead = request.SubHead,
+                    Status = request.Status,
+                    taked = request.taked,
+                };
                 var result = await _unitOfWork.ArticleRepository.AddAsync(article);
                 await _unitOfWork.CommitAsync();
 
@@ -54,13 +70,13 @@ namespace CmsWebsite.Api.Domain.Service
             }
         }
 
-        public async Task<Article> PutArticleAsync(long id, Article article)
+        public async Task<Article> PutArticleAsync(long id, ArticleDTO article)
         {
             var existingArticle = await _unitOfWork.ArticleRepository.FindAsync(id);
 
             if (existingArticle == null)
             {
-                throw new NotFoundException($"Article {id} is not found.");
+                throw new NotFoundException($"Article {id} is not found."); 
             }
 
             existingArticle.Description = article.Description;
@@ -68,7 +84,7 @@ namespace CmsWebsite.Api.Domain.Service
             existingArticle.ImageFile = article.ImageFile;
             existingArticle.KeyWords = article.KeyWords;
             existingArticle.SubHead = article.SubHead;
-
+            existingArticle.SummaryArticle = article.SummaryArticle;
             try
             {
                 _unitOfWork.ArticleRepository.Update(existingArticle);

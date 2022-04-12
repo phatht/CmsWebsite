@@ -1,8 +1,9 @@
 ﻿@page "/article/create"
+@using CmsWebsite.Client.Blazor.Services.Article
 @using CmsWebsite.Share.Models.Article
 @using System.Text.Json
 @inject NavigationManager uriHelper
-@inject CmsWebsite.Client.Blazor.Services.IArticleService _client
+@inject IArticleService _client
 @inject NotificationService NotificationService
 <h3>Create Article</h3>
 
@@ -12,7 +13,7 @@
     Submit: truyền 1 function
 *@
 
-<RadzenTemplateForm TItem="Article" Data="@article" Submit=@CreateArticle>
+<RadzenTemplateForm TItem="ArticleCreateRequest" Data="@article" Submit=@CreateArticle>
     <div class="row">
         <RadzenFieldset>
             <div class="row">
@@ -106,11 +107,11 @@
 
 @code {
     //[Inject] private IArticleService _client { get; set; }
-    Article article = new Article()
-        {
-            PublishDate = DateTime.Now,
-        };
-    private List<ArListRepositorie> Articles;
+    ArticleCreateRequest article = new ArticleCreateRequest()
+    {
+        PublishDate = DateTime.Now,
+    };
+    private List<ArticleDTO> Articles;
     protected override async Task OnInitializedAsync()
     {
 
