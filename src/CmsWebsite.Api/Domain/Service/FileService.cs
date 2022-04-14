@@ -1,5 +1,4 @@
 ﻿using CmsWebsite.Api.Domain.Interfaces;
-using System.IO.Compression;
 
 namespace CmsWebsite.Api.Domain.Service
 {
@@ -17,7 +16,7 @@ namespace CmsWebsite.Api.Domain.Service
         #endregion
 
         #region Upload File  
-        public async Task<string> UploadFile(IFormFile image, string subDirectory)
+        public async Task<string> UploadFile(IFormFile image, string? subDirectory)
         {
             subDirectory = subDirectory ?? string.Empty;
             var check = CheckFileType(image.FileName);
@@ -25,7 +24,10 @@ namespace CmsWebsite.Api.Domain.Service
 
             string uniqueFileName = $"upload-{DateTime.Today.ToString("yyyy-MM-dd")}-{Guid.NewGuid()}{Path.GetExtension(image.FileName)}";
 
-            string uploadsFolder = Path.Combine(_hostingEnvironment.ContentRootPath,"wwwroot", "uploads", subDirectory);
+            string _configPath = @"D:\TranPhat\Projects\CmsWebsite\src\CmsWebsite.Client.Blazor\";
+            //string path = "uploads" + @"\" + DateTime.Now.Year + @"\" + DateTime.Now.Month;
+
+            string uploadsFolder = Path.Combine(_configPath, "wwwroot", "uploads", subDirectory);
 
             if (!File.Exists(uploadsFolder))
                 Directory.CreateDirectory(uploadsFolder);
@@ -37,6 +39,25 @@ namespace CmsWebsite.Api.Domain.Service
                 await image.CopyToAsync(fileStream);
             }
             return uniqueFileName;
+        }
+        #endregion
+
+        #region Upload File  
+        public async Task<bool> DeleteFile(string fileName, string? subDirectory)
+        {
+            subDirectory = subDirectory ?? string.Empty;
+
+            string _configPath = @"D:\TranPhat\Projects\CmsWebsite\src\CmsWebsite.Client.Blazor\";
+
+            string existingFolder = Path.Combine(_configPath, "wwwroot", "uploads", subDirectory);
+            var fullPath = Path.Combine(existingFolder, fileName);
+
+            if (File.Exists(fullPath))
+            {
+                File.Delete(fullPath);
+                return true;
+            }
+            throw new Exception($"Can't find the file :{fileName} or folder is not exist: {existingFolder}");
         }
         #endregion
 

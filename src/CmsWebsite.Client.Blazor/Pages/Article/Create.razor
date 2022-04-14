@@ -7,6 +7,7 @@
 @using CmsWebsite.Share.Models.ArticleCategory
 @using CmsWebsite.Share.Models.Category
 @using System.Text.Json
+@using System.Net.Http.Headers
 @using Tewr.Blazor.FileReader
 
 @inject NavigationManager uriHelper
@@ -31,18 +32,7 @@
 <RadzenTemplateForm TItem="ArticleCreateRequest" Data="@article" Submit=@CreateArticle>
     <div class="row">
         <RadzenFieldset>
-            <div class="row">
-                <div class="col-md-3 align-items-center d-flex">
-                    <RadzenLabel Component="ImageFile" Text="ImageFile" />
-                </div>
-                <div class="col-md-9">
-                    @if (article.ImageFile != null)
-                    {
-                        <RadzenImage Path=@($"uploads/{upload.subDirectory}/{article.ImageFile}") Style="width: 60%; margin: 3rem;" />
-                    }
-                    @*<RadzenUpload Url=@($"api/file/upload?subDirectory={upload.subDirectory}") Accept="image/*" Progress=@(args => OnProgress(args, "Manual Upload")) />*@
-                </div>
-            </div>
+
             <div class="row">
                 <div class="col-md-3 align-items-center d-flex">
                     <RadzenLabel Component="Title" Text="Title" />
@@ -125,7 +115,16 @@
                     </RadzenDatePicker>
                 </div>
             </div>
+            <div class="row">
+                <div class="col-md-3 align-items-center d-flex">
+                    <RadzenLabel Component="ImageFile" Text="ImageFile" />
+                </div>
+                <div class="col-md-9">
+                    <RadzenImage Path=@(article.ImageFile) Style="width: 300px; height: 300px; border: black solid 0.5px " />
 
+                    <input type="file" @ref="_input" @onchange="HandleSelected" accept=".jpg, .jpeg, .png" />
+                </div>
+            </div>
             <div class="row align-items-end justify-content-center">
                 <RadzenButton ButtonType="ButtonType.Submit" Text="Save" />
             </div>
@@ -138,10 +137,6 @@
         {
             PublishDate = DateTime.Now.AddHours(1)
         };
-    private UploadArticleImageRequest upload = new UploadArticleImageRequest()
-        {
-            subDirectory = "articles"
-        };
     private ArticleCategoryCreateRequest ac = new ArticleCategoryCreateRequest();
     private List<CategoryDTO> Categories { get; set; } = new List<CategoryDTO>();
     protected override async Task OnInitializedAsync()
@@ -149,45 +144,61 @@
         article.UserId = await getUserId();
         Categories = await _categoryService.GetListCategory();
     }
+    private ElementReference _input;
     [Parameter]
     public string ImgUrl { get; set; }
-    string fileName = string.Empty;
-    string type = string.Empty;
-    string size = string.Empty;
-    FileStream fileStream;
+    //[Parameter]
+    //public EventCallback<string> OnChange { get; set; }
 
-    //async Task OnProgress(UploadProgressArgs args, string name)
-    //{
-    //    Console.WriteLine(JsonSerializer.Serialize(args, new JsonSerializerOptions() { WriteIndented = true }));
-    //}
+    private MultipartFormDataContent content = new MultipartFormDataContent();
+
+
+    async Task HandleSelected()
+    {
+        foreach (var file in await fileReader.CreateReference(_input).EnumerateFilesAsync())
+        {
+            if (file != null)
+            {
+                var fileInfo = await file.ReadFileInfoAsync();
+                using (var ms = await file.CreateMemoryStreamAsync(4 * 1024))
+                {
+                    content.Headers.ContentDisposition = new ContentDispositionHeaderValue("form-data");
+                    content.Add(new StreamContent(ms, Convert.ToInt32(ms.Length)), "imageFile", fileInfo.Name);
+                    article.ImageFile = await _articleService.UploadArticleImage(content);
+                    //await OnChange.InvokeAsync(article.ImageFile);
+                }
+            }
+        }
+    }
     async Task CreateArticle()
     {
-        Console.WriteLine(JsonSerializer.Serialize(article, new JsonSerializerOptions() { WriteIndented = true }));
-        //var newArticle = await _articleService.CreateArticle(article);
-        //if (newArticle != null)
-        //{
-        //    ac.ArticleID = newArticle;
-        //    var result = await _acService.CreateArticleCategory(ac);
-        //    if (result != null)
-        //    {
-        //        NotificationService.Notify(new NotificationMessage
-        //            {
-        //                Severity = NotificationSeverity.Success,
-        //                Summary = "Thông báo sự kiện",
-        //                Detail = "Thêm thành công",
-        //                Duration = 4000,
-        //            });
-        //        uriHelper.NavigateTo("/article");
-        //    }
-        //    else
-        //    {
-        //        Console.WriteLine(JsonSerializer.Serialize(result, new JsonSerializerOptions() { WriteIndented = true }));
-        //    }
-        //}
-        //else
-        //{
-        //    Console.WriteLine(JsonSerializer.Serialize(article, new JsonSerializerOptions() { WriteIndented = true }));
-        //}
+        //Console.WriteLine(JsonSerializer.Serialize(article, new JsonSerializerOptions() { WriteIndented = true }));
+        var newArticle = await _articleService.CreateArticle(article);
+        if (newArticle != null)
+        {
+            ac.ArticleID = newArticle;
+            var result = await _acService.CreateArticleCategory(ac);
+            if (result != null)
+            {
+                NotificationService.Notify(new NotificationMessage
+                    {
+                        Severity = NotificationSeverity.Success,
+                        Summary = "Thông báo sự kiện",
+                        Detail = "Thêm thành công",
+                        Duration = 4000,
+                    });
+                uriHelper.NavigateTo("/article");
+            }
+            else
+            {
+                await _articleService.DeleteArticleImage(article.ImageFile);
+                Console.WriteLine(JsonSerializer.Serialize(result, new JsonSerializerOptions() { WriteIndented = true }));
+            }
+        }
+        else
+        {
+            Console.WriteLine(JsonSerializer.Serialize(article, new JsonSerializerOptions() { WriteIndented = true }));
+        }
     }
     void OnTodayClick()
     {

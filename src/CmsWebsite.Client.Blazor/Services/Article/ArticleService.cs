@@ -25,6 +25,12 @@ namespace CmsWebsite.Client.Blazor.Services.Article
             return result.IsSuccessStatusCode;
         }
 
+        public async Task<bool> DeleteArticleImage(string fileName)
+        {
+            var result = await _httpClient.DeleteAsync($"api/file/delete?fileName={fileName}&subDirectory=articles");
+            return result.IsSuccessStatusCode;
+        }
+
         public async Task<ArticleDTO> GetArticle(long id)
         {
             var result = await _httpClient.GetFromJsonAsync<ArticleDTO>($"api/article/{id}");
@@ -43,12 +49,12 @@ namespace CmsWebsite.Client.Blazor.Services.Article
             return result.IsSuccessStatusCode;
         }
 
-        public async Task<string> UploadArticleImage(UploadArticleImageRequest request)
+        public async Task<string> UploadArticleImage(MultipartFormDataContent content)
         {
-            var response = await _httpClient.PostAsJsonAsync($"api/file/upload", request.imageFile);
+            var response = await _httpClient.PostAsync($"api/file/upload?subDirectory=articles",content);
             if (!response.IsSuccessStatusCode)
             {
-                throw new ApplicationException($"Check Upload Article Image");
+                throw new ApplicationException($"Check Upload Article Image, {await response.Content.ReadAsStringAsync()}");
             }
             else
             {

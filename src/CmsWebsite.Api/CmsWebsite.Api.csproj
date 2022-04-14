@@ -18,8 +18,4 @@
     <ProjectReference Include="..\CmsWebsite.Share\CmsWebsite.Share.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="wwwroot\" />
-  </ItemGroup>
-
 </Project>
