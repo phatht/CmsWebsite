@@ -40,23 +40,14 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 
 builder.Services.AddScoped<IArticleRepository, ArticleRepository>();
 builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
-builder.Services.AddScoped<IArticleCategoryService, ArticleCategoryService>();
 
+builder.Services.AddScoped<IArticleCategoryService, ArticleCategoryService>();
 builder.Services.AddScoped<IArticleService, ArticleService>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
+builder.Services.AddScoped<IFileService, FileService>();
 
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
-//builder.Services.ConfigureApplicationCookie(options =>
-//{
-//    options.Cookie.HttpOnly = false;
-
-//    options.Events.OnRedirectToLogin = context =>
-//    {
-//        context.Response.StatusCode = 401;
-//        return Task.CompletedTask;
-//    };
-//});
 builder.Services.AddControllers().AddNewtonsoftJson();
 
 //ADD CORS CHO PHÉP THỰC HIỆN API 
@@ -79,6 +70,8 @@ app.UseCors(x => x
 
 
 app.UseHttpsRedirection();
+
+app.UseStaticFiles();
 
 app.UseRouting();
 app.UseAuthentication();

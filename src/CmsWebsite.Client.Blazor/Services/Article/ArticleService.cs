@@ -1,4 +1,5 @@
 ﻿using CmsWebsite.Share.Models.Article;
+using Microsoft.AspNetCore.Http;
 using System.Net.Http.Json;
 
 namespace CmsWebsite.Client.Blazor.Services.Article
@@ -40,6 +41,20 @@ namespace CmsWebsite.Client.Blazor.Services.Article
         {
             var result = await _httpClient.PutAsJsonAsync($"api/article/{id}", article);
             return result.IsSuccessStatusCode;
+        }
+
+        public async Task<string> UploadArticleImage(UploadArticleImageRequest request)
+        {
+            var response = await _httpClient.PostAsJsonAsync($"api/file/upload", request.imageFile);
+            if (!response.IsSuccessStatusCode)
+            {
+                throw new ApplicationException($"Check Upload Article Image");
+            }
+            else
+            {
+                var uploadFileName = await response.Content.ReadAsStringAsync();
+                return uploadFileName;
+            }
         }
     }
 }

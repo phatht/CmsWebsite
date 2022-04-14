@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Radzen;
+using Tewr.Blazor.FileReader;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 
@@ -18,8 +19,9 @@ builder.RootComponents.Add<HeadOutlet>("head::after");
 
 string urlApiOne = builder.Configuration["UrlCmsWebsiteApi:ClientOne"].ToString();
 builder.Services.AddTransient(sp => new HttpClient { BaseAddress = new Uri(urlApiOne) });
-builder.Services.AddBlazoredLocalStorage();
 
+builder.Services.AddBlazoredLocalStorage();
+builder.Services.AddFileReaderService(o => o.UseWasmSharedBuffer = true);
 builder.Services.AddOptions();
 builder.Services.AddAuthorizationCore();
 builder.Services.AddScoped<AuthenticationStateProvider, CustomStateProvider>();

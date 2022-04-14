@@ -7,14 +7,20 @@
 @using CmsWebsite.Share.Models.ArticleCategory
 @using CmsWebsite.Share.Models.Category
 @using System.Text.Json
+@using Tewr.Blazor.FileReader
 
 @inject NavigationManager uriHelper
+
+@*Service*@
 @inject IArticleService _articleService
 @inject ICategoryService _categoryService
 @inject IArticleCategoryService _acService
 
 @inject NotificationService NotificationService
 @inject AuthenticationStateProvider AuthenticationStateProvider
+
+@inject IFileReaderService fileReader
+
 <h3>Create Article</h3>
 @*
     TItem: truyền 1 class, đối tượng request để hiển thị dữ liệu
@@ -30,7 +36,11 @@
                     <RadzenLabel Component="ImageFile" Text="ImageFile" />
                 </div>
                 <div class="col-md-9">
-                    <RadzenFileInput TValue="string" @bind-Value="@article.ImageFile" Class="w-100" />
+                    @if (article.ImageFile != null)
+                    {
+                        <RadzenImage Path=@($"uploads/{upload.subDirectory}/{article.ImageFile}") Style="width: 60%; margin: 3rem;" />
+                    }
+                    @*<RadzenUpload Url=@($"api/file/upload?subDirectory={upload.subDirectory}") Accept="image/*" Progress=@(args => OnProgress(args, "Manual Upload")) />*@
                 </div>
             </div>
             <div class="row">
@@ -126,7 +136,11 @@
 @code {
     private ArticleCreateRequest article = new ArticleCreateRequest()
         {
-            PublishDate = DateTime.Now,
+            PublishDate = DateTime.Now.AddHours(1)
+        };
+    private UploadArticleImageRequest upload = new UploadArticleImageRequest()
+        {
+            subDirectory = "articles"
         };
     private ArticleCategoryCreateRequest ac = new ArticleCategoryCreateRequest();
     private List<CategoryDTO> Categories { get; set; } = new List<CategoryDTO>();
@@ -135,34 +149,45 @@
         article.UserId = await getUserId();
         Categories = await _categoryService.GetListCategory();
     }
+    [Parameter]
+    public string ImgUrl { get; set; }
+    string fileName = string.Empty;
+    string type = string.Empty;
+    string size = string.Empty;
+    FileStream fileStream;
+
+    //async Task OnProgress(UploadProgressArgs args, string name)
+    //{
+    //    Console.WriteLine(JsonSerializer.Serialize(args, new JsonSerializerOptions() { WriteIndented = true }));
+    //}
     async Task CreateArticle()
     {
-
-        var newArticle = await _articleService.CreateArticle(article);
-        if (newArticle != null)
-        {
-            ac.ArticleID = newArticle;
-            var result = await _acService.CreateArticleCategory(ac);
-            if (result != null)
-            {
-                NotificationService.Notify(new NotificationMessage
-                    {
-                        Severity = NotificationSeverity.Success,
-                        Summary = "Thông báo sự kiện",
-                        Detail = "Thêm thành công",
-                        Duration = 4000,
-                    });
-                uriHelper.NavigateTo("/article");
-            }
-            else
-            {
-                Console.WriteLine(JsonSerializer.Serialize(result, new JsonSerializerOptions() { WriteIndented = true }));
-            }
-        }
-        else
-        {
-            Console.WriteLine(JsonSerializer.Serialize(article, new JsonSerializerOptions() { WriteIndented = true }));
-        }
+        Console.WriteLine(JsonSerializer.Serialize(article, new JsonSerializerOptions() { WriteIndented = true }));
+        //var newArticle = await _articleService.CreateArticle(article);
+        //if (newArticle != null)
+        //{
+        //    ac.ArticleID = newArticle;
+        //    var result = await _acService.CreateArticleCategory(ac);
+        //    if (result != null)
+        //    {
+        //        NotificationService.Notify(new NotificationMessage
+        //            {
+        //                Severity = NotificationSeverity.Success,
+        //                Summary = "Thông báo sự kiện",
+        //                Detail = "Thêm thành công",
+        //                Duration = 4000,
+        //            });
+        //        uriHelper.NavigateTo("/article");
+        //    }
+        //    else
+        //    {
+        //        Console.WriteLine(JsonSerializer.Serialize(result, new JsonSerializerOptions() { WriteIndented = true }));
+        //    }
+        //}
+        //else
+        //{
+        //    Console.WriteLine(JsonSerializer.Serialize(article, new JsonSerializerOptions() { WriteIndented = true }));
+        //}
     }
     void OnTodayClick()
     {
@@ -172,6 +197,5 @@
     {
         var user = (await AuthenticationStateProvider.GetAuthenticationStateAsync()).User;
         return user.FindFirst(u => u.Type.Contains("UserId"))?.Value;
-
     }
 }
