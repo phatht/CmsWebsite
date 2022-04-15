@@ -1,7 +1,11 @@
 ﻿@inherits LayoutComponentBase
 @inject NavigationManager navigationManager
 @inject IAuthService auth
+@inject IArticleService _client
+@using CmsWebsite.Client.Blazor.Services.Article
+@using CmsWebsite.Share.Models.Article
 @using CmsWebsite.Client.Blazor.Pages.Components;
+
 <link href="_content/Radzen.Blazor/css/default.css" rel="stylesheet">
 <div class="page">
     <RadzenDialog />
@@ -33,7 +37,7 @@
         <div class="m-2">
             <AuthorizeView>
                 <NotAuthorized>
-                    <TinMoi />
+                    <TinMoi dataTinMoi=@Articles />
                 </NotAuthorized>
             </AuthorizeView>
         </div>
@@ -66,6 +70,11 @@
     [CascadingParameter]
     Task<AuthenticationState> AuthenticationState { get; set; }
 
+    protected List<ArticleDTO> Articles { get; set; }
+    protected override async Task OnInitializedAsync()
+    {
+        Articles = await _client.GetListArticle();
+    }
     protected override async Task OnParametersSetAsync()
     {
         if (!(await AuthenticationState).User.Identity.IsAuthenticated)
