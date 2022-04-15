@@ -1,54 +1,25 @@
-﻿<div class="top-row ps-3 navbar navbar-dark">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="">
-            @*<h6>Trang thông tin điện tử</h6>*@
-        </a>
-        <button title="Navigation menu" class="navbar-toggler" @onclick="ToggleNavMenu">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-    </div>
-</div>
-
+﻿ 
 <div class="@NavMenuCssClass" @onclick="ToggleNavMenu">
     <ul class="nav flex-column">
-        <AuthorizeView>
-            <Authorized>
-                <li class="nav-item">
-                    <NavLink class="nav-link" href="article">
-                        Bài viết
-                    </NavLink> 
-                </li>
-                <li class="nav-item">
-                    <NavLink class="nav-link" href="category">
-                        Loại bài viết
-                    </NavLink>
-                </li>
-            </Authorized>
-            <NotAuthorized>
-                <li class="nav-item">
-                    <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
-                        Giới thiệu
-                    </NavLink>
-                </li>
-                <li class="nav-item">
-                    <NavLink class="nav-link" href="counter">
-                        Giám sát & phản biện
-                    </NavLink>
-                </li>
 
-                <li class="nav-item">
-                    <NavLink class="nav-link" href="fetchdata">
-                        Dân tộc - tôn giáo
-                    </NavLink>
-                </li>
-            </NotAuthorized>
-        </AuthorizeView>
+        <li class="nav-item">
+            <NavLink class="nav-link" href="article">
+                Bài viết
+            </NavLink>
+        </li>
+        <li class="nav-item">
+            <NavLink class="nav-link" href="category">
+                Loại bài viết
+            </NavLink>
+        </li>
     </ul>
 </div>
 
+
+
 @code {
     private bool collapseNavMenu = false;
-     
+
     private string NavMenuCssClass => collapseNavMenu ? "collapse" : null;
 
     private void ToggleNavMenu()

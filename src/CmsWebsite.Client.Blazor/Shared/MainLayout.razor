@@ -11,16 +11,22 @@
     <RadzenDialog />
     <RadzenNotification />
 
-    <div class="col-md-2 sidebar">
-        <NavMenu />
-    </div>
+    <AuthorizeView>
+        <Authorized>
+            <div class="col-md-2 sidebar">
+                <NavMenu />
+            </div>
+        </Authorized>
+    </AuthorizeView>
 
-    <div class="col-md-@col main">
-        <div class="top-row px-4">
-            @DateTime.Now.ToString("dd/MM/yyy HH:mm") | Hotline:  <span style="color:red"> 08046154</span> | Liên hệ
+    <div class="col-md-@col">
+
+        <div class="top-row px-1">
+            <RadzenIcon Icon="event" />@DateTime.Now.ToString("dd/MM/yyy HH:mm")
             <button type="button" class="btn btn-link ml-md-auto"><RadzenIcon Icon="facebook" /> Facebook</button>
             <button type="button" class="btn btn-link ml-md-auto"><RadzenIcon Icon="call" />Mobile</button>
             <button type="button" class="btn btn-link ml-md-auto"><RadzenIcon Icon="mark_email_read" />Email</button>
+
             <AuthorizeView>
                 <Authorized>
                     <NavLink class="nav-link" href="logout" style="float:right">
@@ -34,7 +40,21 @@
                 </NotAuthorized>
             </AuthorizeView>
         </div>
-        <div class="m-2">
+
+        <AuthorizeView>
+            <NotAuthorized>
+                <RadzenMenu>
+                    <RadzenMenuItem Text="General" Icon="home">
+                        <RadzenMenuItem Text="Buttons" Path="counter">
+                        </RadzenMenuItem>
+                    </RadzenMenuItem>
+                </RadzenMenu>
+                <div>
+                    <img src="/img/logo.png" style="width:100%;height:100px" />
+                </div>
+            </NotAuthorized>
+        </AuthorizeView>
+        <div class="m-1">
             <AuthorizeView>
                 <NotAuthorized>
                     <TinMoi dataTinMoi=@Articles />
@@ -42,7 +62,7 @@
             </AuthorizeView>
         </div>
 
-        <div class="content px-4">
+        <div class="content px-2">
             @Body
         </div>
 
@@ -59,14 +79,13 @@
         </NotAuthorized>
     </AuthorizeView>
 
-
 </div>
 <Footer></Footer>
 
 @functions {
 
     int col = 10;
-     
+
     [CascadingParameter]
     Task<AuthenticationState> AuthenticationState { get; set; }
 
@@ -80,7 +99,7 @@
         if (!(await AuthenticationState).User.Identity.IsAuthenticated)
         {
             //navigationManager.NavigateTo("/login");
-            col = 7;
+            col = 9;
         }
     }
 }
