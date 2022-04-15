@@ -49,11 +49,12 @@ builder.Services.AddScoped<IFileService, FileService>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
 builder.Services.AddControllers().AddNewtonsoftJson();
-
 //ADD CORS CHO PHÉP THỰC HIỆN API 
 builder.Services.AddCors();
 
 var app = builder.Build();
+//auto migration
+//app.MigrateDbContext<ApplicationDbContext>();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
@@ -71,7 +72,7 @@ app.UseCors(x => x
 
 app.UseHttpsRedirection();
 
-app.UseStaticFiles();
+//app.UseStaticFiles();
 
 app.UseRouting();
 app.UseAuthentication();

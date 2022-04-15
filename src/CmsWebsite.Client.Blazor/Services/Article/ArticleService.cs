@@ -1,4 +1,5 @@
 ﻿using CmsWebsite.Share.Models.Article;
+using CmsWebsite.Share.Response;
 using Microsoft.AspNetCore.Http;
 using System.Net.Http.Json;
 
@@ -27,7 +28,7 @@ namespace CmsWebsite.Client.Blazor.Services.Article
 
         public async Task<bool> DeleteArticleImage(string fileName)
         {
-            var result = await _httpClient.DeleteAsync($"api/file/delete?fileName={fileName}&subDirectory=articles");
+            var result = await _httpClient.DeleteAsync($"api/file/delete?fileName={fileName}");
             return result.IsSuccessStatusCode;
         }
 
@@ -49,7 +50,7 @@ namespace CmsWebsite.Client.Blazor.Services.Article
             return result.IsSuccessStatusCode;
         }
 
-        public async Task<string> UploadArticleImage(MultipartFormDataContent content)
+        public async Task<UploadFileResponse> UploadArticleImage(MultipartFormDataContent content)
         {
             var response = await _httpClient.PostAsync($"api/file/upload?subDirectory=articles",content);
             if (!response.IsSuccessStatusCode)
@@ -58,8 +59,7 @@ namespace CmsWebsite.Client.Blazor.Services.Article
             }
             else
             {
-                var uploadFileName = await response.Content.ReadAsStringAsync();
-                return uploadFileName;
+                return await response.Content.ReadFromJsonAsync<UploadFileResponse>();
             }
         }
     }

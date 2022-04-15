@@ -1,9 +1,11 @@
-﻿namespace CmsWebsite.Api.Domain.Interfaces
+﻿using CmsWebsite.Share.Response;
+
+namespace CmsWebsite.Api.Domain.Interfaces
 {
     public interface IFileService
     {
-        Task<string> UploadFile(IFormFile image, string? subDirectory);
-        Task<bool> DeleteFile(string fileName, string? subDirectory);
+        Task<UploadFileResponse> UploadFile(IFormFile image, string? subDirectory);
+        Task<bool> DeleteFile(string fileName);
 
         string SizeConverter(long bytes);
     }

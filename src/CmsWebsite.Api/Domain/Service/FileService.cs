@@ -1,63 +1,77 @@
 ﻿using CmsWebsite.Api.Domain.Interfaces;
+using CmsWebsite.Share.Response;
 
 namespace CmsWebsite.Api.Domain.Service
 {
     public class FileService : IFileService
     {
         #region Property  
-        private IWebHostEnvironment _hostingEnvironment;
+        private readonly IWebHostEnvironment _hostingEnvironment;
+        private readonly IConfiguration _configuration;
         #endregion
 
         #region Constructor  
-        public FileService(IWebHostEnvironment hostingEnvironment)
+        public FileService(IWebHostEnvironment hostingEnvironment, IConfiguration configuration)
         {
             _hostingEnvironment = hostingEnvironment;
+            _configuration = configuration;
         }
         #endregion
 
         #region Upload File  
-        public async Task<string> UploadFile(IFormFile image, string? subDirectory)
+        public async Task<UploadFileResponse> UploadFile(IFormFile image, string? subDirectory)
         {
             subDirectory = subDirectory ?? string.Empty;
+
             var check = CheckFileType(image.FileName);
             if (!check) throw new Exception($"File is not a valid image");
 
             string uniqueFileName = $"upload-{DateTime.Today.ToString("yyyy-MM-dd")}-{Guid.NewGuid()}{Path.GetExtension(image.FileName)}";
 
-            string _configPath = @"D:\TranPhat\Projects\CmsWebsite\src\CmsWebsite.Client.Blazor\";
-            //string path = "uploads" + @"\" + DateTime.Now.Year + @"\" + DateTime.Now.Month;
+            //đường dẫn config từ appsetting của api application
+            string _configPath = _configuration["UploadPath"];
 
-            string uploadsFolder = Path.Combine(_configPath, "wwwroot", "uploads", subDirectory);
+            //đường dẫn upload mặc định theo năm tháng 
+            string uploadPath = "uploads" + @"\" + DateTime.Now.Year + @"\" + DateTime.Now.Month;
 
+            //đường dẫn đến subfolder
+            string uploadsFolder = Path.Combine(_configPath, uploadPath, subDirectory);
+
+            //kiểm tra tồn tại và tạo thư mục nếu chưa có
             if (!File.Exists(uploadsFolder))
                 Directory.CreateDirectory(uploadsFolder);
 
-            var filePath = Path.Combine(uploadsFolder, uniqueFileName);
+            //đường dẫn hoàn chỉnh đến tên file
+            var fullPath = Path.Combine(uploadsFolder, uniqueFileName);
 
-            using (var fileStream = new FileStream(filePath, FileMode.Create, FileAccess.Write))
+            //xử lí load ảnh
+            var response = new UploadFileResponse();
+            //đường dẫn load ảnh
+            response.loadPathFolder = _configuration["UploadPath"];
+            response.loadPathFile = Path.Combine(uploadPath, subDirectory, uniqueFileName);
+
+            using (var fileStream = new FileStream(fullPath, FileMode.Create, FileAccess.Write))
             {
                 await image.CopyToAsync(fileStream);
             }
-            return uniqueFileName;
+            return response;
         }
         #endregion
 
         #region Upload File  
-        public async Task<bool> DeleteFile(string fileName, string? subDirectory)
+        public async Task<bool> DeleteFile(string loadPath)
         {
-            subDirectory = subDirectory ?? string.Empty;
 
-            string _configPath = @"D:\TranPhat\Projects\CmsWebsite\src\CmsWebsite.Client.Blazor\";
+            string _configPath = _configuration["UploadPath"];
 
-            string existingFolder = Path.Combine(_configPath, "wwwroot", "uploads", subDirectory);
-            var fullPath = Path.Combine(existingFolder, fileName);
+            var fullPath = Path.Combine(_configPath, loadPath);
 
             if (File.Exists(fullPath))
             {
                 File.Delete(fullPath);
                 return true;
             }
-            throw new Exception($"Can't find the file :{fileName} or folder is not exist: {existingFolder}");
+            throw new Exception($"Can't find the file or folder is not exist: {loadPath}");
         }
         #endregion
 

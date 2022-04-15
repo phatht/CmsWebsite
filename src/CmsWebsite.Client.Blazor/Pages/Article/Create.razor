@@ -2,13 +2,14 @@
 @using CmsWebsite.Client.Blazor.Services.Article
 @using CmsWebsite.Client.Blazor.Services.Category
 @using CmsWebsite.Client.Blazor.Services.ArticleCategory
-@using System.Security.Claims
+
 @using CmsWebsite.Share.Models.Article
 @using CmsWebsite.Share.Models.ArticleCategory
 @using CmsWebsite.Share.Models.Category
+
 @using System.Text.Json
 @using System.Net.Http.Headers
-@using Tewr.Blazor.FileReader
+
 
 @inject NavigationManager uriHelper
 
@@ -20,7 +21,6 @@
 @inject NotificationService NotificationService
 @inject AuthenticationStateProvider AuthenticationStateProvider
 
-@inject IFileReaderService fileReader
 
 <h3>Create Article</h3>
 @*
@@ -120,13 +120,16 @@
                     <RadzenLabel Component="ImageFile" Text="ImageFile" />
                 </div>
                 <div class="col-md-9">
-                    <RadzenImage Path=@(article.ImageFile) Style="width: 300px; height: 300px; border: black solid 0.5px " />
+                    <RadzenImage Path=@($"{ImgUrl}") Style="width: 300px; height: 300px; border: black solid 0.5px " />
+                    <InputFile OnChange="@HandleSelected" accept=".jpg, .jpeg, .png" />
 
-                    <input type="file" @ref="_input" @onchange="HandleSelected" accept=".jpg, .jpeg, .png" />
                 </div>
             </div>
-            <div class="row align-items-end justify-content-center">
-                <RadzenButton ButtonType="ButtonType.Submit" Text="Save" />
+            <div class="row justify-content-center">
+                <div class="col-md-3  d-flex align-items-end justify-content-center">
+                    <RadzenButton ButtonType="ButtonType.Submit" Text="Save" />
+                    <RadzenButton ButtonStyle="ButtonStyle.Light" Style="display: inline-block; margin-left: 10px;" ButtonType="ButtonType.Button" Click=@Back Text="Back" />
+                </div>
             </div>
         </RadzenFieldset>
     </div>
@@ -139,40 +142,75 @@
         };
     private ArticleCategoryCreateRequest ac = new ArticleCategoryCreateRequest();
     private List<CategoryDTO> Categories { get; set; } = new List<CategoryDTO>();
+
+    [Parameter]
+    public string ImgUrl { get; set; }
+    public string FirstFile;
+    private bool stateChanged = false;
+    private bool isSave = false;
+    private int count = 0;
+
     protected override async Task OnInitializedAsync()
     {
         article.UserId = await getUserId();
         Categories = await _categoryService.GetListCategory();
     }
-    private ElementReference _input;
-    [Parameter]
-    public string ImgUrl { get; set; }
-    //[Parameter]
-    //public EventCallback<string> OnChange { get; set; }
-
-    private MultipartFormDataContent content = new MultipartFormDataContent();
 
 
-    async Task HandleSelected()
+
+    async Task HandleSelected(InputFileChangeEventArgs e)
     {
-        foreach (var file in await fileReader.CreateReference(_input).EnumerateFilesAsync())
+        var imageFiles = e.GetMultipleFiles();
+        foreach (var imageFile in imageFiles)
         {
-            if (file != null)
+            if (imageFile != null)
             {
-                var fileInfo = await file.ReadFileInfoAsync();
-                using (var ms = await file.CreateMemoryStreamAsync(4 * 1024))
+                var resizedFile = await imageFile.RequestImageFileAsync("image/png", 300, 500);
+                using (var ms = resizedFile.OpenReadStream(resizedFile.Size))
                 {
+                    var content = new MultipartFormDataContent();
                     content.Headers.ContentDisposition = new ContentDispositionHeaderValue("form-data");
-                    content.Add(new StreamContent(ms, Convert.ToInt32(ms.Length)), "imageFile", fileInfo.Name);
-                    article.ImageFile = await _articleService.UploadArticleImage(content);
-                    //await OnChange.InvokeAsync(article.ImageFile);
+                    content.Add(new StreamContent(ms, Convert.ToInt32(ms.Length)), "imageFile", imageFile.Name);
+
+                    //chỉ xoá file nếu img thay đổi lần 2
+                    if (!string.IsNullOrEmpty(ImgUrl) && stateChanged)
+                        await _articleService.DeleteArticleImage(ImgUrl);
+
+                    var response = await _articleService.UploadArticleImage(content);
+                    ImgUrl = response.loadPathFile;
+
+                    //kiểm tra file đã thay đổi hay chưa nếu thay đổi rồi thì save lại
+                    stateChanged = true;
+                    ++count;
+
+                    //reset trạng thái save filechange file
+                    isSave = false;
                 }
             }
         }
     }
+
     async Task CreateArticle()
     {
         //Console.WriteLine(JsonSerializer.Serialize(article, new JsonSerializerOptions() { WriteIndented = true }));
+        article.ImageFile = ImgUrl;
+        //nếu file có sự thay đổi thì xoá file củ
+        //sau khi lưu lần 1 file ban đầu đã bị xoá cần lưu lại giá trị file mới
+        //FirstFile = ImgUrl;
+        if (!string.IsNullOrEmpty(FirstFile))
+        {
+            if (stateChanged && count > 0)
+            {
+                await _articleService.DeleteArticleImage(FirstFile);
+            }
+        }
+        //lưu trạng thái save file
+        isSave = true;
+        //reset trạng thái
+        stateChanged = false;
+        count = 0;
+        //ghi lại file vừa mới lưu
+        FirstFile = article.ImageFile;
         var newArticle = await _articleService.CreateArticle(article);
         if (newArticle != null)
         {
@@ -208,5 +246,15 @@
     {
         var user = (await AuthenticationStateProvider.GetAuthenticationStateAsync()).User;
         return user.FindFirst(u => u.Type.Contains("UserId"))?.Value;
+    }
+    void Back()
+    {
+        //đổi file nhưng mà chưa save lại thì xoá đi file đó để tránh rác
+        // cách này chỉ áp dụng cho lần đầu
+        if(stateChanged && !isSave )
+        {
+            _articleService.DeleteArticleImage(ImgUrl);
+        }
+        uriHelper.NavigateTo("article");
     }
 }

@@ -2,9 +2,11 @@
 @using CmsWebsite.Client.Blazor.Services.Article
 @using CmsWebsite.Share.Models.Article
 @using System.Text.Json
+@using System.Net.Http.Headers
 
-@inject IArticleService _client
+@inject IArticleService _articleService
 @inject NavigationManager uriHelper
+@inject NotificationService NotificationService
 <h3>Edit Article</h3>
 
 <RadzenTemplateForm TItem="ArticleDTO" Data="@existingArticle" Submit=@UpdateArticle>
@@ -12,14 +14,6 @@
 
     <div class="row">
         <RadzenFieldset>
-            <div class="row">
-                <div class="col-md-3 align-items-center d-flex">
-                    <RadzenLabel Component="ImageFile" Text="ImageFile" />
-                </div>
-                <div class="col-md-9">
-                    <RadzenFileInput TValue="string" @bind-Value="@existingArticle.ImageFile" Class="w-100" />
-                </div>
-            </div>
             <div class="row">
                 <div class="col-md-3 align-items-center d-flex">
                     <RadzenLabel Component="Title" Text="Title" />
@@ -43,7 +37,7 @@
                     <RadzenLabel Component="SummaryArticle" Text="Summary Article" />
                 </div>
                 <div class="col-md-9">
-                     <RadzenHtmlEditor Name="SummaryArticle" @bind-Value=@existingArticle.SummaryArticle style="height: 500px; margin-bottom: 1rem;" UploadUrl="upload/image">
+                    <RadzenHtmlEditor Name="SummaryArticle" @bind-Value=@existingArticle.SummaryArticle style="height: 500px; margin-bottom: 1rem;" UploadUrl="upload/image">
                         <RadzenHtmlEditorUndo />
                         <RadzenHtmlEditorRedo />
                         <RadzenHtmlEditorSeparator />
@@ -93,7 +87,15 @@
                     </RadzenDatePicker>
                 </div>
             </div>
-
+            <div class="row">
+                <div class="col-md-3 align-items-center d-flex">
+                    <RadzenLabel Component="ImageFile" Text="ImageFile" />
+                </div>
+                <div class="col-md-9">
+                    <RadzenImage Path=@($"{ImgUrl}") Style="width: 300px; height: 300px; border: black solid 0.5px " />
+                    <InputFile OnChange="@HandleSelected" accept=".jpg, .jpeg, .png" />
+                </div>
+            </div>
             <div class="row justify-content-center">
                 <div class="col-md-3  d-flex align-items-end justify-content-center">
                     <RadzenButton ButtonType="ButtonType.Submit" Text="Save" />
@@ -106,31 +108,104 @@
 
 @code {
     private ArticleDTO existingArticle { get; set; } = new ArticleDTO();
-    
+
     [Parameter]
     public long articleId { set; get; }
+    [Parameter]
+    public string ImgUrl { get; set; }
+
+    public string FirstFile;
+    private bool stateChanged = false;
+    private bool isSave = false;
+    private int count = 0;
+
     protected async override Task OnParametersSetAsync()
     {
-        existingArticle = await _client.GetArticle(articleId);
+        existingArticle = await _articleService.GetArticle(articleId);
+        FirstFile = ImgUrl = existingArticle.ImageFile;
     }
+    async Task HandleSelected(InputFileChangeEventArgs e)
+    {
+
+        var imageFiles = e.GetMultipleFiles();
+        foreach (var imageFile in imageFiles)
+        {
+            if (imageFile != null)
+            {
+                var resizedFile = await imageFile.RequestImageFileAsync("image/png", 300, 500);
+                using (var ms = resizedFile.OpenReadStream(resizedFile.Size))
+                {
+                    var content = new MultipartFormDataContent();
+                    content.Headers.ContentDisposition = new ContentDispositionHeaderValue("form-data");
+                    content.Add(new StreamContent(ms, Convert.ToInt32(ms.Length)), "imageFile", imageFile.Name);
+
+                    //chỉ xoá file nếu img thay đổi lần 2
+                    if (!string.IsNullOrEmpty(ImgUrl) && stateChanged)
+                        await _articleService.DeleteArticleImage(ImgUrl);
+
+                    var response = await _articleService.UploadArticleImage(content);
+                    ImgUrl = response.loadPathFile;
+
+                    //kiểm tra file đã thay đổi hay chưa nếu thay đổi rồi thì save lại
+                    stateChanged = true;
+                    ++count;
+
+                    //reset trạng thái save filechange file
+                    isSave = false;
+                }
+            }
+        }
+    }
+
     async Task UpdateArticle()
     {
-        var result = await _client.UpdateArticle(articleId, existingArticle);
+        existingArticle.ImageFile = ImgUrl;
+        //nếu file có sự thay đổi thì xoá file củ
+        //sau khi lưu lần 1 file ban đầu đã bị xoá cần lưu lại giá trị file mới
+        //FirstFile = ImgUrl;
+        if (stateChanged && count > 0)
+        {
+            await _articleService.DeleteArticleImage(FirstFile);
+        }
+        //lưu trạng thái save file
+        isSave = true;
+        //reset trạng thái
+        stateChanged = false;
+        count = 0;
+        //ghi lại file vừa mới lưu
+        FirstFile = existingArticle.ImageFile;
+        var result = await _articleService.UpdateArticle(articleId, existingArticle);
         if (result)
         {
-            uriHelper.NavigateTo("article");
+            
+            NotificationService.Notify(new NotificationMessage
+                {
+                    Severity = NotificationSeverity.Success,
+                    Summary = "Thông báo sự kiện",
+                    Detail = "Update thành công",
+                    Duration = 4000,
+                });
         }
         else
         {
+            await _articleService.DeleteArticleImage(existingArticle.ImageFile);
             Console.WriteLine(JsonSerializer.Serialize(existingArticle, new JsonSerializerOptions() { WriteIndented = true }));
         }
     }
+
     void OnTodayClick()
     {
         existingArticle.PublishDate = DateTime.Now;
     }
     void Back()
     {
+        //đổi file nhưng mà chưa save lại thì xoá đi file đó để tránh rác
+        // cách này chỉ áp dụng cho lần đầu
+        if(stateChanged && !isSave )
+        {
+            _articleService.DeleteArticleImage(ImgUrl);
+        }
+
         uriHelper.NavigateTo("article");
     }
 }

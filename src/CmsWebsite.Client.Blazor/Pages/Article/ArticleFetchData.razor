@@ -25,7 +25,7 @@ else
         <Columns>
             <RadzenDataGridColumn TItem="ArticleDTO" Title="Photo" Width="80px">
                 <Template Context="data">
-                    <RadzenImage Path="@($"uploads/articles/{data.ImageFile}")" style="width: 40px; height: 40px; border-radius: 8px;" />
+                    <RadzenImage Path="@($"{data.ImageFile}")" style="width: 40px; height: 40px; border-radius: 8px;" />
                 </Template>
             </RadzenDataGridColumn>
             <RadzenDataGridColumn TItem="ArticleDTO" Property="Title"

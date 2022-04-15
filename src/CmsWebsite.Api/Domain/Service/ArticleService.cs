@@ -47,16 +47,17 @@ namespace CmsWebsite.Api.Domain.Service
                 {
                     UserId = request.UserId,
                     CreatedDate = DateTime.Now,
+                    LastModifiedDate = DateTime.Now,
                     Title = request.Title,
                     Description = request.Description,
                     SummaryArticle = request.SummaryArticle,
                     ImageFile = request.ImageFile,
                     PublishDate = request.PublishDate,
-                    ExpireDate = request.ExpireDate,
+                    ExpireDate = request.PublishDate.AddDays(10),
                     KeyWords = request.KeyWords,
                     SubHead = request.SubHead,
-                    Status = request.Status,
-                    taked = request.taked,
+                    Status = 1,
+                    taked = true,
                 };
                 var result = await _unitOfWork.ArticleRepository.AddAsync(article);
                 await _unitOfWork.CommitAsync();

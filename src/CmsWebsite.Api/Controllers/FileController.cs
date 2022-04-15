@@ -42,13 +42,13 @@ namespace CmsWebsite.Api.Controllers
 
         #region Upload  
         [HttpDelete(nameof(Delete))]
-        public async Task<ActionResult<bool>> Delete( string fileName, string? subDirectory)
+        public async Task<ActionResult<bool>> Delete( string fileName)
         {
             try
             {
                 if (fileName == null ) return BadRequest("Undefined a file name");
 
-                var result = await _fileService.DeleteFile(fileName, subDirectory);
+                var result = await _fileService.DeleteFile(fileName);
 
                 return Ok(result);
             }
