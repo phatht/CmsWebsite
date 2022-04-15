@@ -1,21 +1,48 @@
-﻿<RadzenCard  class="m-1">
+﻿<RadzenCard>
     <h6 class="category">VĂN BẢN</h6>
 
-    <RadzenTabs Change=@OnChange TabPosition="TabPosition.Top"
-                 RenderMode="TabRenderMode.Client">
+    @*<RadzenTabs Change=@OnChange TabPosition="TabPosition.Top"
+                RenderMode="TabRenderMode.Client">
         <Tabs>
             <RadzenTabsItem Text="HƯỚNG DẪN" Style="font-size:small">
             </RadzenTabsItem>
             <RadzenTabsItem Text="PHÁP LUẬT" Style="font-size:small">
             </RadzenTabsItem>
         </Tabs>
-    </RadzenTabs>
+    </RadzenTabs>*@
 
 
-    <RadzenTabs Change=@OnChange TabPosition="TabPosition.Bottom"
-                 RenderMode="TabRenderMode.Client">
+    <RadzenTabs Change=@OnChange TabPosition="TabPosition.Top"
+                RenderMode="TabRenderMode.Client">
         <Tabs>
             <RadzenTabsItem Text="XEM NHIỀU" Style="font-size:small">
+                <table class="table table-hover" width="100%">
+
+                    <tbody>
+                        <tr>
+
+                            <td>
+                                Hội nghị tổng kết công tác phối hợp giữa Chủ tịch nước và Đoàn Chủ tịch UBTƯ MTTQ Việt Nam
+                            </td>
+
+                        </tr>
+                        <tr>
+
+                            <td>
+                                Gìn giữ bản sắc văn hóa và tinh thần tương thân tương ái trong mỗi kiều bào tại Nhật Bản
+                            </td>
+
+
+                        </tr>
+                        <tr>
+
+                            <td>
+                                Tình hình thực hiện thí điểm mô hình Trưởng ban Dân vận cấp ủy đồng thời là Chủ tịch Ủy ban MTTQ Việt Nam ở cấp tỉnh, cấp huyện
+                            </td>
+
+                        </tr>
+                    </tbody>
+                </table>
             </RadzenTabsItem>
             <RadzenTabsItem Text="TIN MỚI" Style="font-size:small">
             </RadzenTabsItem>
@@ -26,7 +53,7 @@
 
 @code {
 
-    
+
 
     protected override void OnInitialized()
     {

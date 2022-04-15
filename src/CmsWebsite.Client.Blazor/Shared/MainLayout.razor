@@ -21,40 +21,81 @@
 
     <div class="col-md-@col">
 
-        <div class="top-row px-1">
-            <RadzenIcon Icon="event" />@DateTime.Now.ToString("dd/MM/yyy HH:mm")
-            <button type="button" class="btn btn-link ml-md-auto"><RadzenIcon Icon="facebook" /> Facebook</button>
-            <button type="button" class="btn btn-link ml-md-auto"><RadzenIcon Icon="call" />Mobile</button>
-            <button type="button" class="btn btn-link ml-md-auto"><RadzenIcon Icon="mark_email_read" />Email</button>
-
+        <div class="top-row">
+            <div class="col-md-4">
+                <RadzenImage Path="/img/logo.png" Style="width:280px" />
+            </div>
+            <div class="col-md-3">
+                Thứ  @DateTime.Now.DayOfWeek, @DateTime.Now.ToString("dd/MM/yyy")
+            </div>
+            <div class="col-md-4">
+                <button type="button" class="btn btn-link ml-md-auto"><RadzenIcon Icon="facebook" /> Facebook</button>
+                <button type="button" class="btn btn-link ml-md-auto"><RadzenIcon Icon="call" />Mobile</button>
+                <button type="button" class="btn btn-link ml-md-auto"><RadzenIcon Icon="mark_email_read" />Email</button>
+            </div>
             <AuthorizeView>
                 <Authorized>
-                    <NavLink class="nav-link" href="logout" style="float:right">
-                        Xin chào @context.User.Identity.Name !  Thoát <span class="oi oi-power-standby"></span>
-                    </NavLink>
+                    <div class="col-md-2">
+                        <NavLink class="nav-link" href="logout" style="float:right">
+                            Xin chào @context.User.Identity.Name !  Thoát <span class="oi oi-power-standby"></span>
+                        </NavLink>
+                    </div>
                 </Authorized>
                 <NotAuthorized>
-                    <NavLink class="nav-link" href="login" style="float:right">
-                        Đăng nhập <span class="oi oi-power-standby"></span>
+                    <NavLink class="nav-link" href="login" style="float:right" title="Đăng nhập quản trị">
+                        <RadzenIcon Icon="manage_accounts" />
                     </NavLink>
                 </NotAuthorized>
             </AuthorizeView>
+
         </div>
 
         <AuthorizeView>
             <NotAuthorized>
+
                 <RadzenMenu>
-                    <RadzenMenuItem Text="General" Icon="home">
-                        <RadzenMenuItem Text="Buttons" Path="counter">
+                    <RadzenMenuItem Icon="menu" Text="Tất cả">
+                        <table class="table table-hover">
+                            <tbody>
+                                <tr>
+                                    <td>Giới thiệu</td>
+                                    <td>Tin tổng hợp</td>
+                                    <td>Tin hoạt động</td>
+                                </tr>
+                                <tr>
+                                    <td>Chương trình phối hợp</td>
+                                    <td>Văn bản hướng dẫn</td>
+                                    <td>Thành đoàn</td>
+                                </tr>
+                                <tr>
+                                    <td>Đối ngoại kiều bào</td>
+                                    <td>Dân tộc - tôn giáo</td>
+                                    <td>Thư viện ảnh</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </RadzenMenuItem>
+                    <RadzenMenuItem Text="Giới thiệu">
+                        <RadzenMenuItem Text="Giới thiệu chung" Path="counter">
+                        </RadzenMenuItem>
+                        <RadzenMenuItem Text="Các kỳ đại hội" Path="">
                         </RadzenMenuItem>
                     </RadzenMenuItem>
+                    <RadzenMenuItem Text="Hoạt động mặt trận">
+                        <RadzenMenuItem Text="Tin hoạt động" Path="">
+                        </RadzenMenuItem>
+                        <RadzenMenuItem Text="Hoạt động mật trận địa phương" Path="">
+                        </RadzenMenuItem>
+                    </RadzenMenuItem>
+                    <RadzenMenuItem Text="Giám sát & phản biện"></RadzenMenuItem>
+                    <RadzenMenuItem Text="Dân tộc - tôn giáo"></RadzenMenuItem>
+                    <RadzenMenuItem Text="Đối ngoại kiều bào"></RadzenMenuItem>
+
                 </RadzenMenu>
-                <div>
-                    <img src="/img/logo.png" style="width:100%;height:100px" />
-                </div>
+
             </NotAuthorized>
         </AuthorizeView>
-        <div class="m-1">
+        <div>
             <AuthorizeView>
                 <NotAuthorized>
                     <TinMoi dataTinMoi=@Articles />
@@ -62,7 +103,7 @@
             </AuthorizeView>
         </div>
 
-        <div class="content px-2">
+        <div class="content">
             @Body
         </div>
 
