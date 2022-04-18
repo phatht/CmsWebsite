@@ -98,7 +98,8 @@
         <div>
             <AuthorizeView>
                 <NotAuthorized>
-                    <TinMoi dataTinMoi=@Articles />
+                    <TinMoi Articles=@articles />
+                    <ItemContent Abbreviation=""></ItemContent>
                 </NotAuthorized>
             </AuthorizeView>
         </div>
@@ -130,10 +131,10 @@
     [CascadingParameter]
     Task<AuthenticationState> AuthenticationState { get; set; }
 
-    protected List<ArticleDTO> Articles { get; set; }
+    protected List<ArticleDTO> articles { get; set; }
     protected override async Task OnInitializedAsync()
     {
-        Articles = await _client.GetListArticle();
+        articles = await _client.GetListArticle();
     }
     protected override async Task OnParametersSetAsync()
     {
