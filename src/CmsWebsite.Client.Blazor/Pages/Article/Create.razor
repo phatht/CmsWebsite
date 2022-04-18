@@ -57,17 +57,7 @@
                 </div>
                 <div class="col-md-9">
                     <RadzenHtmlEditor Name="SummaryArticle" @bind-Value=@article.SummaryArticle style="height: 500px; margin-bottom: 1rem;" UploadUrl="upload/image">
-                        <RadzenHtmlEditorUndo />
-                        <RadzenHtmlEditorRedo />
-                        <RadzenHtmlEditorSeparator />
-                        <RadzenHtmlEditorBold />
-                        <RadzenHtmlEditorItalic />
-                        <RadzenHtmlEditorUnderline />
-                        <RadzenHtmlEditorStrikeThrough />
-                        <RadzenHtmlEditorSeparator />
-                        <RadzenHtmlEditorColor />
-                        <RadzenHtmlEditorBackground />
-                        <RadzenHtmlEditorRemoveFormat />
+                       
                     </RadzenHtmlEditor>
                     @*<RadzenTextBox Name="SummaryArticle" @bind-Value="@article.SummaryArticle" />*@
                 </div>
@@ -140,7 +130,9 @@
         {
             PublishDate = DateTime.Now.AddHours(1)
         };
-    private ArticleCategoryCreateRequest ac = new ArticleCategoryCreateRequest();
+
+    private ArticleCategoryRequest ac = new ArticleCategoryRequest();
+
     private List<CategoryDTO> Categories { get; set; } = new List<CategoryDTO>();
 
     [Parameter]

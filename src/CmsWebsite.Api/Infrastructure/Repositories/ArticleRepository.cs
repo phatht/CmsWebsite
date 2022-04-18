@@ -13,12 +13,12 @@ namespace CmsWebsite.Api.Infrastructure.Repositories
 
         public async Task<IEnumerable<Article>> ListAsync()
         {
-            return await _context.Article.AsNoTracking().ToListAsync();
+            return await _context.Article.AsNoTracking().IgnoreQueryFilters().ToListAsync();
         }
 
         public async Task<Article> FindAsync(long id)
         {
-            var article = await _context.Article
+            var article = await _context.Article.IgnoreQueryFilters()
                 .FirstOrDefaultAsync(r => r.ArticleID == id);
 
             return article;

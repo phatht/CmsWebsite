@@ -1,10 +1,16 @@
 ﻿@page "/article/edit/{articleId:long}"
 @using CmsWebsite.Client.Blazor.Services.Article
+@using CmsWebsite.Client.Blazor.Services.ArticleCategory
+@using CmsWebsite.Client.Blazor.Services.Category
 @using CmsWebsite.Share.Models.Article
 @using System.Text.Json
 @using System.Net.Http.Headers
+@using CmsWebsite.Share.Models.ArticleCategory
+@using CmsWebsite.Share.Models.Category
 
 @inject IArticleService _articleService
+@inject ICategoryService _categoryService
+@inject IArticleCategoryService _acService
 @inject NavigationManager uriHelper
 @inject NotificationService NotificationService
 <h3>Edit Article</h3>
@@ -38,17 +44,7 @@
                 </div>
                 <div class="col-md-9">
                     <RadzenHtmlEditor Name="SummaryArticle" @bind-Value=@existingArticle.SummaryArticle style="height: 500px; margin-bottom: 1rem;" UploadUrl="upload/image">
-                        <RadzenHtmlEditorUndo />
-                        <RadzenHtmlEditorRedo />
-                        <RadzenHtmlEditorSeparator />
-                        <RadzenHtmlEditorBold />
-                        <RadzenHtmlEditorItalic />
-                        <RadzenHtmlEditorUnderline />
-                        <RadzenHtmlEditorStrikeThrough />
-                        <RadzenHtmlEditorSeparator />
-                        <RadzenHtmlEditorColor />
-                        <RadzenHtmlEditorBackground />
-                        <RadzenHtmlEditorRemoveFormat />
+                       
                     </RadzenHtmlEditor>
                     @*<RadzenTextBox Name="SummaryArticle" @bind-Value="@article.SummaryArticle" />*@
                 </div>
@@ -72,7 +68,16 @@
                     <RadzenTextBox Name="SubHead" @bind-Value="@existingArticle.SubHead" />
                 </div>
             </div>
+            <div class="row">
+                <div class="col-md-3 align-items-center d-flex">
+                    <RadzenLabel Component="Categories" Text="Categories" />
+                </div>
+                <div class="col-md-9">
+                    <RadzenDropDown AllowClear=true Name="Level" Data="@Categories" TextProperty="CategoryName" ValueProperty="CategoryId"
+                                    @bind-Value=@ac.CategoryID Placeholder="Select Category..." />
 
+                </div>
+            </div>
 
             <div class="row">
                 <div class="col-md-3 align-items-center d-flex">
@@ -108,7 +113,8 @@
 
 @code {
     private ArticleDTO existingArticle { get; set; } = new ArticleDTO();
-
+    private ArticleCategoryRequest ac = new ArticleCategoryRequest();
+    private List<CategoryDTO> Categories { get; set; } = new List<CategoryDTO>();
     [Parameter]
     public long articleId { set; get; }
     [Parameter]
@@ -122,6 +128,7 @@
     protected async override Task OnParametersSetAsync()
     {
         existingArticle = await _articleService.GetArticle(articleId);
+        Categories = await _categoryService.GetListCategory();
         FirstFile = ImgUrl = existingArticle.ImageFile;
     }
     async Task HandleSelected(InputFileChangeEventArgs e)
@@ -177,7 +184,7 @@
         var result = await _articleService.UpdateArticle(articleId, existingArticle);
         if (result)
         {
-            
+
             NotificationService.Notify(new NotificationMessage
                 {
                     Severity = NotificationSeverity.Success,
@@ -201,7 +208,7 @@
     {
         //đổi file nhưng mà chưa save lại thì xoá đi file đó để tránh rác
         // cách này chỉ áp dụng cho lần đầu
-        if(stateChanged && !isSave )
+        if (stateChanged && !isSave)
         {
             _articleService.DeleteArticleImage(ImgUrl);
         }

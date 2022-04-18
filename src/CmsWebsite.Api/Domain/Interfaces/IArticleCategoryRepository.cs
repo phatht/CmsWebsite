@@ -6,11 +6,11 @@ namespace CmsWebsite.Api.Domain.Interfaces
     {
         //public Task<IEnumerable<ArticleCategories>> ListAsync();
 
-        //public Task<ArticleCategories> FindAsync(long id);
+        public Task<ArticleCategories> FindAsync(long id);
 
         public Task<ArticleCategories> AddAsync(ArticleCategories ac);
 
-        //public void Update(ArticleCategories reminder);
+        public void Update(ArticleCategories reminder);
 
         //public void Remove(ArticleCategories reminder);
     }

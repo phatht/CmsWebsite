@@ -9,7 +9,9 @@
         public string Abbreviation { get; set; }
         public string IconFile { get; set; }
         public int Level { get; set; }
-        public List<ArticleCategories> ArticleCategories { get; set; }
+        public bool isDeleted  { get; set; }
+        public DateTime? DateDeleted { get; set; }
+        public DateTime? CreatedDate { get; set; }
 
     }
 }

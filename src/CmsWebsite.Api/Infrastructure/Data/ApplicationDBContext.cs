@@ -15,7 +15,7 @@ namespace CmsWebsite.Api.Infrastructure.Data
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {
-          
+
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -30,6 +30,7 @@ namespace CmsWebsite.Api.Infrastructure.Data
         {
             entity.ToTable("CmsArticle");
             entity.HasKey(r => r.ArticleID);
+            entity.HasQueryFilter(r => !r.isDeleted); //isDeleted == false
             entity.Property(r => r.Title).IsRequired();
         }
 
@@ -53,5 +54,45 @@ namespace CmsWebsite.Api.Infrastructure.Data
             entity.Property(r => r.CategoryName).IsRequired();
         }
 
+        public override int SaveChanges()
+        {
+            UpdateSoftDeleteStatuses();
+            return base.SaveChanges();
+        }
+
+
+
+        public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
+        {
+            UpdateSoftDeleteStatuses();
+            return await base.SaveChangesAsync(cancellationToken);
+        }
+
+        private void UpdateSoftDeleteStatuses()
+        {
+            foreach (var entry in ChangeTracker.Entries())
+            {
+                var entity = entry.Entity.GetType().Name;
+                switch (entry.State)
+                {
+                    case EntityState.Added:
+                        if (entity == "Article" || entity == "Category")
+                        {
+                            entry.CurrentValues["isDeleted"] = false;
+                            entry.CurrentValues["CreatedDate"] = DateTime.Now;
+                        }
+
+                        break;
+                    case EntityState.Deleted:
+                        if (entity == "Article" || entity == "Category")
+                        {
+                            entry.State = EntityState.Modified;
+                            entry.CurrentValues["isDeleted"] = true;
+                            entry.CurrentValues["DateDeleted"] = DateTime.Now;
+                        }
+                        break;
+                }
+            }
+        }
     }
 }

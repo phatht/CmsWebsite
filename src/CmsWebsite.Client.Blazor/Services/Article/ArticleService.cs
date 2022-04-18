@@ -20,9 +20,9 @@ namespace CmsWebsite.Client.Blazor.Services.Article
             return result;
         }
 
-        public async Task<bool> DeleteArticle(long id)
+        public async Task<bool> DeleteArticle(long id, bool isDeleted)
         {
-            var result = await _httpClient.DeleteAsync($"/api/article/{id}");
+            var result = await _httpClient.DeleteAsync($"/api/article/soft/{id}?isDeleted={isDeleted}");
             return result.IsSuccessStatusCode;
         }
 

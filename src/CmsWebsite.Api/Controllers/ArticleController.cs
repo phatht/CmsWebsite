@@ -85,5 +85,21 @@ namespace CmsWebsite.Api.Controllers
             }
             return article;
         }
+
+        [HttpDelete("soft/{id}")]
+        public async Task<IActionResult> SoftDeleteArticle(long id, bool isDeleted)
+        {
+            
+            try
+            {
+                await _articleService.SoftDeleteArticle(id,isDeleted);
+            }
+            catch (Exception ex)
+            {
+                // Handle exception
+                return StatusCode(500, "A problem happened while handling your request.");
+            }
+            return NoContent();
+        }
     }
 }

@@ -1,4 +1,5 @@
-﻿using CmsWebsite.Api.Domain.Interfaces;
+﻿using CmsWebsite.Api.Domain.Exceptions;
+using CmsWebsite.Api.Domain.Interfaces;
 using CmsWebsite.Api.Domain.Models;
 using CmsWebsite.Share.Models.ArticleCategory;
 
@@ -8,13 +9,13 @@ namespace CmsWebsite.Api.Domain.Service
     {
         //Task<IEnumerable<Article>> GetArticleAsync();
 
-        //Task<Article> GetArticleAsync(long id);
+        Task<ArticleCategories> GetArticleCategory(long id);
         //create
-        Task<ArticleCategories> PutArticleAsync(ArticleCategoryCreateRequest request);
+        Task<ArticleCategories> PutArticleCategory(ArticleCategoryRequest request);
 
         //Task<Article> DeleteArticle(long id);
 
-        //Task<Article> PutArticleAsync(long id, ArticleDTO article);
+        Task<ArticleCategories> PutArticleCategory(long articleId, ArticleCategories ac);
     }
 
     public class ArticleCategoryService : IArticleCategoryService
@@ -28,9 +29,7 @@ namespace CmsWebsite.Api.Domain.Service
             _unitOfWork = unitOfWork;
         }
 
-
-
-        public async Task<ArticleCategories> PutArticleAsync(ArticleCategoryCreateRequest request)
+        public async Task<ArticleCategories> PutArticleCategory(ArticleCategoryRequest request)
         {
             try
             {
@@ -50,7 +49,33 @@ namespace CmsWebsite.Api.Domain.Service
                 throw;
             }
         }
+        public async Task<ArticleCategories> GetArticleCategory(long id)
+        {
+            return await _unitOfWork.ArticleCategoryRepository.FindAsync(id);
+        }
 
+        public async Task<ArticleCategories> PutArticleCategory(long articleId, ArticleCategories ac)
+        {
+            var existingAC = await GetArticleCategory(articleId);
+
+            if (existingAC == null)
+            {
+                throw new NotFoundException($"Article {articleId} is not found.");
+            }
+            existingAC.CategoryID = ac.CategoryID;
+            try
+            {
+                _unitOfWork.ArticleCategoryRepository.Update(existingAC);
+                await _unitOfWork.CommitAsync();
+
+                return existingAC;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Error when update article {ex}", ex.Message);
+                throw ex;
+            }
+        }
     }
 
 }

@@ -16,6 +16,9 @@ namespace CmsWebsite.Api.Domain.Service
         Task<Article> DeleteArticle(long id);
 
         Task<Article> PutArticleAsync(long id, ArticleDTO article);
+
+        Task<Article> SoftDeleteArticle(long id, bool isDeleted);
+
     }
 
     public class ArticleService : IArticleService
@@ -57,7 +60,6 @@ namespace CmsWebsite.Api.Domain.Service
                     KeyWords = request.KeyWords,
                     SubHead = request.SubHead,
                     Status = 1,
-                    taked = true,
                 };
                 var result = await _unitOfWork.ArticleRepository.AddAsync(article);
                 await _unitOfWork.CommitAsync();
@@ -73,7 +75,7 @@ namespace CmsWebsite.Api.Domain.Service
 
         public async Task<Article> PutArticleAsync(long id, ArticleDTO article)
         {
-            var existingArticle = await _unitOfWork.ArticleRepository.FindAsync(id);
+            var existingArticle = await GetArticleAsync(id);
 
             if (existingArticle == null)
             {
@@ -122,5 +124,29 @@ namespace CmsWebsite.Api.Domain.Service
                 throw ex;
             }
         }
+
+        public async Task<Article> SoftDeleteArticle(long id, bool isDeleted)
+        {
+            var existingArticle = await _unitOfWork.ArticleRepository.FindAsync(id);
+
+            if (existingArticle == null)
+            {
+                throw new NotFoundException($"Article {id} is not found.");
+            }
+            existingArticle.isDeleted = isDeleted;
+            try
+            {
+                _unitOfWork.ArticleRepository.Update(existingArticle);
+                await _unitOfWork.CommitAsync();
+
+                return existingArticle;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Error when update article {ex}", ex.Message);
+                throw ex;
+            }
+        }
+
     }
 }

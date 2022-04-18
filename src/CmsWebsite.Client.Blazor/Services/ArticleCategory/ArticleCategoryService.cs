@@ -10,7 +10,13 @@ namespace CmsWebsite.Client.Blazor.Services.ArticleCategory
         {
             _httpClient = httpClient;
         }
-        public async Task<ArticleCategoryDTO> CreateArticleCategory(ArticleCategoryCreateRequest request)
+        public async Task<ArticleCategoryDTO> CreateArticleCategory(ArticleCategoryRequest request)
+        {
+            var response = await _httpClient.PostAsJsonAsync("api/ArticleCategory", request);
+            ArticleCategoryDTO result = await response.Content.ReadFromJsonAsync<ArticleCategoryDTO>();
+            return result;
+        }
+        public async Task<ArticleCategoryDTO> UpdateArticleCategory(ArticleCategoryRequest request)
         {
             var response = await _httpClient.PostAsJsonAsync("api/ArticleCategory", request);
             ArticleCategoryDTO result = await response.Content.ReadFromJsonAsync<ArticleCategoryDTO>();

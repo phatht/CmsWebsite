@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CmsWebsite.Share.Models.ArticleCategory
 {
-    public class ArticleCategoryCreateRequest
+    public class ArticleCategoryRequest
     {
         public long ArticleID { get; set; }
         public long CategoryID { get; set; }
