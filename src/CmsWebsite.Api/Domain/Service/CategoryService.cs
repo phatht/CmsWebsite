@@ -50,7 +50,7 @@ namespace CmsWebsite.Api.Domain.Service
                 {
                     CategoryName = request.CategoryName,
                     ParentCategoryId = request.ParentCategoryId,
-                    Abbreviation = request.Abbreviation,
+                    Abbreviation = Guid.NewGuid().ToString(),
                     IconFile = request.IconFile,
                     Level = (int)request.Level,
                 };
@@ -77,7 +77,6 @@ namespace CmsWebsite.Api.Domain.Service
 
             existingCategory.ParentCategoryId = category.ParentCategoryId;
             existingCategory.CategoryName = category.CategoryName;
-            existingCategory.Abbreviation = category.Abbreviation;
             existingCategory.IconFile = category.IconFile;
             existingCategory.Level = category.Level;
 

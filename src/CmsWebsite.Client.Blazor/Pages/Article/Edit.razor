@@ -117,9 +117,9 @@
     private List<CategoryDTO> Categories { get; set; } = new List<CategoryDTO>();
     [Parameter]
     public long articleId { set; get; }
+
     [Parameter]
     public string ImgUrl { get; set; }
-
     public string FirstFile;
     private bool stateChanged = false;
     private bool isSave = false;
@@ -192,7 +192,7 @@
                 {
                     Severity = NotificationSeverity.Success,
                     Summary = "Thông báo sự kiện",
-                    Detail = "Update thành công",
+                    Detail = "Cập nhật thành công",
                     Duration = 4000,
                 });
             }
@@ -202,7 +202,7 @@
                 {
                     Severity = NotificationSeverity.Error,
                     Summary = "Thông báo sự kiện",
-                    Detail = "Update thất bại",
+                    Detail = "Cập nhật thất bại",
                     Duration = 4000,
                 });
             }

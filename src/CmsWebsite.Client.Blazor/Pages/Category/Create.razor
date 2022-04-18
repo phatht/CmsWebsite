@@ -2,8 +2,9 @@
 @using CmsWebsite.Client.Blazor.Services.Category
 @using System.Text.Json
 @using CmsWebsite.Share.Models.Category
+@using System.Net.Http.Headers
 @inject NavigationManager uriHelper
-@inject ICategoryService _client
+@inject ICategoryService _categoryService
 @inject NotificationService NotificationService
 <h3>Create category</h3>
 
@@ -18,32 +19,15 @@
         <RadzenFieldset>
             <div class="row">
                 <div class="col-md-3 align-items-center d-flex">
-                    <RadzenLabel Component="ImageFile" Text="ImageFile" />
-                </div>
-                <div class="col-md-9">
-                    <RadzenFileInput TValue="string" @bind-Value="@category.IconFile" Class="w-100" />
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-3 align-items-center d-flex">
                     <RadzenLabel Component="CategoryName" Text="Category Name" />
                 </div>
                 <div class="col-md-9">
                     <RadzenTextBox Name="CategoryName" @bind-Value="@category.CategoryName" />
                 </div>
             </div>
-
             <div class="row">
                 <div class="col-md-3 align-items-center d-flex">
-                    <RadzenLabel Component="Abbreviation" Text="Abbreviation" />
-                </div>
-                <div class="col-md-9">
-                    <RadzenTextBox Name="Abbreviation" @bind-Value="@category.Abbreviation" />
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-3 align-items-center d-flex">
-                    <RadzenLabel  Component="ParentCategoryId" Text="Parent Category" />
+                    <RadzenLabel Component="ParentCategoryId" Text="Parent Category" />
                 </div>
                 <div class="col-md-9">
                     <RadzenDropDown Name="ParentCategoryId" AllowClear="true" Data="@categories" TextProperty="CategoryName" ValueProperty="CategoryId"
@@ -61,9 +45,21 @@
 
                 </div>
             </div>
+            <div class="row">
+                <div class="col-md-3 align-items-center d-flex">
+                    <RadzenLabel Component="ImageFile" Text="ImageFile" />
+                </div>
+                <div class="col-md-9">
+                    <RadzenImage Path=@($"{ImgUrl}") Style="width: 300px; height: 300px; border: black solid 0.5px " />
+                    <InputFile OnChange="@HandleSelected" accept=".jpg, .jpeg, .png" />
 
-            <div class="row align-items-end justify-content-center">
-                <RadzenButton ButtonType="ButtonType.Submit" Text="Save" />
+                </div>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col-md-3  d-flex align-items-end justify-content-center">
+                    <RadzenButton ButtonType="ButtonType.Submit" Text="Save" />
+                    <RadzenButton ButtonStyle="ButtonStyle.Light" Style="display: inline-block; margin-left: 10px;" ButtonType="ButtonType.Button" Click=@Back Text="Back" />
+                </div>
             </div>
         </RadzenFieldset>
     </div>
@@ -84,18 +80,77 @@
         };
     private List<CategoryDTO> categories;
 
+    //xử lí ảnh
+    [Parameter]
+    public string ImgUrl { get; set; }
+    public string FirstFile;
+    private bool stateChanged = false;
+    private bool isSave = false;
+    private int count = 0;
+
     protected override async Task OnInitializedAsync()
     {
-        categories = await _client.GetListCategory();
+        categories = await _categoryService.GetListCategory();
         // load the list
         foreach (Level item in Enum.GetValues(typeof(Level)))
         {
             MyLevels.Add(new EnumLevels { EnumName = item.ToString(), EnumValue = item });
         }
     }
+
+    async Task HandleSelected(InputFileChangeEventArgs e)
+    {
+        var imageFiles = e.GetMultipleFiles();
+        foreach (var imageFile in imageFiles)
+        {
+            if (imageFile != null)
+            {
+                var resizedFile = await imageFile.RequestImageFileAsync("image/png", 300, 500);
+                using (var ms = resizedFile.OpenReadStream(resizedFile.Size))
+                {
+                    var content = new MultipartFormDataContent();
+                    content.Headers.ContentDisposition = new ContentDispositionHeaderValue("form-data");
+                    content.Add(new StreamContent(ms, Convert.ToInt32(ms.Length)), "imageFile", imageFile.Name);
+
+                    //chỉ xoá file nếu img thay đổi lần 2
+                    if (!string.IsNullOrEmpty(ImgUrl) && stateChanged)
+                        await _categoryService.DeleteCategoryImage(ImgUrl);
+
+                    var response = await _categoryService.UploadCategoryImage(content);
+                    ImgUrl = response.loadPathFile;
+
+                    //kiểm tra file đã thay đổi hay chưa nếu thay đổi rồi thì save lại
+                    stateChanged = true;
+                    ++count;
+
+                    //reset trạng thái save filechange file
+                    isSave = false;
+                }
+            }
+        }
+    }
+
     async Task Createcategory()
     {
-        var result = await _client.CreateCategory(category);
+        category.IconFile = ImgUrl;
+        //nếu file có sự thay đổi thì xoá file củ
+        //sau khi lưu lần 1 file ban đầu đã bị xoá cần lưu lại giá trị file mới
+        //FirstFile = ImgUrl;
+        if (!string.IsNullOrEmpty(FirstFile))
+        {
+            if (stateChanged && count > 0)
+            {
+                await _categoryService.DeleteCategoryImage(FirstFile);
+            }
+        }
+        //lưu trạng thái save file
+        isSave = true;
+        //reset trạng thái
+        stateChanged = false;
+        count = 0;
+        //ghi lại file vừa mới lưu
+        FirstFile = category.IconFile;
+        var result = await _categoryService.CreateCategory(category);
         if (result)
         {
             Console.WriteLine("OK");
@@ -112,5 +167,15 @@
         {
             Console.WriteLine(JsonSerializer.Serialize(category, new JsonSerializerOptions() { WriteIndented = true }));
         }
+    }
+    void Back()
+    {
+        //đổi file nhưng mà chưa save lại thì xoá đi file đó để tránh rác
+        // cách này chỉ áp dụng cho lần đầu
+        if (stateChanged && !isSave)
+        {
+            _categoryService.DeleteCategoryImage(ImgUrl);
+        }
+        uriHelper.NavigateTo("category");
     }
 }

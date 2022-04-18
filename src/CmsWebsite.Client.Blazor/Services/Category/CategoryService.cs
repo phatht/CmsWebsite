@@ -1,4 +1,5 @@
 ﻿using CmsWebsite.Share.Models.Category;
+using CmsWebsite.Share.Response;
 using System.Net.Http.Json;
 
 namespace CmsWebsite.Client.Blazor.Services.Category
@@ -22,6 +23,8 @@ namespace CmsWebsite.Client.Blazor.Services.Category
             return result.IsSuccessStatusCode;
         }
 
+        
+
         public async Task<CategoryDTO> GetCategory(long id)
         {
             var result = await _httpClient.GetFromJsonAsync<CategoryDTO>($"api/category/{id}");
@@ -37,6 +40,25 @@ namespace CmsWebsite.Client.Blazor.Services.Category
         public async Task<bool> UpdateCategory(long id, CategoryDTO caRequest)
         {
             var result = await _httpClient.PutAsJsonAsync($"api/category/{id}", caRequest);
+            return result.IsSuccessStatusCode;
+        }
+
+        public async Task<UploadFileResponse> UploadCategoryImage(MultipartFormDataContent content)
+        {
+            var response = await _httpClient.PostAsync($"api/file/upload?subDirectory=categories", content);
+            if (!response.IsSuccessStatusCode)
+            {
+                throw new ApplicationException($"Check Upload Category Image, {await response.Content.ReadAsStringAsync()}");
+            }
+            else
+            {
+                return await response.Content.ReadFromJsonAsync<UploadFileResponse>();
+            }
+        }
+
+        public async Task<bool> DeleteCategoryImage(string fileName)
+        {
+            var result = await _httpClient.DeleteAsync($"api/file/delete?fileName={fileName}");
             return result.IsSuccessStatusCode;
         }
     }
