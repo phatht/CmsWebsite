@@ -10,17 +10,22 @@ namespace CmsWebsite.Client.Blazor.Services.ArticleCategory
         {
             _httpClient = httpClient;
         }
-        public async Task<ArticleCategoryDTO> CreateArticleCategory(ArticleCategoryRequest request)
+        public async Task<bool> CreateArticleCategory(ArticleCategoryRequest request)
         {
             var response = await _httpClient.PostAsJsonAsync("api/ArticleCategory", request);
-            ArticleCategoryDTO result = await response.Content.ReadFromJsonAsync<ArticleCategoryDTO>();
-            return result;
+            return response.IsSuccessStatusCode;
         }
-        public async Task<ArticleCategoryDTO> UpdateArticleCategory(ArticleCategoryRequest request)
+
+        public async Task<ArticleCategoryDTO> GetArticleCategory(long id)
         {
-            var response = await _httpClient.PostAsJsonAsync("api/ArticleCategory", request);
-            ArticleCategoryDTO result = await response.Content.ReadFromJsonAsync<ArticleCategoryDTO>();
-            return result;
+            var response = await _httpClient.GetFromJsonAsync<ArticleCategoryDTO>($"api/ArticleCategory/{id}");
+            return response;
+        }
+
+        public async Task<bool> UpdateArticleCategory(long articleId, ArticleCategoryDTO ac)
+        {
+            var response = await _httpClient.PutAsJsonAsync($"api/ArticleCategory/{articleId}", ac);
+            return response.IsSuccessStatusCode;
         }
     }
 }

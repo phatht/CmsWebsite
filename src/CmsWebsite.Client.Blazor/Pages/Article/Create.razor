@@ -208,7 +208,7 @@
         {
             ac.ArticleID = newArticle;
             var result = await _acService.CreateArticleCategory(ac);
-            if (result != null)
+            if (result)
             {
                 NotificationService.Notify(new NotificationMessage
                     {
@@ -221,7 +221,6 @@
             }
             else
             {
-                await _articleService.DeleteArticleImage(article.ImageFile);
                 Console.WriteLine(JsonSerializer.Serialize(result, new JsonSerializerOptions() { WriteIndented = true }));
             }
         }

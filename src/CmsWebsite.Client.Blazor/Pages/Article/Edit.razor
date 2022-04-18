@@ -113,7 +113,7 @@
 
 @code {
     private ArticleDTO existingArticle { get; set; } = new ArticleDTO();
-    private ArticleCategoryRequest ac = new ArticleCategoryRequest();
+    private ArticleCategoryDTO ac = new ArticleCategoryDTO();
     private List<CategoryDTO> Categories { get; set; } = new List<CategoryDTO>();
     [Parameter]
     public long articleId { set; get; }
@@ -129,6 +129,7 @@
     {
         existingArticle = await _articleService.GetArticle(articleId);
         Categories = await _categoryService.GetListCategory();
+        ac = await _acService.GetArticleCategory(articleId);
         FirstFile = ImgUrl = existingArticle.ImageFile;
     }
     async Task HandleSelected(InputFileChangeEventArgs e)
@@ -181,17 +182,30 @@
         count = 0;
         //ghi lại file vừa mới lưu
         FirstFile = existingArticle.ImageFile;
-        var result = await _articleService.UpdateArticle(articleId, existingArticle);
-        if (result)
+        //cập nhật bài viết
+        var updateArticle = await _articleService.UpdateArticle(articleId, existingArticle);
+        if (updateArticle)
         {
-
-            NotificationService.Notify(new NotificationMessage
+            var result = await _acService.UpdateArticleCategory(articleId, ac);
+            if(result){
+                NotificationService.Notify(new NotificationMessage
                 {
                     Severity = NotificationSeverity.Success,
                     Summary = "Thông báo sự kiện",
                     Detail = "Update thành công",
                     Duration = 4000,
                 });
+            }
+            else
+            {
+                NotificationService.Notify(new NotificationMessage
+                {
+                    Severity = NotificationSeverity.Error,
+                    Summary = "Thông báo sự kiện",
+                    Detail = "Update thất bại",
+                    Duration = 4000,
+                });
+            }
         }
         else
         {

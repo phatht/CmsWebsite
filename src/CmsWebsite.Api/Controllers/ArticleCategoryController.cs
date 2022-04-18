@@ -33,10 +33,6 @@ namespace CmsWebsite.Api.Controllers
         [HttpPut("{articleId}")]
         public async Task<ActionResult<ArticleCategories>> PutArticleCategory(long articleId, ArticleCategories ac)
         {
-            if (articleId != ac.ArticleID)
-            {
-                return BadRequest($"Not found {articleId}");
-            }
             try
             {
                 await _articleCategoryService.PutArticleCategory(articleId, ac);
