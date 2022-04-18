@@ -35,18 +35,26 @@ else
                               Title="Abbreviation" Width="140px" />
             <RadzenDataGridColumn TItem="CategoryDTO" Property="Level"
                               Title="Level" Width="140px" />
+            <RadzenDataGridColumn Width="140px" Filterable="false" TItem="CategoryDTO" Property="isDeleted"
+                              Title="Tạm ẩn">
+                <Template Context="data">
+                    <RadzenCheckBox @bind-Value=@data.isDeleted Name="isDeleted" TValue="bool"
+                                Change="@((args) => IsDeleted(data.CategoryId, args))" />
+                    <RadzenLabel Text="Tạm ẩn" Component="isDeleted" Style="margin-left: 8px; vertical-align: middle;" />
+                </Template>
+            </RadzenDataGridColumn>
             <RadzenDataGridColumn TItem="CategoryDTO" Filterable="false" Sortable="false" Property="Edit" TextAlign="TextAlign.Center" Width="120px">
                 <Template Context="data">
                     <RadzenButton Class="m-1" ButtonStyle="Radzen.ButtonStyle.Secondary" Icon="edit"
                               Click="@((args) => EditRow(data.CategoryId))" @onclick:stopPropagation="true" />
                 </Template>
             </RadzenDataGridColumn>
-            <RadzenDataGridColumn TItem="CategoryDTO" Context="order" Filterable="false" Property="Delete" Sortable="false" TextAlign="TextAlign.Center" Width="60px">
+            @*<RadzenDataGridColumn TItem="CategoryDTO" Context="order" Filterable="false" Property="Delete" Sortable="false" TextAlign="TextAlign.Center" Width="60px">
                 <Template Context="data">
-                    <RadzenButton Class="m-1" ButtonStyle="ButtonStyle.Danger" Icon="delete"
-                              Click="@((args) => DeleteRow(data.CategoryId))" @onclick:stopPropagation="true" />
+                <RadzenButton Class="m-1" ButtonStyle="ButtonStyle.Danger" Icon="delete"
+                Click="@((args) => DeleteRow(data.CategoryId))" @onclick:stopPropagation="true" />
                 </Template>
-            </RadzenDataGridColumn>
+                </RadzenDataGridColumn>*@
 
         </Columns>
     </RadzenDataGrid>
@@ -59,31 +67,35 @@ else
         Categories = await _client.GetListCategory();
     }
     protected void EditRow(long id) => uriHelper.NavigateTo($"category/edit/{id}");
-    protected async Task DeleteRow(long id)
+
+    protected async Task IsDeleted(long id, bool isDeleted)
     {
+
         try
         {
-            var confirmed = await DialogService.Confirm(
-               "Bạn có chắc muốn xoá?", "Xoá loại bài viết", options: new ConfirmOptions()
-                   {
-                       OkButtonText = "Đồng ý",
-                       CancelButtonText = "Không"
-                   });
-            if (confirmed == true)
+            var deleted = await _client.DeleteCategory(id, isDeleted);
+            var deletedMessage = (isDeleted) ? "Ẩn" : "Hiển thị";
+            if (deleted)
             {
-                var result = await _client.DeleteCategory(id);
-                if (result != null)
-                {
-                    var itemToRemove = Categories.Single(r => r.CategoryId == id);
-                    Categories.Remove(itemToRemove);
-                    await grid0.Reload();
-                    NotificationService.Notify(new NotificationMessage { Severity = NotificationSeverity.Success, Summary = "Thông báo sự kiện", Detail = "Đã xoá thành công", Duration = 4000 });
-                }
+                NotificationService.Notify(new NotificationMessage
+                    {
+                        Severity = NotificationSeverity.Success,
+                        Summary = "Thông báo sự kiện",
+                        Detail = $"{deletedMessage} bài viết!",
+                        Duration = 2000,
+                    });
             }
+
         }
-        catch (System.Exception exception)
+        catch (Exception ex)
         {
-            NotificationService.Notify(new NotificationMessage { Severity = NotificationSeverity.Error, Summary = "Thông báo sự kiện", Detail = $"{exception}", Duration = 4000 });
+            NotificationService.Notify(new NotificationMessage
+                {
+                    Severity = NotificationSeverity.Error,
+                    Summary = "Thông báo sự kiện",
+                    Detail = $"{ex}",
+                    Duration = 4000
+                });
         }
     }
 }

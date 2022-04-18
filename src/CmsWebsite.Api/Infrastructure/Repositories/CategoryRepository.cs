@@ -13,7 +13,8 @@ namespace CmsWebsite.Api.Infrastructure.Repositories
         }
         public async Task<IEnumerable<Category>> ListAsync()
         {
-            return await _context.Categories.AsNoTracking().ToListAsync();
+            //IgnoreQueryFilter lấy tất cả dữ liệu kể cả phần bị lọc bỏ
+            return await _context.Categories.AsNoTracking().IgnoreQueryFilters().ToListAsync();
         }
 
         public async Task<Category> AddAsync(Category category)
@@ -24,7 +25,7 @@ namespace CmsWebsite.Api.Infrastructure.Repositories
 
         public async Task<Category> FindAsync(long id)
         {
-            var category = await _context.Categories
+            var category = await _context.Categories.IgnoreQueryFilters()
                 .FirstOrDefaultAsync(r => r.CategoryId == id);
             return category;
         }

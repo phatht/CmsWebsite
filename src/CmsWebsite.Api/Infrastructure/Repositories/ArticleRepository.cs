@@ -13,6 +13,7 @@ namespace CmsWebsite.Api.Infrastructure.Repositories
 
         public async Task<IEnumerable<Article>> ListAsync()
         {
+            //IgnoreQueryFilter lấy tất cả dữ liệu kể cả phần bị lọc bỏ
             return await _context.Article.AsNoTracking().IgnoreQueryFilters().ToListAsync();
         }
 

@@ -8,5 +8,7 @@
         public string Abbreviation { get; set; }
         public string IconFile { get; set; }
         public int Level { get; set; }
+        public bool isDeleted { get; set; }
+
     }
 }

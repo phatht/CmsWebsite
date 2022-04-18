@@ -79,7 +79,7 @@ namespace CmsWebsite.Api.Domain.Service
 
             if (existingArticle == null)
             {
-                throw new NotFoundException($"Article {id} is not found."); 
+                throw new NotFoundException($"Article {id} is not found.");
             }
 
             existingArticle.Description = article.Description;
@@ -134,6 +134,14 @@ namespace CmsWebsite.Api.Domain.Service
                 throw new NotFoundException($"Article {id} is not found.");
             }
             existingArticle.isDeleted = isDeleted;
+            if (isDeleted)
+            {
+                existingArticle.DateDeleted = DateTime.Now;
+            }
+            else
+            {
+                existingArticle.DateDeleted = null;
+            }
             try
             {
                 _unitOfWork.ArticleRepository.Update(existingArticle);

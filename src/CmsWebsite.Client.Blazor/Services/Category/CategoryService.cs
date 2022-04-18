@@ -16,9 +16,9 @@ namespace CmsWebsite.Client.Blazor.Services.Category
             return result.IsSuccessStatusCode;
         }
 
-        public async Task<bool> DeleteCategory(long id)
+        public async Task<bool> DeleteCategory(long id, bool isDeleted)
         {
-            var result = await _httpClient.DeleteAsync($"api/category/{id}");
+            var result = await _httpClient.DeleteAsync($"api/category/soft/{id}?isDeleted={isDeleted}");
             return result.IsSuccessStatusCode;
         }
 

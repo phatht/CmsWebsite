@@ -14,6 +14,7 @@ namespace CmsWebsite.Api.Domain.Service
         Task<Category> PutCategoryAsync(CategoryCreateRequest request);
 
         Task<Category> DeleteCategory(long id);
+        Task<Category> SoftDeleteCategory(long id, bool isDeleted);
 
         Task<Category> PutCategoryAsync(long id, CategoryDTO category);
     }
@@ -113,6 +114,37 @@ namespace CmsWebsite.Api.Domain.Service
             catch (Exception ex)
             {
                 _logger.LogError($"Error when delete category {ex}", ex.Message);
+                throw ex;
+            }
+        }
+
+        public async Task<Category> SoftDeleteCategory(long id, bool isDeleted)
+        {
+            var existingCategory = await _unitOfWork.CategoryRepository.FindAsync(id);
+
+            if (existingCategory == null)
+            {
+                throw new NotFoundException($"Category {id} is not found.");
+            }
+            existingCategory.isDeleted = isDeleted;
+            if (isDeleted)
+            {
+                existingCategory.DateDeleted = DateTime.Now;
+            }
+            else
+            {
+                existingCategory.DateDeleted = null;
+            }
+            try
+            {
+                _unitOfWork.CategoryRepository.Update(existingCategory);
+                await _unitOfWork.CommitAsync();
+
+                return existingCategory;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Error when update category {ex}", ex.Message);
                 throw ex;
             }
         }
