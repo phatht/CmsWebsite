@@ -73,3 +73,13 @@ a, .btn-link {
 form .row {
     margin-bottom: 16px;
 }
+
+
+.wrapper-p {
+    overflow: hidden;
+    text-justify: inter-word;
+    text-align: justify;
+    display: -webkit-box;
+    -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical;
+}

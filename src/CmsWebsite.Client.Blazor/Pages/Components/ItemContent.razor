@@ -1,6 +1,9 @@
-﻿@using CmsWebsite.Share.Models.Article
+﻿@using CmsWebsite.Client.Blazor.Services.Category
 @using CmsWebsite.Client.Blazor.Services.Article
-@inject IArticleService _client
+@using CmsWebsite.Share.Models.Article
+@inject ICategoryService _clientCategory
+@inject IArticleService  _clientArticle
+
 
 <div class="row">
     <div class="col-md-6"> 
@@ -16,9 +19,12 @@
 
     public List<ArticleDTO>? Articless { get; set; }
 
-    
+
     protected override async Task OnInitializedAsync()
-    {    
-        Articless = await _client.GetListArticle();
+    {
+        var list = await _clientCategory.GetListCategory();
+        long categoryId  =  list.Where(i => i.Abbreviation == Abbreviation).FirstOrDefault().CategoryId;
+        Articless = await _clientArticle.GetListArticle();
+         
     }
 }
