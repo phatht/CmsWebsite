@@ -17,7 +17,6 @@
 @inject IArticleService _articleService
 @inject ICategoryService _categoryService
 @inject IArticleCategoryService _acService
-
 @inject NotificationService NotificationService
 @inject AuthenticationStateProvider AuthenticationStateProvider
 
@@ -56,10 +55,10 @@
                     <RadzenLabel Component="SummaryArticle" Text="Summary Article" />
                 </div>
                 <div class="col-md-9">
-                    <RadzenHtmlEditor Name="SummaryArticle" @bind-Value=@article.SummaryArticle style="height: 500px; margin-bottom: 1rem;" UploadUrl="upload/image">
-                       
+                    <RadzenHtmlEditor Name="SummaryArticle" @bind-Value=@article.SummaryArticle
+                                      style="height: 500px; margin-bottom: 1rem;" UploadUrl=@(uploadPath)
+                                      Change=@OnChange Paste=@OnPaste Execute=@OnExecute>
                     </RadzenHtmlEditor>
-                    @*<RadzenTextBox Name="SummaryArticle" @bind-Value="@article.SummaryArticle" />*@
                 </div>
             </div>
 
@@ -135,6 +134,7 @@
 
     private List<CategoryDTO> Categories { get; set; } = new List<CategoryDTO>();
 
+    //#region Process ImageFile Variables
     [Parameter]
     public string ImgUrl { get; set; }
     public string FirstFile;
@@ -142,12 +142,14 @@
     private bool isSave = false;
     private int count = 0;
 
+    public string uploadPath;
+
     protected override async Task OnInitializedAsync()
     {
         article.UserId = await getUserId();
         Categories = await _categoryService.GetListCategory();
+        uploadPath = $"api/File/Upload?subDirectory=articles";
     }
-
 
 
     async Task HandleSelected(InputFileChangeEventArgs e)
@@ -162,14 +164,15 @@
                 {
                     var content = new MultipartFormDataContent();
                     content.Headers.ContentDisposition = new ContentDispositionHeaderValue("form-data");
-                    content.Add(new StreamContent(ms, Convert.ToInt32(ms.Length)), "imageFile", imageFile.Name);
+                    content.Add(new StreamContent(ms, Convert.ToInt32(ms.Length)), "file", imageFile.Name);
 
                     //chỉ xoá file nếu img thay đổi lần 2
                     if (!string.IsNullOrEmpty(ImgUrl) && stateChanged)
                         await _articleService.DeleteArticleImage(ImgUrl);
 
                     var response = await _articleService.UploadArticleImage(content);
-                    ImgUrl = response.loadPathFile;
+                    ImgUrl = response;
+                    //Console.WriteLine(JsonSerializer.Serialize(response, new JsonSerializerOptions() { WriteIndented = true }));
 
                     //kiểm tra file đã thay đổi hay chưa nếu thay đổi rồi thì save lại
                     stateChanged = true;
@@ -242,10 +245,26 @@
     {
         //đổi file nhưng mà chưa save lại thì xoá đi file đó để tránh rác
         // cách này chỉ áp dụng cho lần đầu
-        if(stateChanged && !isSave )
+        if (stateChanged && !isSave)
         {
             _articleService.DeleteArticleImage(ImgUrl);
         }
         uriHelper.NavigateTo("article");
+    }
+
+
+    void OnPaste(HtmlEditorPasteEventArgs args)
+    {
+        Console.WriteLine($"Paste: {args.Html}");
+    }
+
+    void OnChange(string html)
+    {
+        Console.WriteLine($"Change: {html}");
+    }
+
+    void OnExecute(HtmlEditorExecuteEventArgs args)
+    {
+        Console.WriteLine($"Execute: {args.CommandName}");
     }
 }

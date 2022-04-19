@@ -110,7 +110,7 @@
                 {
                     var content = new MultipartFormDataContent();
                     content.Headers.ContentDisposition = new ContentDispositionHeaderValue("form-data");
-                    content.Add(new StreamContent(ms, Convert.ToInt32(ms.Length)), "imageFile", imageFile.Name);
+                    content.Add(new StreamContent(ms, Convert.ToInt32(ms.Length)), "file", imageFile.Name);
 
                     //chỉ xoá file nếu img thay đổi lần 2
                     if (!string.IsNullOrEmpty(ImgUrl) && stateChanged)

@@ -23,24 +23,41 @@ namespace CmsWebsite.Api.Controllers
 
         #region Upload  
         [HttpPost(nameof(Upload))]
-        public async Task<IActionResult> Upload([Required] IFormFile imageFile, string? subDirectory)
+        public async Task<IActionResult> Upload([Required] IFormFile file, string? subDirectory)
         {
             try
             {
-                if (imageFile == null || imageFile.Length == 0) return BadRequest("Upload a file");
+                if (file == null || file.Length == 0) return BadRequest("Upload a file");
 
-                var result = await _fileService.UploadFile(imageFile, subDirectory);
-
-                return Ok(result);
+                var result = await _fileService.UploadFile(file, subDirectory);
+                return Ok(new { Url = result });
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                return BadRequest(ex);
             }
         }
         #endregion
 
-        #region Upload  
+        #region Uploadd
+        [HttpPost(nameof(Uploaded))]
+        public async Task<IActionResult> Uploaded([Required] IFormFile file, string? subDirectory)
+        {
+            try
+            {
+                if (file == null || file.Length == 0) return BadRequest("Upload a file");
+
+                var result = await _fileService.UploadFile(file, subDirectory);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex);
+            }
+        }
+        #endregion
+
+        #region Delete  
         [HttpDelete(nameof(Delete))]
         public async Task<ActionResult<bool>> Delete( string fileName)
         {

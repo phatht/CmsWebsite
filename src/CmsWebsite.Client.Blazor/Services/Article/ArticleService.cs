@@ -1,6 +1,6 @@
 ﻿using CmsWebsite.Share.Models.Article;
 using CmsWebsite.Share.Response;
-using Microsoft.AspNetCore.Http;
+using Newtonsoft.Json;
 using System.Net.Http.Json;
 
 namespace CmsWebsite.Client.Blazor.Services.Article
@@ -50,16 +50,16 @@ namespace CmsWebsite.Client.Blazor.Services.Article
             return result.IsSuccessStatusCode;
         }
 
-        public async Task<UploadFileResponse> UploadArticleImage(MultipartFormDataContent content)
+        public async Task<string> UploadArticleImage(MultipartFormDataContent content)
         {
-            var response = await _httpClient.PostAsync($"api/file/upload?subDirectory=articles",content);
+            var response = await _httpClient.PostAsync($"api/file/uploaded?subDirectory=articles", content);
             if (!response.IsSuccessStatusCode)
             {
                 throw new ApplicationException($"Check Upload Article Image, {await response.Content.ReadAsStringAsync()}");
             }
             else
             {
-                return await response.Content.ReadFromJsonAsync<UploadFileResponse>();
+               return await response.Content.ReadAsStringAsync();
             }
         }
     }

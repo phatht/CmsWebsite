@@ -19,20 +19,20 @@ namespace CmsWebsite.Api.Domain.Service
         #endregion
 
         #region Upload File  
-        public async Task<UploadFileResponse> UploadFile(IFormFile image, string? subDirectory)
+        public async Task<string> UploadFile(IFormFile file, string? subDirectory)
         {
             subDirectory = subDirectory ?? string.Empty;
 
-            var check = CheckFileType(image.FileName);
+            var check = CheckFileType(file.FileName);
             if (!check) throw new Exception($"File is not a valid image");
 
-            string uniqueFileName = $"upload-{DateTime.Today.ToString("yyyy-MM-dd")}-{Guid.NewGuid()}{Path.GetExtension(image.FileName)}";
+            string uniqueFileName = $"upload-{DateTime.Today.ToString("yyyy-MM-dd")}-{Guid.NewGuid()}{Path.GetExtension(file.FileName)}";
 
             //đường dẫn config từ appsetting của api application
             string _configPath = _configuration["UploadPath"];
 
             //đường dẫn upload mặc định theo năm tháng 
-            string uploadPath = "uploads" + @"\" + DateTime.Now.Year + @"\" + DateTime.Now.Month;
+            string uploadPath = "uploads" + @"\Year_" + DateTime.Now.Year + @"\Month_" + DateTime.Now.Month;
 
             //đường dẫn đến subfolder
             string uploadsFolder = Path.Combine(_configPath, uploadPath, subDirectory);
@@ -45,14 +45,16 @@ namespace CmsWebsite.Api.Domain.Service
             var fullPath = Path.Combine(uploadsFolder, uniqueFileName);
 
             //xử lí load ảnh
-            var response = new UploadFileResponse();
+            //var response = new UploadFileResponse();
             //đường dẫn load ảnh
-            response.loadPathFolder = _configuration["UploadPath"];
-            response.loadPathFile = Path.Combine(uploadPath, subDirectory, uniqueFileName);
+            //response.loadPathFolder = _configuration["UploadPath"];
+            //response.loadPathFile = Path.Combine(uploadPath, subDirectory, uniqueFileName);
+
+            var response = Path.Combine(uploadPath, subDirectory, uniqueFileName);
 
             using (var fileStream = new FileStream(fullPath, FileMode.Create, FileAccess.Write))
             {
-                await image.CopyToAsync(fileStream);
+                await file.CopyToAsync(fileStream);
             }
             return response;
         }

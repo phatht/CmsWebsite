@@ -12,7 +12,7 @@ namespace CmsWebsite.Client.Blazor.Services.Article
         Task<bool> UpdateArticle(long id, ArticleDTO article);
         Task<bool> DeleteArticle(long id, bool isDeleted);
         Task<bool> DeleteArticleImage(string fileName);
-        Task<UploadFileResponse> UploadArticleImage(MultipartFormDataContent content);
+        Task<string> UploadArticleImage(MultipartFormDataContent content);
 
     }
 }

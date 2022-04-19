@@ -43,10 +43,10 @@
                     <RadzenLabel Component="SummaryArticle" Text="Summary Article" />
                 </div>
                 <div class="col-md-9">
-                    <RadzenHtmlEditor Name="SummaryArticle" @bind-Value=@existingArticle.SummaryArticle style="height: 500px; margin-bottom: 1rem;" UploadUrl="upload/image">
-                       
+                    <RadzenHtmlEditor Name="SummaryArticle" @bind-Value=@existingArticle.SummaryArticle
+                                      style="height: 500px; margin-bottom: 1rem;" UploadUrl=@(uploadPath)
+                                      Change=@OnChange Paste=@OnPaste Execute=@OnExecute>
                     </RadzenHtmlEditor>
-                    @*<RadzenTextBox Name="SummaryArticle" @bind-Value="@article.SummaryArticle" />*@
                 </div>
             </div>
 
@@ -125,12 +125,16 @@
     private bool isSave = false;
     private int count = 0;
 
+    public string uploadPath;
+
     protected async override Task OnParametersSetAsync()
     {
         existingArticle = await _articleService.GetArticle(articleId);
         Categories = await _categoryService.GetListCategory();
         ac = await _acService.GetArticleCategory(articleId);
         FirstFile = ImgUrl = existingArticle.ImageFile;
+        uploadPath = $"api/File/Upload?subDirectory=articles";
+
     }
     async Task HandleSelected(InputFileChangeEventArgs e)
     {
@@ -145,15 +149,15 @@
                 {
                     var content = new MultipartFormDataContent();
                     content.Headers.ContentDisposition = new ContentDispositionHeaderValue("form-data");
-                    content.Add(new StreamContent(ms, Convert.ToInt32(ms.Length)), "imageFile", imageFile.Name);
+                    content.Add(new StreamContent(ms, Convert.ToInt32(ms.Length)), "file", imageFile.Name);
 
                     //chỉ xoá file nếu img thay đổi lần 2
                     if (!string.IsNullOrEmpty(ImgUrl) && stateChanged)
                         await _articleService.DeleteArticleImage(ImgUrl);
 
                     var response = await _articleService.UploadArticleImage(content);
-                    ImgUrl = response.loadPathFile;
-
+                    ImgUrl = response;
+                    Console.WriteLine(response);
                     //kiểm tra file đã thay đổi hay chưa nếu thay đổi rồi thì save lại
                     stateChanged = true;
                     ++count;
@@ -187,24 +191,25 @@
         if (updateArticle)
         {
             var result = await _acService.UpdateArticleCategory(articleId, ac);
-            if(result){
+            if (result)
+            {
                 NotificationService.Notify(new NotificationMessage
-                {
-                    Severity = NotificationSeverity.Success,
-                    Summary = "Thông báo sự kiện",
-                    Detail = "Cập nhật thành công",
-                    Duration = 4000,
-                });
+                    {
+                        Severity = NotificationSeverity.Success,
+                        Summary = "Thông báo sự kiện",
+                        Detail = "Cập nhật thành công",
+                        Duration = 4000,
+                    });
             }
             else
             {
                 NotificationService.Notify(new NotificationMessage
-                {
-                    Severity = NotificationSeverity.Error,
-                    Summary = "Thông báo sự kiện",
-                    Detail = "Cập nhật thất bại",
-                    Duration = 4000,
-                });
+                    {
+                        Severity = NotificationSeverity.Error,
+                        Summary = "Thông báo sự kiện",
+                        Detail = "Cập nhật thất bại",
+                        Duration = 4000,
+                    });
             }
         }
         else
@@ -228,5 +233,21 @@
         }
 
         uriHelper.NavigateTo("article");
+    }
+
+    
+    void OnPaste(HtmlEditorPasteEventArgs args)
+    {
+        Console.WriteLine($"Paste: {args.Html}");
+    }
+
+    void OnChange(string html)
+    {
+        Console.WriteLine($"Change: {html}");
+    }
+
+    void OnExecute(HtmlEditorExecuteEventArgs args)
+    {
+        Console.WriteLine($"Execute: {args.CommandName}");
     }
 }

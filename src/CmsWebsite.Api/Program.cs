@@ -38,6 +38,8 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     });
 // DI
 
+builder.Services.AddRazorPages();
+builder.Services.AddControllersWithViews();
 builder.Services.AddScoped<IArticleRepository, ArticleRepository>();
 builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 
@@ -60,7 +62,8 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
-}
+    app.UseWebAssemblyDebugging();
+}   
 
 //ENABLE CORS
 app.UseCors(x => x
@@ -72,14 +75,17 @@ app.UseCors(x => x
 
 app.UseHttpsRedirection();
 
-//app.UseStaticFiles();
+app.UseBlazorFrameworkFiles();
+app.UseStaticFiles();
 
 app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
 app.UseEndpoints(endpoints =>
 {
+    endpoints.MapRazorPages();
     endpoints.MapControllers();
+    endpoints.MapFallbackToFile("index.html");
 });
 
 app.Run();
