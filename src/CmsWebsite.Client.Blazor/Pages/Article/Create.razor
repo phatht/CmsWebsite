@@ -63,8 +63,9 @@
                         <RichTextEditorImageSettings SaveUrl=@(uploadImage) Path=@($"{uploadsFolder}/") />
                         <RichTextEditorEvents BeforeUploadImage="@BeforeUploadImage"
                                               OnImageUploadSuccess="@ImageUploadSuccess"
-                                              OnImageRemoving="@OnImageRemovingHandler" 
-                                              ImageDelete=@OnImageDeleteHandler />
+                                              OnImageRemoving="@OnImageRemovingHandler"
+                                              ImageDelete=@OnImageDeleteHandler
+                                              OnImageSelected=@OnImageSelectedHandler />
                     </SfRichTextEditor>
                 </div>
             </div>
@@ -157,7 +158,7 @@
     {
         article.UserId = await getUserId();
         Categories = await _categoryService.GetListCategory();
-        
+
     }
     private void BeforeUploadImage(ImageUploadingEventArgs args)
     {
@@ -175,16 +176,28 @@
         }
     }
 
+    public async void OnImageSelectedHandler(Syncfusion.Blazor.Inputs.SelectedEventArgs args)
+    {
+        foreach (var file in args.FilesData)
+        {
+            summaryArticleImage = file.Name;
+        }
+
+        Console.WriteLine(summaryArticleImage);
+    }
+
     private void ImageUploadSuccess(ImageSuccessEventArgs args)
     {
         args.File.Name = args.Response.Headers.ToString().Split("name: ")[1].Split("\r")[0];
-        summaryArticleImage =args.Response.Headers.ToString().Split("loadpath: ")[1].Split("\r")[0];
+        summaryArticleImage = args.Response.Headers.ToString().Split("loadpath: ")[1].Split("\r")[0];
 
     }
+    //xoá image nằm trong dialog insert image của rich text editor
     public async void OnImageRemovingHandler(Syncfusion.Blazor.Inputs.RemovingEventArgs args)
     {
         await _articleService.DeleteArticleImage(summaryArticleImage);
     }
+    //xoá image nằm trong content của rich text editor
     public async void OnImageDeleteHandler(Syncfusion.Blazor.RichTextEditor.AfterImageDeleteEventArgs args)
     {
         await _articleService.DeleteArticleImage(summaryArticleImage);

@@ -32,7 +32,7 @@ namespace CmsWebsite.Api.Domain.Service
             string _configPath = _configuration["UploadPath"];
 
             //đường dẫn upload mặc định theo năm tháng 
-            string uploadPath = "uploads" + @"/Year-" + DateTime.Now.Year + @"/Month-" + DateTime.Now.Month;
+            string uploadPath = "uploads" + @"\Year-" + DateTime.Now.Year + @"\Month-" + DateTime.Now.Month;
 
             //đường dẫn đến subfolder
             string uploadsFolder = Path.Combine(_configPath, uploadPath, subDirectory);
@@ -50,10 +50,10 @@ namespace CmsWebsite.Api.Domain.Service
             response.loadPathFolder = Path.Combine(uploadPath,subDirectory);
             response.loadPathFile = Path.Combine(uploadPath, subDirectory, uniqueFileName);
             response.fileName = uniqueFileName;
+
             using (var fileStream = new FileStream(fullPath, FileMode.Create, FileAccess.Write))
             {
                 await file.CopyToAsync(fileStream);
-                fileStream.Flush();
             }
             return response;
         }

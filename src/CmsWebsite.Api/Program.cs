@@ -39,8 +39,8 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 // DI
 
 //Hosted
-builder.Services.AddRazorPages();
-builder.Services.AddControllersWithViews();
+//builder.Services.AddRazorPages();
+//builder.Services.AddControllersWithViews();
 
 builder.Services.AddScoped<IArticleRepository, ArticleRepository>();
 builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
@@ -65,7 +65,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
     //Hosted
-    app.UseWebAssemblyDebugging();
+    //app.UseWebAssemblyDebugging();
 }   
 
 //ENABLE CORS
@@ -79,8 +79,8 @@ app.UseCors(x => x
 app.UseHttpsRedirection();
 
 //Hosted
-app.UseBlazorFrameworkFiles();
-app.UseStaticFiles();
+//app.UseBlazorFrameworkFiles();
+//app.UseStaticFiles();
 
 app.UseRouting();
 app.UseAuthentication();
@@ -88,9 +88,9 @@ app.UseAuthorization();
 app.UseEndpoints(endpoints =>
 {
 
-    endpoints.MapRazorPages();//Hosted
+    //endpoints.MapRazorPages();//Hosted
     endpoints.MapControllers();
-    endpoints.MapFallbackToFile("index.html");//Hosted
+    //endpoints.MapFallbackToFile("index.html");//Hosted
 });
 
 app.Run();
