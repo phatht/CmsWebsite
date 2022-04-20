@@ -20,4 +20,9 @@
 		<ProjectReference Include="..\CmsWebsite.Share\CmsWebsite.Share.csproj" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <Folder Include="wwwroot\uploads\2022\4\articles\" />
+	  <Folder Include="wwwroot\uploads\2022\4\categories\" />
+	</ItemGroup>
+
 </Project>

@@ -27,3 +27,4 @@ bld/
 /log4net
 /packages
 
+/src/CmsWebsite.Client.Blazor/wwwroot/uploads/
