@@ -13,7 +13,6 @@
 		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="6.0.4" PrivateAssets="all" />
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
 		<PackageReference Include="Radzen.Blazor" Version="3.18.3" />
-		<PackageReference Include="Syncfusion.Blazor.RichTextEditor" Version="20.1.0.50" />
 	</ItemGroup>
 
 	<ItemGroup>
