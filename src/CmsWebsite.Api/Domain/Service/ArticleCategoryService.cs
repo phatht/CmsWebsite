@@ -7,7 +7,7 @@ namespace CmsWebsite.Api.Domain.Service
 {
     public interface IArticleCategoryService
     {
-        //Task<IEnumerable<Article>> GetArticleAsync();
+        Task<IEnumerable<ArticleCategories>> GetArticleCategoryByCategoryIdAsync(long CategoryId);
 
         Task<ArticleCategories> GetArticleCategory(long id);
         //create
@@ -27,6 +27,20 @@ namespace CmsWebsite.Api.Domain.Service
         {
             _logger = logger;
             _unitOfWork = unitOfWork;
+        }
+
+
+        public async Task<IEnumerable<ArticleCategories>> GetArticleCategoryByCategoryIdAsync(long CategoryId)
+        {
+            try
+            {
+                return await _unitOfWork.ArticleCategoryRepository.ListByCategoryIdAsync(CategoryId);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Error when ArticleCategory {ex}", ex.Message);
+                throw;
+            }
         }
 
         public async Task<ArticleCategories> PutArticleCategory(ArticleCategoryRequest request)
@@ -76,6 +90,8 @@ namespace CmsWebsite.Api.Domain.Service
                 throw ex;
             }
         }
+
+      
     }
 
 }

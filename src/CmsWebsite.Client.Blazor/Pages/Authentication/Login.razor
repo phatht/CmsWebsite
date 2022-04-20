@@ -19,7 +19,6 @@
         <div class="col-md-6 form-check m-3">
             <InputCheckbox id="inputRememberMe" class="form-check-input" @bind-Value="@loginRequest.RememberMe" />
             <label class="form-check-label" for="inputRememberMe">Ghi nhớ đăng nhập</label>
-
         </div>
 
         <button class="btn btn-lg btn-primary btn-block m-2" style="width:100%" type="submit">@busyText</button>
@@ -27,7 +26,9 @@
         <NavLink href="register">
             <h6 class="font-weight-normal text-center" style="float:right">Tạo tài khoản !</h6>
         </NavLink>
-
+        <NavLink href="/">
+            <h6 class="font-weight-normal text-center" style="float:left">Trang chủ</h6>
+        </NavLink>
         <label class="text-danger">@error</label>
 
     </EditForm>

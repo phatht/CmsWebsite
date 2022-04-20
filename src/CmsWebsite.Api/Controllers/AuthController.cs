@@ -59,8 +59,9 @@ namespace CmsWebsite.Api.Controllers
         {
             var user = new ApplicationUser();
             user.UserName = parameters.UserName;
-            user.Email = "NomalizedEmail";
-            user.NormalizedEmail = "NomalizedEmail";
+            user.FullName = parameters.FullName;
+            user.Email = "";
+            user.NormalizedEmail = "";
             var result = await _userManager.CreateAsync(user, parameters.Password);
             if (!result.Succeeded) return BadRequest(result.Errors.FirstOrDefault()?.Description);
 

@@ -5,16 +5,19 @@
     {
         foreach (var item in Articles.Take(3))
         {
-            <RadzenCard Style="width:33%">
-                <div class="d-flex flex-row wrapper">
-                    <img src="@item.ImageFile" class="rounded float-left mr-3" style="width: 95px; height: 80px;">
+            <div class="col-md-4">
+                @* <RadzenCard Style="width:33%">*@
+                <div class="wrapper m-2">
+                    <img src="@item.ImageFile" class="rounded float-left mr-2" style="width: 95px; height: 80px;">
                     <div>
                         <p class="wrapper-p" style="font-size:13px">@item.Description</p>
                     </div>
                 </div>
-            </RadzenCard>
+                @*</RadzenCard>*@
+            </div>
         }
     }
+
 </div>
 
 @code {

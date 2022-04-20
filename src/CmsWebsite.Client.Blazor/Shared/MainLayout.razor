@@ -23,15 +23,17 @@
 
         <div class="top-row">
             <div class="col-md-4">
-                <RadzenImage Path="/img/logo.png" Style="width:280px" />
+                <a href="/">
+                    <RadzenImage Path="/img/logo.png" Style="width:280px" />
+                </a>
             </div>
             <div class="col-md-3">
                 Thứ  @DateTime.Now.DayOfWeek, @DateTime.Now.ToString("dd/MM/yyy")
             </div>
             <div class="col-md-4">
-                <button type="button" class="btn btn-link ml-md-auto"><RadzenIcon Icon="facebook" /> Facebook</button>
-                <button type="button" class="btn btn-link ml-md-auto"><RadzenIcon Icon="call" />Mobile</button>
-                <button type="button" class="btn btn-link ml-md-auto"><RadzenIcon Icon="mark_email_read" />Email</button>
+                <button type="button" class="btn ml-md-auto"><RadzenIcon Icon="facebook" /> Facebook</button>
+                <button type="button" class="btn ml-md-auto"><RadzenIcon Icon="call" />Mobile</button>
+                <button type="button" class="btn ml-md-auto"><RadzenIcon Icon="mark_email_read" />Email</button>
             </div>
             <AuthorizeView>
                 <Authorized>
@@ -99,7 +101,7 @@
             <AuthorizeView>
                 <NotAuthorized>
                     <TinMoi Articles=@articles />
-                    <ItemContent Abbreviation=""></ItemContent>
+                    <ItemContent Abbreviation="56aa0f66-4f79-44b4-adf6-06a00eaf1aaf"></ItemContent>
                 </NotAuthorized>
             </AuthorizeView>
         </div>

@@ -13,7 +13,7 @@ namespace CmsWebsite.Api.Domain.Interfaces
         public void Update(Article reminder);
 
         public void Remove(Article reminder);
-
+         
 
     }
 }

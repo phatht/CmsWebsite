@@ -7,6 +7,7 @@ namespace CmsWebsite.Client.Blazor.Services.Article
     public interface IArticleService
     {
         Task<List<ArticleDTO>> GetListArticle();
+        Task<List<ArticleDTO>> GetListArticleCategoryByCategoryId(long CategoryId);
         Task<ArticleDTO> GetArticle(long id);
         Task<long> CreateArticle(ArticleCreateRequest arRequest);
         Task<bool> UpdateArticle(long id, ArticleDTO article);

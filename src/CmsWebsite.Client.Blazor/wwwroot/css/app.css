@@ -67,7 +67,7 @@ a, .btn-link {
 
 
 .category {
-    color: #740a2c
+    color: #479cc8
 }
 
 form .row {
@@ -82,4 +82,5 @@ form .row {
     display: -webkit-box;
     -webkit-line-clamp: 4;
     -webkit-box-orient: vertical;
+    color:#000000
 }

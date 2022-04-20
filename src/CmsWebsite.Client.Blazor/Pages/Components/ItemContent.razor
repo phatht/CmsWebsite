@@ -2,29 +2,52 @@
 @using CmsWebsite.Client.Blazor.Services.Article
 @using CmsWebsite.Share.Models.Article
 @inject ICategoryService _clientCategory
-@inject IArticleService  _clientArticle
+@inject IArticleService _clientArticle
 
 
-<div class="row">
-    <div class="col-md-6"> 
-        <RadzenImage Path="" Style="width: 60%; margin: 3rem;" />
-        
+
+<RadzenCard Style="width: 100%;">
+
+    <div class="row">
+        <div class="col-md-8">
+            <RadzenImage Path=@Articless[0].ImageFile Style="width: 100%;height:60%" />
+            <p style="font-weight:600">@Articless[0].Title</p>
+            <p class="wrapper-p mr-2">@Articless[0].Description</p>
+        </div>
+
+        <div class="col-md-4">
+
+            <RadzenImage Path=@Articless[1].ImageFile Style="width: 100%;" />
+            <p>@Articless[1].Title</p>
+            @for (var i = 2; i < Articless.Count; i++)
+            {
+                <p>@Articless[i].Title</p>
+            }
+        </div>
     </div>
-    
-</div>
+</RadzenCard>
+
 @code {
 
     [Parameter]
     public string? Abbreviation { get; set; }
+
 
     public List<ArticleDTO>? Articless { get; set; }
 
 
     protected override async Task OnInitializedAsync()
     {
-        var list = await _clientCategory.GetListCategory();
-        long categoryId  =  list.Where(i => i.Abbreviation == Abbreviation).FirstOrDefault().CategoryId;
-        Articless = await _clientArticle.GetListArticle();
-         
+        try
+        {
+            var list = await _clientCategory.GetListCategory();
+            long categoryId = list.Where(i => i.Abbreviation == Abbreviation).FirstOrDefault().CategoryId;
+            Articless = await _clientArticle.GetListArticleCategoryByCategoryId(categoryId);
+
+        }
+        catch (Exception ex)
+        {
+
+        }
     }
 }

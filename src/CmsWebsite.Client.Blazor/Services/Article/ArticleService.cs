@@ -62,5 +62,11 @@ namespace CmsWebsite.Client.Blazor.Services.Article
                return await response.Content.ReadAsStringAsync();
             }
         }
+
+        public async Task<List<ArticleDTO>> GetListArticleCategoryByCategoryId(long categoryId)
+        {
+            var result = await _httpClient.GetFromJsonAsync<List<ArticleDTO>>($"api/article/GetArticleByCategoryId/{categoryId}");
+            return result;
+        }
     }
 }

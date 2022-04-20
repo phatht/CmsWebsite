@@ -10,6 +10,10 @@
     <EditForm class="form-signin" OnValidSubmit="OnSubmit" Model="registerRequest">
         <DataAnnotationsValidator />
 
+        <label for="inputFullName" class="sr-only m-1">Tên người dùng</label>
+        <InputText id="inputFullName" class="form-control"  autofocus @bind-Value="@registerRequest.FullName" />
+        <ValidationMessage For="@(() => registerRequest.FullName)" />
+
         <label for="inputUsername" class="sr-only m-1">Tên đăng nhập</label>
         <InputText id="inputUsername" class="form-control"  autofocus @bind-Value="@registerRequest.UserName" />
         <ValidationMessage For="@(() => registerRequest.UserName)" />

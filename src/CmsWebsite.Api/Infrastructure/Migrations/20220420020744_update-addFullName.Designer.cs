@@ -12,14 +12,14 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CmsWebsite.Api.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20220401074443_update-1")]
-    partial class update1
+    [Migration("20220420020744_update-addFullName")]
+    partial class updateaddFullName
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "6.0.3")
+                .HasAnnotation("ProductVersion", "6.0.4")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
@@ -42,6 +42,10 @@ namespace CmsWebsite.Api.Migrations
 
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("bit");
+
+                    b.Property<string>("FullName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("bit");
@@ -97,7 +101,10 @@ namespace CmsWebsite.Api.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("ArticleID"), 1L, 1);
 
-                    b.Property<DateTime>("CreatedDate")
+                    b.Property<DateTime?>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DateDeleted")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Description")
@@ -115,7 +122,7 @@ namespace CmsWebsite.Api.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("LastModifiedDate")
+                    b.Property<DateTime?>("LastModifiedDate")
                         .HasColumnType("datetime2");
 
                     b.Property<int>("NumberOfViews")
@@ -143,7 +150,7 @@ namespace CmsWebsite.Api.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("taked")
+                    b.Property<bool>("isDeleted")
                         .HasColumnType("bit");
 
                     b.HasKey("ArticleID");
@@ -170,7 +177,7 @@ namespace CmsWebsite.Api.Migrations
                     b.ToTable("CmsArticleCategories", (string)null);
                 });
 
-            modelBuilder.Entity("CmsWebsite.Api.Domain.Models.Categories", b =>
+            modelBuilder.Entity("CmsWebsite.Api.Domain.Models.Category", b =>
                 {
                     b.Property<long>("CategoryId")
                         .ValueGeneratedOnAdd()
@@ -186,6 +193,12 @@ namespace CmsWebsite.Api.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<DateTime?>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DateDeleted")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("IconFile")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -195,6 +208,9 @@ namespace CmsWebsite.Api.Migrations
 
                     b.Property<long>("ParentCategoryId")
                         .HasColumnType("bigint");
+
+                    b.Property<bool>("isDeleted")
+                        .HasColumnType("bit");
 
                     b.HasKey("CategoryId");
 

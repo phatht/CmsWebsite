@@ -19,6 +19,8 @@ namespace CmsWebsite.Api.Domain.Service
 
         Task<Article> SoftDeleteArticle(long id, bool isDeleted);
 
+        Task<IEnumerable<Article>> GetArticleByCategoryIdAsync(long CategoryId);
+
     }
 
     public class ArticleService : IArticleService
@@ -154,6 +156,30 @@ namespace CmsWebsite.Api.Domain.Service
                 _logger.LogError($"Error when update article {ex}", ex.Message);
                 throw ex;
             }
+        }
+
+        public async Task<IEnumerable<Article>> GetArticleByCategoryIdAsync(long CategoryId)
+        {
+            try
+            {
+                var articleCategorys = await _unitOfWork.ArticleCategoryRepository.ListByCategoryIdAsync(CategoryId);
+                var articles = await _unitOfWork.ArticleRepository.ListAsync();
+                var datas = (
+                    from a in articles
+                    join b in articleCategorys
+                    on a.ArticleID equals b.ArticleID
+                    select a
+                    );
+
+                return datas;
+
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Error when get ArticleByCategoryId {ex}", ex.Message);
+                throw;
+            }
+
         }
 
     }
