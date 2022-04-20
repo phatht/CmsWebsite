@@ -43,10 +43,8 @@
                     <RadzenLabel Component="SummaryArticle" Text="Summary Article" />
                 </div>
                 <div class="col-md-9">
-                    <RadzenHtmlEditor Name="SummaryArticle" @bind-Value=@existingArticle.SummaryArticle
-                                      style="height: 500px; margin-bottom: 1rem;" UploadUrl=@(uploadPath)
-                                      Change=@OnChange Paste=@OnPaste Execute=@OnExecute>
-                    </RadzenHtmlEditor>
+                    <SfRichTextEditor @bind-Value=existingArticle.SummaryArticle>
+                    </SfRichTextEditor>
                 </div>
             </div>
 
@@ -156,7 +154,7 @@
                         await _articleService.DeleteArticleImage(ImgUrl);
 
                     var response = await _articleService.UploadArticleImage(content);
-                    ImgUrl = response;
+                    ImgUrl = response.loadPathFile;
                     Console.WriteLine(response);
                     //kiểm tra file đã thay đổi hay chưa nếu thay đổi rồi thì save lại
                     stateChanged = true;
@@ -233,21 +231,5 @@
         }
 
         uriHelper.NavigateTo("article");
-    }
-
-    
-    void OnPaste(HtmlEditorPasteEventArgs args)
-    {
-        Console.WriteLine($"Paste: {args.Html}");
-    }
-
-    void OnChange(string html)
-    {
-        Console.WriteLine($"Change: {html}");
-    }
-
-    void OnExecute(HtmlEditorExecuteEventArgs args)
-    {
-        Console.WriteLine($"Execute: {args.CommandName}");
     }
 }

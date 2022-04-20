@@ -10,5 +10,7 @@ namespace CmsWebsite.Share.Response
     {
         public string loadPathFolder { get; set; }
         public string loadPathFile { get; set; }
+        public string fileName { get; set; }
+
     }
 }

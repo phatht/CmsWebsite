@@ -55,10 +55,17 @@
                     <RadzenLabel Component="SummaryArticle" Text="Summary Article" />
                 </div>
                 <div class="col-md-9">
-                    <RadzenHtmlEditor Name="SummaryArticle" @bind-Value=@article.SummaryArticle
-                                      style="height: 500px; margin-bottom: 1rem;" UploadUrl=@(uploadPath)
-                                      Change=@OnChange Paste=@OnPaste Execute=@OnExecute>
-                    </RadzenHtmlEditor>
+                    @*<RadzenHtmlEditor Name="SummaryArticle" @bind-Value=@article.SummaryArticle
+                        style="height: 500px; margin-bottom: 1rem;" UploadUrl=@(uploadPath)
+                        Change=@OnChange Paste=@OnPaste Execute=@OnExecute>
+                        </RadzenHtmlEditor>*@
+                    <SfRichTextEditor @bind-Value=article.SummaryArticle>
+                        <RichTextEditorImageSettings SaveUrl=@(uploadImage) Path=@($"{uploadsFolder}/") />
+                        <RichTextEditorEvents BeforeUploadImage="@BeforeUploadImage"
+                                              OnImageUploadSuccess="@ImageUploadSuccess"
+                                              OnImageRemoving="@OnImageRemovingHandler" 
+                                              ImageDelete=@OnImageDeleteHandler />
+                    </SfRichTextEditor>
                 </div>
             </div>
 
@@ -142,15 +149,46 @@
     private bool isSave = false;
     private int count = 0;
 
-    public string uploadPath;
+    public string summaryArticleImage;
+    public string uploadsFolder;
+    public string uploadImage = $"api/file/upload?subDirectory=articles";
 
     protected override async Task OnInitializedAsync()
     {
         article.UserId = await getUserId();
         Categories = await _categoryService.GetListCategory();
-        uploadPath = $"api/File/Upload?subDirectory=articles";
+        
+    }
+    private void BeforeUploadImage(ImageUploadingEventArgs args)
+    {
+        //đường dẫn upload mặc định theo năm tháng
+        var uploadPath = "uploads" + @"/Year-" + DateTime.Now.Year + @"/Month-" + DateTime.Now.Month;
+
+        //đường dẫn đến subfolder
+        uploadsFolder = Path.Combine(uploadPath, "articles");
+
+        var sizeInBytes = args.FilesData[0].Size;
+        var imgSize = 500000;
+        if (imgSize < sizeInBytes)
+        {
+            args.Cancel = true;
+        }
     }
 
+    private void ImageUploadSuccess(ImageSuccessEventArgs args)
+    {
+        args.File.Name = args.Response.Headers.ToString().Split("name: ")[1].Split("\r")[0];
+        summaryArticleImage =args.Response.Headers.ToString().Split("loadpath: ")[1].Split("\r")[0];
+
+    }
+    public async void OnImageRemovingHandler(Syncfusion.Blazor.Inputs.RemovingEventArgs args)
+    {
+        await _articleService.DeleteArticleImage(summaryArticleImage);
+    }
+    public async void OnImageDeleteHandler(Syncfusion.Blazor.RichTextEditor.AfterImageDeleteEventArgs args)
+    {
+        await _articleService.DeleteArticleImage(summaryArticleImage);
+    }
 
     async Task HandleSelected(InputFileChangeEventArgs e)
     {
@@ -164,14 +202,14 @@
                 {
                     var content = new MultipartFormDataContent();
                     content.Headers.ContentDisposition = new ContentDispositionHeaderValue("form-data");
-                    content.Add(new StreamContent(ms, Convert.ToInt32(ms.Length)), "file", imageFile.Name);
+                    content.Add(new StreamContent(ms, Convert.ToInt32(ms.Length)), "UploadFiles", imageFile.Name);
 
                     //chỉ xoá file nếu img thay đổi lần 2
                     if (!string.IsNullOrEmpty(ImgUrl) && stateChanged)
                         await _articleService.DeleteArticleImage(ImgUrl);
 
                     var response = await _articleService.UploadArticleImage(content);
-                    ImgUrl = response;
+                    ImgUrl = response.loadPathFile;
                     //Console.WriteLine(JsonSerializer.Serialize(response, new JsonSerializerOptions() { WriteIndented = true }));
 
                     //kiểm tra file đã thay đổi hay chưa nếu thay đổi rồi thì save lại
@@ -188,49 +226,50 @@
     async Task CreateArticle()
     {
         //Console.WriteLine(JsonSerializer.Serialize(article, new JsonSerializerOptions() { WriteIndented = true }));
-        article.ImageFile = ImgUrl;
-        //nếu file có sự thay đổi thì xoá file củ
-        //sau khi lưu lần 1 file ban đầu đã bị xoá cần lưu lại giá trị file mới
-        //FirstFile = ImgUrl;
-        if (!string.IsNullOrEmpty(FirstFile))
-        {
-            if (stateChanged && count > 0)
-            {
-                await _articleService.DeleteArticleImage(FirstFile);
-            }
-        }
-        //lưu trạng thái save file
-        isSave = true;
-        //reset trạng thái
-        stateChanged = false;
-        count = 0;
-        //ghi lại file vừa mới lưu
-        FirstFile = article.ImageFile;
-        var newArticle = await _articleService.CreateArticle(article);
-        if (newArticle != null)
-        {
-            ac.ArticleID = newArticle;
-            var result = await _acService.CreateArticleCategory(ac);
-            if (result)
-            {
-                NotificationService.Notify(new NotificationMessage
-                    {
-                        Severity = NotificationSeverity.Success,
-                        Summary = "Thông báo sự kiện",
-                        Detail = "Thêm thành công",
-                        Duration = 4000,
-                    });
-                uriHelper.NavigateTo("/article");
-            }
-            else
-            {
-                Console.WriteLine(JsonSerializer.Serialize(result, new JsonSerializerOptions() { WriteIndented = true }));
-            }
-        }
-        else
-        {
-            Console.WriteLine(JsonSerializer.Serialize(article, new JsonSerializerOptions() { WriteIndented = true }));
-        }
+
+        //article.ImageFile = ImgUrl;
+        ////nếu file có sự thay đổi thì xoá file củ
+        ////sau khi lưu lần 1 file ban đầu đã bị xoá cần lưu lại giá trị file mới
+        ////FirstFile = ImgUrl;
+        //if (!string.IsNullOrEmpty(FirstFile))
+        //{
+        //    if (stateChanged && count > 0)
+        //    {
+        //        await _articleService.DeleteArticleImage(FirstFile);
+        //    }
+        //}
+        ////lưu trạng thái save file
+        //isSave = true;
+        ////reset trạng thái
+        //stateChanged = false;
+        //count = 0;
+        ////ghi lại file vừa mới lưu
+        //FirstFile = article.ImageFile;
+        //var newArticle = await _articleService.CreateArticle(article);
+        //if (newArticle != null)
+        //{
+        //    ac.ArticleID = newArticle;
+        //    var result = await _acService.CreateArticleCategory(ac);
+        //    if (result)
+        //    {
+        //        NotificationService.Notify(new NotificationMessage
+        //            {
+        //                Severity = NotificationSeverity.Success,
+        //                Summary = "Thông báo sự kiện",
+        //                Detail = "Thêm thành công",
+        //                Duration = 4000,
+        //            });
+        //        uriHelper.NavigateTo("/article");
+        //    }
+        //    else
+        //    {
+        //        Console.WriteLine(JsonSerializer.Serialize(result, new JsonSerializerOptions() { WriteIndented = true }));
+        //    }
+        //}
+        //else
+        //{
+        //    Console.WriteLine(JsonSerializer.Serialize(article, new JsonSerializerOptions() { WriteIndented = true }));
+        //}
     }
     void OnTodayClick()
     {
@@ -252,19 +291,4 @@
         uriHelper.NavigateTo("article");
     }
 
-
-    void OnPaste(HtmlEditorPasteEventArgs args)
-    {
-        Console.WriteLine($"Paste: {args.Html}");
-    }
-
-    void OnChange(string html)
-    {
-        Console.WriteLine($"Change: {html}");
-    }
-
-    void OnExecute(HtmlEditorExecuteEventArgs args)
-    {
-        Console.WriteLine($"Execute: {args.CommandName}");
-    }
 }
