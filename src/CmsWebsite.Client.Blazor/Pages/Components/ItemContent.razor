@@ -7,24 +7,28 @@
 
 
 <RadzenCard Style="width: 100%;">
+    @if (Articless != null)
+    {
+        <div class="row">
+            <div class="col-md-8">
+                <RadzenImage Path=@Articless[0].ImageFile Style="width:100%;height:60%;" />
+                <label class="m-2" style="font-weight:700;font-size:22px">@Articless[0].Title</label>
+                <p class="wrapper-p mr-2">@Articless[0].Description</p>
+            </div>
 
-    <div class="row">
-        <div class="col-md-8">
-            <RadzenImage Path=@Articless[0].ImageFile Style="width: 100%;height:60%" />
-            <p style="font-weight:600">@Articless[0].Title</p>
-            <p class="wrapper-p mr-2">@Articless[0].Description</p>
+            <div class="col-md-4">
+                <RadzenImage Path=@Articless[1].ImageFile Style="width: 100%;" />
+                <RadzenCard >
+                    @for (var i = 1; i < Articless.Count; i++)
+                    {
+                        <hr />
+                        <span class="wrapper-p">@Articless[i].Title</span>
+                    }
+                </RadzenCard>
+            </div>
         </div>
-
-        <div class="col-md-4">
-
-            <RadzenImage Path=@Articless[1].ImageFile Style="width: 100%;" />
-            <p>@Articless[1].Title</p>
-            @for (var i = 2; i < Articless.Count; i++)
-            {
-                <p>@Articless[i].Title</p>
-            }
-        </div>
-    </div>
+    }
+   
 </RadzenCard>
 
 @code {
