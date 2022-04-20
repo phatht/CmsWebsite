@@ -50,19 +50,19 @@ namespace CmsWebsite.Client.Blazor.Services.Article
             return result.IsSuccessStatusCode;
         }
 
-        public async Task<string> UploadArticleImage(MultipartFormDataContent content)
+        public async Task<UploadFileResponse> UploadArticleImage(MultipartFormDataContent content)
         {
-            var response = await _httpClient.PostAsync($"api/file/uploaded?subDirectory=articles", content);
+            var response = await _httpClient.PostAsync($"api/file/upload?subDirectory=articles", content);
             if (!response.IsSuccessStatusCode)
             {
                 throw new ApplicationException($"Check Upload Article Image, {await response.Content.ReadAsStringAsync()}");
             }
             else
             {
-               return await response.Content.ReadAsStringAsync();
+
+               return await response.Content.ReadFromJsonAsync<UploadFileResponse>();
             }
         }
-
         public async Task<List<ArticleDTO>> GetListArticleCategoryByCategoryId(long categoryId)
         {
             var result = await _httpClient.GetFromJsonAsync<List<ArticleDTO>>($"api/article/GetArticleByCategoryId/{categoryId}");
