@@ -43,8 +43,7 @@
                     <RadzenLabel Component="SummaryArticle" Text="Summary Article" />
                 </div>
                 <div class="col-md-9">
-                    <SfRichTextEditor @bind-Value=existingArticle.SummaryArticle>
-                    </SfRichTextEditor>
+                    
                 </div>
             </div>
 
@@ -147,7 +146,7 @@
                 {
                     var content = new MultipartFormDataContent();
                     content.Headers.ContentDisposition = new ContentDispositionHeaderValue("form-data");
-                    content.Add(new StreamContent(ms, Convert.ToInt32(ms.Length)), "file", imageFile.Name);
+                    content.Add(new StreamContent(ms, Convert.ToInt32(ms.Length)), "UploadFiles", imageFile.Name);
 
                     //chỉ xoá file nếu img thay đổi lần 2
                     if (!string.IsNullOrEmpty(ImgUrl) && stateChanged)
@@ -155,7 +154,7 @@
 
                     var response = await _articleService.UploadArticleImage(content);
                     ImgUrl = response.loadPathFile;
-                    Console.WriteLine(response);
+                    //Console.WriteLine(response);
                     //kiểm tra file đã thay đổi hay chưa nếu thay đổi rồi thì save lại
                     stateChanged = true;
                     ++count;

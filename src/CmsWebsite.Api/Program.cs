@@ -58,7 +58,7 @@ builder.Services.AddCors();
 
 var app = builder.Build();
 //auto migration
-app.MigrateDbContext<ApplicationDbContext>();
+//app.MigrateDbContext<ApplicationDbContext>();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {

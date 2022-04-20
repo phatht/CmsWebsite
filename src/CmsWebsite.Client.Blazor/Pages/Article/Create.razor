@@ -59,14 +59,6 @@
                         style="height: 500px; margin-bottom: 1rem;" UploadUrl=@(uploadPath)
                         Change=@OnChange Paste=@OnPaste Execute=@OnExecute>
                         </RadzenHtmlEditor>*@
-                    <SfRichTextEditor @bind-Value=article.SummaryArticle>
-                        <RichTextEditorImageSettings SaveUrl=@(uploadImage) Path=@($"{uploadsFolder}/") />
-                        <RichTextEditorEvents BeforeUploadImage="@BeforeUploadImage"
-                                              OnImageUploadSuccess="@ImageUploadSuccess"
-                                              OnImageRemoving="@OnImageRemovingHandler"
-                                              ImageDelete=@OnImageDeleteHandler
-                                              OnImageSelected=@OnImageSelectedHandler />
-                    </SfRichTextEditor>
                 </div>
             </div>
 
@@ -150,9 +142,7 @@
     private bool isSave = false;
     private int count = 0;
 
-    public string summaryArticleImage;
-    public string uploadsFolder;
-    public string uploadImage = $"api/file/upload?subDirectory=articles";
+    public string uploadFiletPath = "http://localhost:5200/api/File/Upload?subDirectory=articles";
 
     protected override async Task OnInitializedAsync()
     {
@@ -160,49 +150,7 @@
         Categories = await _categoryService.GetListCategory();
 
     }
-    private void BeforeUploadImage(ImageUploadingEventArgs args)
-    {
-        //đường dẫn upload mặc định theo năm tháng
-        var uploadPath = "uploads" + @"/Year-" + DateTime.Now.Year + @"/Month-" + DateTime.Now.Month;
-
-        //đường dẫn đến subfolder
-        uploadsFolder = Path.Combine(uploadPath, "articles");
-
-        var sizeInBytes = args.FilesData[0].Size;
-        var imgSize = 500000;
-        if (imgSize < sizeInBytes)
-        {
-            args.Cancel = true;
-        }
-    }
-
-    public async void OnImageSelectedHandler(Syncfusion.Blazor.Inputs.SelectedEventArgs args)
-    {
-        foreach (var file in args.FilesData)
-        {
-            summaryArticleImage = file.Name;
-        }
-
-        Console.WriteLine(summaryArticleImage);
-    }
-
-    private void ImageUploadSuccess(ImageSuccessEventArgs args)
-    {
-        args.File.Name = args.Response.Headers.ToString().Split("name: ")[1].Split("\r")[0];
-        summaryArticleImage = args.Response.Headers.ToString().Split("loadpath: ")[1].Split("\r")[0];
-
-    }
-    //xoá image nằm trong dialog insert image của rich text editor
-    public async void OnImageRemovingHandler(Syncfusion.Blazor.Inputs.RemovingEventArgs args)
-    {
-        await _articleService.DeleteArticleImage(summaryArticleImage);
-    }
-    //xoá image nằm trong content của rich text editor
-    public async void OnImageDeleteHandler(Syncfusion.Blazor.RichTextEditor.AfterImageDeleteEventArgs args)
-    {
-        await _articleService.DeleteArticleImage(summaryArticleImage);
-    }
-
+   
     async Task HandleSelected(InputFileChangeEventArgs e)
     {
         var imageFiles = e.GetMultipleFiles();
@@ -240,49 +188,49 @@
     {
         //Console.WriteLine(JsonSerializer.Serialize(article, new JsonSerializerOptions() { WriteIndented = true }));
 
-        //article.ImageFile = ImgUrl;
-        ////nếu file có sự thay đổi thì xoá file củ
-        ////sau khi lưu lần 1 file ban đầu đã bị xoá cần lưu lại giá trị file mới
-        ////FirstFile = ImgUrl;
-        //if (!string.IsNullOrEmpty(FirstFile))
-        //{
-        //    if (stateChanged && count > 0)
-        //    {
-        //        await _articleService.DeleteArticleImage(FirstFile);
-        //    }
-        //}
-        ////lưu trạng thái save file
-        //isSave = true;
-        ////reset trạng thái
-        //stateChanged = false;
-        //count = 0;
-        ////ghi lại file vừa mới lưu
-        //FirstFile = article.ImageFile;
-        //var newArticle = await _articleService.CreateArticle(article);
-        //if (newArticle != null)
-        //{
-        //    ac.ArticleID = newArticle;
-        //    var result = await _acService.CreateArticleCategory(ac);
-        //    if (result)
-        //    {
-        //        NotificationService.Notify(new NotificationMessage
-        //            {
-        //                Severity = NotificationSeverity.Success,
-        //                Summary = "Thông báo sự kiện",
-        //                Detail = "Thêm thành công",
-        //                Duration = 4000,
-        //            });
-        //        uriHelper.NavigateTo("/article");
-        //    }
-        //    else
-        //    {
-        //        Console.WriteLine(JsonSerializer.Serialize(result, new JsonSerializerOptions() { WriteIndented = true }));
-        //    }
-        //}
-        //else
-        //{
-        //    Console.WriteLine(JsonSerializer.Serialize(article, new JsonSerializerOptions() { WriteIndented = true }));
-        //}
+        article.ImageFile = ImgUrl;
+        //nếu file có sự thay đổi thì xoá file củ
+        //sau khi lưu lần 1 file ban đầu đã bị xoá cần lưu lại giá trị file mới
+        //FirstFile = ImgUrl;
+        if (!string.IsNullOrEmpty(FirstFile))
+        {
+            if (stateChanged && count > 0)
+            {
+                await _articleService.DeleteArticleImage(FirstFile);
+            }
+        }
+        //lưu trạng thái save file
+        isSave = true;
+        //reset trạng thái
+        stateChanged = false;
+        count = 0;
+        //ghi lại file vừa mới lưu
+        FirstFile = article.ImageFile;
+        var newArticle = await _articleService.CreateArticle(article);
+        if (newArticle != null)
+        {
+            ac.ArticleID = newArticle;
+            var result = await _acService.CreateArticleCategory(ac);
+            if (result)
+            {
+                NotificationService.Notify(new NotificationMessage
+                    {
+                        Severity = NotificationSeverity.Success,
+                        Summary = "Thông báo sự kiện",
+                        Detail = "Thêm thành công",
+                        Duration = 4000,
+                    });
+                uriHelper.NavigateTo("/article");
+            }
+            else
+            {
+                Console.WriteLine(JsonSerializer.Serialize(result, new JsonSerializerOptions() { WriteIndented = true }));
+            }
+        }
+        else
+        {
+            Console.WriteLine(JsonSerializer.Serialize(article, new JsonSerializerOptions() { WriteIndented = true }));
+        }
     }
     void OnTodayClick()
     {
