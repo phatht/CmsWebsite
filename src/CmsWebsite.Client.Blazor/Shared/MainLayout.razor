@@ -24,16 +24,16 @@
         <div class="top-row">
             <div class="col-md-4">
                 <a href="/">
-                    <RadzenImage Path="/img/logo.png" Style="width:280px" />
+                    <RadzenImage Path="/img/logo.png" Style="width:255px" />
                 </a>
             </div>
-            <div class="col-md-3">
-                Thứ  @DateTime.Now.DayOfWeek, @DateTime.Now.ToString("dd/MM/yyy")
-            </div>
-            <div class="col-md-4">
-                <button type="button" class="btn ml-md-auto"><RadzenIcon Icon="facebook" /> Facebook</button>
-                <button type="button" class="btn ml-md-auto"><RadzenIcon Icon="call" />Mobile</button>
-                <button type="button" class="btn ml-md-auto"><RadzenIcon Icon="mark_email_read" />Email</button>
+            <div class="col-md-1">
+            </div> 
+            <div class="col-md-5">
+                <button type="button" class="btn " style="font-size:14px;color:#007bff"><RadzenIcon Icon="facebook" /> Facebook</button>
+                <button type="button" class="btn " style="font-size:14px;color:#28a745"><RadzenIcon Icon="call" />Mobile</button>
+                <button type="button" class="btn " style="font-size:14px;color:#e35d5dd9"><RadzenIcon Icon="mark_email_read" />Email</button>
+               
             </div>
             <AuthorizeView>
                 <Authorized>
@@ -55,27 +55,31 @@
         <AuthorizeView>
             <NotAuthorized>
 
-                <RadzenMenu>
+                <RadzenMenu Style="width:100%">
                     <RadzenMenuItem Icon="menu" Text="Tất cả">
-                        <table class="table table-hover">
-                            <tbody>
-                                <tr>
-                                    <td>Giới thiệu</td>
-                                    <td>Tin tổng hợp</td>
-                                    <td>Tin hoạt động</td>
-                                </tr>
-                                <tr>
-                                    <td>Chương trình phối hợp</td>
-                                    <td>Văn bản hướng dẫn</td>
-                                    <td>Thành đoàn</td>
-                                </tr>
-                                <tr>
-                                    <td>Đối ngoại kiều bào</td>
-                                    <td>Dân tộc - tôn giáo</td>
-                                    <td>Thư viện ảnh</td>
-                                </tr>
-                            </tbody>
-                        </table>
+                        @*<div class="top-row">*@
+                            <div class="row">
+                                <table class="table table-hover">
+                                    <tbody>
+                                        <tr>
+                                            <td>Giới thiệu</td>
+                                            <td>Tin tổng hợp</td>
+                                            <td>Tin hoạt động</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Chương trình phối hợp</td>
+                                            <td>Văn bản hướng dẫn</td>
+                                            <td>Thành đoàn</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Đối ngoại kiều bào</td>
+                                            <td>Dân tộc - tôn giáo</td>
+                                            <td>Thư viện ảnh</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        @*</div>*@
                     </RadzenMenuItem>
                     <RadzenMenuItem Text="Giới thiệu">
                         <RadzenMenuItem Text="Giới thiệu chung" Path="counter">
@@ -97,11 +101,12 @@
 
             </NotAuthorized>
         </AuthorizeView>
+
         <div>
             <AuthorizeView>
                 <NotAuthorized>
                     <TinMoi Articles=@articles />
-                    <ItemContent Abbreviation="56aa0f66-4f79-44b4-adf6-06a00eaf1aaf"></ItemContent>
+                    <BoCuc01 Abbreviation="56aa0f66-4f79-44b4-adf6-06a00eaf1aaf"></BoCuc01>
                 </NotAuthorized>
             </AuthorizeView>
         </div>
@@ -111,7 +116,6 @@
         </div>
 
     </div>
-
 
     <AuthorizeView>
         <NotAuthorized>
@@ -138,6 +142,7 @@
     {
         articles = await _client.GetListArticle();
     }
+
     protected override async Task OnParametersSetAsync()
     {
         if (!(await AuthenticationState).User.Identity.IsAuthenticated)
@@ -146,4 +151,5 @@
             col = 9;
         }
     }
+    
 }

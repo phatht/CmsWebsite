@@ -1,0 +1,18 @@
+﻿@page "/chitietbaiviet/{articleId:long}"
+@using CmsWebsite.Client.Blazor.Services.Article
+@using CmsWebsite.Share.Models.Article
+@inject IArticleService _articleService
+
+@existingArticle.Description
+
+@code {
+    [Parameter]
+    public long articleId { set; get; }
+    private ArticleDTO existingArticle { get; set; } = new ArticleDTO();
+
+    protected async override Task OnParametersSetAsync()
+    {
+        existingArticle = await _articleService.GetArticle(articleId);
+         
+    }
+}

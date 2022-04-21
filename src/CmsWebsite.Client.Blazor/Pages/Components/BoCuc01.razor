@@ -17,9 +17,10 @@
             </div>
 
             <div class="col-md-4">
-                <RadzenImage Path=@Articless[1].ImageFile Style="width: 100%;" />
+                <RadzenImage Path=@Articless[1].ImageFile Style="width: 100%;" class="rounded"/>
                 <RadzenCard >
-                    @for (var i = 1; i < Articless.Count; i++)
+                    <span class="wrapper-p">@Articless[1].Title</span>
+                    @for (var i = 2; i < Articless.Count; i++)
                     {
                         <hr />
                         <span class="wrapper-p">@Articless[i].Title</span>
