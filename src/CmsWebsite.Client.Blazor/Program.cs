@@ -29,7 +29,6 @@ builder.Services.AddScoped<IArticleCategoryService, ArticleCategoryService>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<DialogService>();
 builder.Services.AddScoped<NotificationService>();
-
-
+ 
 await builder.Build().RunAsync();
     

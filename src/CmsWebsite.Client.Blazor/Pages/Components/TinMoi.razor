@@ -9,10 +9,10 @@
 
             <div class="col-md-4">
                 <div class="wrapper m-2">
-                    <img src="@item.ImageFile" class="rounded float-left mr-2" style="width: 95px; height: 80px;">
-                    <div>
+                    <span @onclick="() => EditRow(item.ArticleID)">
+                        <img src="@item.ImageFile" class="rounded float-left mr-2" style="width: 95px; height: 80px;">
                         <p class="wrapper-p" style="font-size:13px">@item.Description</p>
-                    </div>
+                    </span>
                 </div>
             </div>
 
@@ -26,5 +26,5 @@
     [Parameter]
     public List<ArticleDTO>? Articles { get; set; }
 
-    private void EditRow(long id) => uriHelper.NavigateTo($"chitietbaiviet/{id}");
+    protected void EditRow(long id) => uriHelper.NavigateTo($"chitietbaiviet/{id}");
 }

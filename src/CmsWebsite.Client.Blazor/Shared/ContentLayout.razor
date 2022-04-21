@@ -98,16 +98,21 @@
                     <RadzenMenuItem Text="Đối ngoại kiều bào"></RadzenMenuItem>
 
                 </RadzenMenu>
+
             </NotAuthorized>
         </AuthorizeView>
         <div>
             <AuthorizeView>
                 <NotAuthorized>
                     <TinMoi Articles=@articles />
-                    <TrangChu Abbreviation="56aa0f66-4f79-44b4-adf6-06a00eaf1aaf"></TrangChu>
                 </NotAuthorized>
             </AuthorizeView>
         </div>
+
+        <div class="content">
+            @Body
+        </div>
+
     </div>
 
     <AuthorizeView>

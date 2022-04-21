@@ -2,7 +2,8 @@
 @using CmsWebsite.Client.Blazor.Services.Article
 @using CmsWebsite.Share.Models.Article
 @inject IArticleService _articleService
-
+@inherits LayoutComponentBase
+@layout ContentLayout
 @existingArticle.Description
 
 @code {
