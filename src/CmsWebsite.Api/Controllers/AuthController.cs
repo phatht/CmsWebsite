@@ -35,6 +35,7 @@ namespace CmsWebsite.Api.Controllers
             var claims = new[]
             {
                 new Claim("UserName",request.UserName),
+                new Claim("FullName",user.FullName),
                 new Claim("UserId",user.Id)
             };
 
@@ -85,7 +86,7 @@ namespace CmsWebsite.Api.Controllers
             return new CurrentUser
             {
                 IsAuthenticated = User.Identity.IsAuthenticated,
-                UserName = User.Identity.Name,
+                FullName = User.Identity.Name,
                 Claims = User.Claims
                 .ToDictionary(c => c.Type, c => c.Value)
             };

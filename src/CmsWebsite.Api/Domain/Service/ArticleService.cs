@@ -1,6 +1,7 @@
 ﻿using CmsWebsite.Api.Domain.Exceptions;
 using CmsWebsite.Api.Domain.Interfaces;
 using CmsWebsite.Api.Domain.Models;
+using CmsWebsite.Share.Method;
 using CmsWebsite.Share.Models.Article;
 
 namespace CmsWebsite.Api.Domain.Service
@@ -57,12 +58,28 @@ namespace CmsWebsite.Api.Domain.Service
                     Description = request.Description,
                     SummaryArticle = request.SummaryArticle,
                     ImageFile = request.ImageFile,
-                    PublishDate = request.PublishDate,
-                    ExpireDate = request.PublishDate.AddDays(10),
                     KeyWords = request.KeyWords,
                     SubHead = request.SubHead,
+                    Author = request.Author,
                     Status = 1,
+                    PublishDate = request.PublishDate,
+                    ExpireDate = request.ExpireDate,
+                    NumberOfViews = 0,
                 };
+
+                //bool checkDate = Public.PublishExpiry(request.PublishDate, request.ExpireDate);
+                //if (!checkDate)
+                //{
+                //    //nếu ngày hết hạn không hợp lệ mặc định bài viết tồn tại ..
+                //    request.PublishDate = DateTime.Now;
+                //    request.ExpireDate = request.PublishDate.AddYears(1000);
+                //}
+                //else
+                //{
+                //    article.PublishDate = request.PublishDate;
+                //    article.ExpireDate = request.ExpireDate;
+                //}
+
                 var result = await _unitOfWork.ArticleRepository.AddAsync(article);
                 await _unitOfWork.CommitAsync();
 

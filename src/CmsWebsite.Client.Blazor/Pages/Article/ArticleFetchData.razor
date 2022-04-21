@@ -14,10 +14,14 @@
 }
 else
 {
-    <NavLink class="nav-link" href="article/create">
-        Thêm bài viết
-    </NavLink>
-    <RadzenDataGrid @ref="grid0" AllowFiltering="true" AllowColumnResize="true"
+    <div class="container-fluid">
+    <div class="row mb-3">
+        <div class="col">
+        <RadzenButton Click=@(arg => uriHelper.NavigateTo("article/create")) Text="Thêm bài viết" Icon="add_circle_outline" ButtonStyle="ButtonStyle.Secondary" />
+        </div>
+    </div>
+    <div class="">
+    @*<RadzenDataGrid @ref="grid0" AllowFiltering="true" AllowColumnResize="true"
                 FilterMode="FilterMode.Simple" AllowSorting="true" PageSize="10"
                 AllowPaging="true" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive"
                 ShowPagingSummary="true"
@@ -61,7 +65,9 @@ else
             </RadzenDataGridColumn>
 
         </Columns>
-    </RadzenDataGrid>
+    </RadzenDataGrid>*@
+    </div>
+    </div>
 }
 
 

@@ -6,6 +6,7 @@
 @using CmsWebsite.Share.Models.Article
 @using CmsWebsite.Share.Models.ArticleCategory
 @using CmsWebsite.Share.Models.Category
+@using CmsWebsite.Share.Method
 
 @using System.Text.Json
 @using System.Net.Http.Headers
@@ -21,109 +22,144 @@
 @inject AuthenticationStateProvider AuthenticationStateProvider
 
 
-<h3>Create Article</h3>
 @*
     TItem: truyền 1 class, đối tượng request để hiển thị dữ liệu
     Data: truyền 1 biến object để bind dữ liệu
     Submit: truyền 1 function
 *@
-
-<RadzenTemplateForm TItem="ArticleCreateRequest" Data="@article" Submit=@CreateArticle>
-    <div class="row">
-        <RadzenFieldset>
-
-            <div class="row">
-                <div class="col-md-3 align-items-center d-flex">
-                    <RadzenLabel Component="Title" Text="Title" />
-                </div>
-                <div class="col-md-9">
-                    <RadzenTextBox Name="Title" @bind-Value="@article.Title" />
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-md-3 align-items-center d-flex">
-                    <RadzenLabel Component="Description" Text="Description" />
-                </div>
-                <div class="col-md-9">
-                    <RadzenTextBox Name="Description" @bind-Value="@article.Description" />
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-md-3 align-items-center d-flex">
-                    <RadzenLabel Component="SummaryArticle" Text="Summary Article" />
-                </div>
-                <div class="col-md-9">
-                    @*<RadzenHtmlEditor Name="SummaryArticle" @bind-Value=@article.SummaryArticle
-                        style="height: 500px; margin-bottom: 1rem;" UploadUrl=@(uploadPath)
-                        Change=@OnChange Paste=@OnPaste Execute=@OnExecute>
-                        </RadzenHtmlEditor>*@
-                </div>
-            </div>
-
-
-            <div class="row">
-                <div class="col-md-3 align-items-center d-flex">
-                    <RadzenLabel Component="KeyWords" Text="KeyWords" />
-                </div>
-                <div class="col-md-9">
-                    <RadzenTextBox Name="KeyWords" @bind-Value="@article.KeyWords" />
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-md-3 align-items-center d-flex">
-                    <RadzenLabel Component="SubHead" Text="SubHead" />
-                </div>
-                <div class="col-md-9">
-                    <RadzenTextBox Name="SubHead" @bind-Value="@article.SubHead" />
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-3 align-items-center d-flex">
-                    <RadzenLabel Component="Categories" Text="Categories" />
-                </div>
-                <div class="col-md-9">
-                    <RadzenDropDown AllowClear=true Name="Level" Data="@Categories" TextProperty="CategoryName" ValueProperty="CategoryId"
-                                    @bind-Value=@ac.CategoryID Placeholder="Select Category..." />
-
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-md-3 align-items-center d-flex">
-                    <RadzenLabel Component="PublishDate" Text="PublishDate" />
-                </div>
-                <div class="col-md-9">
-                    <RadzenDatePicker @bind-Value=@article.PublishDate TValue="DateTime" ShowTime="true" ShowSeconds="true"
-                                      HoursStep="1.5" MinutesStep="5" SecondsStep="10" DateFormat="MM/dd/yyyy HH:mm">
-                        <FooterTemplate>
-                            <RadzenButton Click=@OnTodayClick Text="Today" />
-                        </FooterTemplate>
-                    </RadzenDatePicker>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-3 align-items-center d-flex">
-                    <RadzenLabel Component="ImageFile" Text="ImageFile" />
-                </div>
-                <div class="col-md-9">
-                    <RadzenImage Path=@($"{ImgUrl}") Style="width: 300px; height: 300px; border: black solid 0.5px " />
-                    <InputFile OnChange="@HandleSelected" accept=".jpg, .jpeg, .png" />
-
-                </div>
-            </div>
-            <div class="row justify-content-center">
-                <div class="col-md-3  d-flex align-items-end justify-content-center">
-                    <RadzenButton ButtonType="ButtonType.Submit" Text="Save" />
-                    <RadzenButton ButtonStyle="ButtonStyle.Light" Style="display: inline-block; margin-left: 10px;" ButtonType="ButtonType.Button" Click=@Back Text="Back" />
-                </div>
-            </div>
-        </RadzenFieldset>
+<div class="container-fluid">
+    <div class="row text-center"
+        <h2>Tạo Bài Viết</h2>
     </div>
-</RadzenTemplateForm>
+    <div class="row"
+        <RadzenTemplateForm TItem="ArticleCreateRequest" Data="@article" Submit=@CreateArticle>
+            <DataAnnotationsValidator/>
+            <ValidationSummary/>
+            <div class="row">
+                <div class="col-md-6">
+                            <div class="row my-3">
+                                <div class="col-md-3 align-items-center d-flex">
+                                    <RadzenLabel Component="Title" Text="Tiêu đề: " />
+                                </div>
+                                <div class="col-md-9">
+                                    <RadzenTextBox Name="Title" @bind-Value="@article.Title" Placeholder="Nhập tiêu đề bài viết.."/>
+                                    <ValidationMessage For="@(() => article.Title)" />
+                                </div>
+                            </div>
+                            <div class="row my-3">
+                                <div class="col-md-3 align-items-center d-flex">
+                                    <RadzenLabel Component="SubHead" Text="Tiêu đề phụ: " />
+                                </div>
+                                <div class="col-md-9">
+                                    <RadzenTextBox Name="SubHead" @bind-Value="@article.SubHead" Placeholder="Tiêu đề phụ bài viết(SEO)..." />
 
+                                </div>
+                            </div>
+                            <div class="row my-3">
+                                <div class="col-md-3 align-items-center d-flex">
+                                    <RadzenLabel Component="KeyWords" Text="Từ khoá SEO" />
+                                </div>
+                                <div class="col-md-9">
+                                    <RadzenTextBox Name="KeyWords" @bind-Value="@article.KeyWords" Placeholder="Từ khoá SEO cho bài viết..." />
+
+                                </div>
+                            </div>
+                            <div class="row my-3">
+                                <div class="col-md-3 align-items-center d-flex">
+                                    <RadzenLabel Component="KeyWords" Text="Tác giả: " />
+                                </div>
+                                <div class="col-md-9">
+                                    <RadzenTextBox Name="KeyWords" @bind-Value="@article.Author" Placeholder="Tác giả bài viết..." />
+
+                                </div>
+                            </div>
+
+                </div>
+                <div class="col-md-6"
+                        <div class="row my-3">
+                            <div class="col-md-3 align-items-center d-flex">
+                                <RadzenLabel Component="Description" Text="Mô tả: " />
+                            </div>
+                            <div class="col-md-9">
+                                <RadzenTextBox Name="Description" @bind-Value="@article.Description" Placeholder="Tóm tắt bài viết" />
+                                <ValidationMessage For="@(() => article.Description)" />
+                            </div>
+                        </div>
+                        <div class="row justify-content-center my-3">
+                            <div class="col-md-3 align-items-center d-flex">
+                                <RadzenLabel Component="Categories" Text="Loại bài viết: " />
+                            </div>
+                            <div class="col-md-9">
+                                <RadzenDropDown AllowClear=true Name="Categories" Data="@Categories" TextProperty="CategoryName" ValueProperty="CategoryId"
+                                                @bind-Value=@ac.CategoryID Placeholder="Bài viết thuộc loại..." />
+
+                            </div>
+                        </div>
+                        <div class="row my-3">
+                            <div class="col-md-3 align-items-center d-flex">
+                                <RadzenLabel Component="PublishDate" Text="Chọn ngày xuất bản: " />
+                            </div>
+                            <div class="col-md-9">
+                                <RadzenDatePicker  @bind-Value=@article.PublishDate TValue="DateTime" ShowTime="true" ShowSeconds="true"
+                                                    HoursStep="1.5" MinutesStep="5" SecondsStep="10" DateFormat="MM/dd/yyyy HH:mm">
+                                    <FooterTemplate>
+                                        <RadzenButton Click=@OnTodayClick Text="Hôm nay" />
+                                    </FooterTemplate>
+                                </RadzenDatePicker>
+                            </div>
+                        </div
+                        <div class="row my-3">
+                            <div class="col-md-3 align-items-center d-flex">
+                                <RadzenLabel Component="PublishDate" Text="Chọn ngày xuất bản: " />
+                            </div>
+                            <div class="col-md-9">
+                                <RadzenDatePicker  @bind-Value=@article.ExpireDate TValue="DateTime" ShowTime="true" ShowSeconds="true"
+                                                    HoursStep="1.5" MinutesStep="5" SecondsStep="10" DateFormat="MM/dd/yyyy HH:mm">
+                                    <FooterTemplate>
+                                        <RadzenButton Click=@NextDay Text="Hôm sau" />
+                                        <RadzenButton Click=@NextWeek Text="Tuần sau" />
+                                        <RadzenButton Click=@NextMonth Text="Tháng sau" />
+
+                                    </FooterTemplate>
+                                </RadzenDatePicker>
+                            </div>
+                        </div
+                </div>
+            </div>
+                <div class="row my-3">
+                    <div class="col-md-3 align-items-center d-flex">
+                        <RadzenLabel Component="SummaryArticle" Text="Nội dung: " />
+                    </div>
+                    <div class="col-md-9">
+                        <RadzenHtmlEditor style="height: 400px; margin-bottom: 1rem;" Name="SummaryArticle" @bind-Value=@article.SummaryArticle
+                            UploadUrl="" Change=@OnChange Paste=@OnPaste Execute=@OnExecute/>
+                        <ValidationMessage For="@(() => article.SummaryArticle)" />
+                    @*<RadzenTextBox Name="SummaryArticle" @bind-Value="@article.SummaryArticle" Placeholder="Nội dung của bài viết.."/>*@
+
+                    </div>
+                </div>
+                <div class="row my-3">
+                    <div class="col-md-3 align-items-center d-flex">
+                        <RadzenLabel Component="ImageFile" Text="Ảnh đại diện bài viết: " />
+                    </div>
+                    <div class="col-md-9">
+                        <RadzenImage Path=@($"{ImgUrl}")  Style="width: 100%; height: 250px; border: black solid 0.5px " />
+                        <InputFile OnChange="@HandleSelected"/>
+                        <ValidationMessage For="@(() => article.ImageFile)" />
+
+                    </div>
+                </div>
+                <div class="row justify-content-center">
+                    <div class="col-md-3  d-flex align-items-end justify-content-center">
+                        <RadzenButton ButtonType="ButtonType.Submit" Text="Save" />
+                        <RadzenButton ButtonStyle="ButtonStyle.Light" Style="display: inline-block; margin-left: 10px;" ButtonType="ButtonType.Button" Click=@Back Text="Back" />
+                    </div>
+                </div>
+        </RadzenTemplateForm>
+    </div>
+    <RadzenButton ButtonType="ButtonType.Submit" Text="Debug" Click=@Show />
+
+</div>
 @code {
     private ArticleCreateRequest article = new ArticleCreateRequest()
         {
@@ -146,11 +182,13 @@
 
     protected override async Task OnInitializedAsync()
     {
-        article.UserId = await getUserId();
+        var userInfor = await getCurrentUser();
+        article.UserId = userInfor.Id;
+        article.Author = userInfor.FullName;
         Categories = await _categoryService.GetListCategory();
 
     }
-   
+
     async Task HandleSelected(InputFileChangeEventArgs e)
     {
         var imageFiles = e.GetMultipleFiles();
@@ -170,7 +208,7 @@
                         await _articleService.DeleteArticleImage(ImgUrl);
 
                     var response = await _articleService.UploadArticleImage(content);
-                    ImgUrl = response.loadPathFile;
+                    article.ImageFile = ImgUrl = response.loadPathFile;
                     //Console.WriteLine(JsonSerializer.Serialize(response, new JsonSerializerOptions() { WriteIndented = true }));
 
                     //kiểm tra file đã thay đổi hay chưa nếu thay đổi rồi thì save lại
@@ -183,11 +221,15 @@
             }
         }
     }
+    async void Show()
+    {
+        var userInfor = await getCurrentUser();
+        Console.WriteLine(JsonSerializer.Serialize(article, new JsonSerializerOptions() { WriteIndented = true }));
+        Console.WriteLine(JsonSerializer.Serialize(userInfor, new JsonSerializerOptions() { WriteIndented = true }));
 
+    }
     async Task CreateArticle()
     {
-        //Console.WriteLine(JsonSerializer.Serialize(article, new JsonSerializerOptions() { WriteIndented = true }));
-
         article.ImageFile = ImgUrl;
         //nếu file có sự thay đổi thì xoá file củ
         //sau khi lưu lần 1 file ban đầu đã bị xoá cần lưu lại giá trị file mới
@@ -211,35 +253,42 @@
         {
             ac.ArticleID = newArticle;
             var result = await _acService.CreateArticleCategory(ac);
-            if (result)
-            {
-                NotificationService.Notify(new NotificationMessage
-                    {
-                        Severity = NotificationSeverity.Success,
-                        Summary = "Thông báo sự kiện",
-                        Detail = "Thêm thành công",
-                        Duration = 4000,
-                    });
-                uriHelper.NavigateTo("/article");
-            }
-            else
-            {
-                Console.WriteLine(JsonSerializer.Serialize(result, new JsonSerializerOptions() { WriteIndented = true }));
-            }
+            NotificationService.Notify(new NotificationMessage
+                {
+                    Severity = NotificationSeverity.Success,
+                    Summary = "Thông báo sự kiện",
+                    Detail = "Thêm thành công",
+                    Duration = 4000,
+                });
+            uriHelper.NavigateTo("/article");
         }
-        else
-        {
-            Console.WriteLine(JsonSerializer.Serialize(article, new JsonSerializerOptions() { WriteIndented = true }));
-        }
+
     }
     void OnTodayClick()
     {
         article.PublishDate = DateTime.Now;
     }
-    async Task<string> getUserId()
+    void NextDay()
     {
-        var user = (await AuthenticationStateProvider.GetAuthenticationStateAsync()).User;
-        return user.FindFirst(u => u.Type.Contains("UserId"))?.Value;
+        article.ExpireDate = DateTime.Now.AddDays(1);
+    }
+    void NextWeek()
+    {
+        article.ExpireDate = DateTime.Now.AddDays(7);
+    }
+    void NextMonth()
+    {
+        article.ExpireDate = DateTime.Now.AddMonths(1);
+    }
+    async Task<CurrentUser> getCurrentUser()
+    {
+        var claimsPrincipal = (await AuthenticationStateProvider.GetAuthenticationStateAsync()).User;
+        CurrentUser user = new CurrentUser()
+            {
+                Id = claimsPrincipal.FindFirst(u => u.Type.Contains("UserId"))?.Value,
+                FullName = claimsPrincipal.FindFirst(u => u.Type.Contains("FullName"))?.Value,
+            };
+        return user;
     }
     void Back()
     {
@@ -251,5 +300,18 @@
         }
         uriHelper.NavigateTo("article");
     }
+    void OnPaste(HtmlEditorPasteEventArgs args)
+    {
+        //console.Log($"Paste: {args.Html}");
+    }
 
+    void OnChange(string html)
+    {
+        //console.Log($"Change: {html}");
+    }
+
+    void OnExecute(HtmlEditorExecuteEventArgs args)
+    {
+        //console.Log($"Execute: {args.CommandName}");
+    }
 }
