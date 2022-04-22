@@ -2,9 +2,9 @@
 @inject NavigationManager uriHelper
 <div class="row">
 
-    @if (Articles != null)
+    @if (listArticle != null)
     {
-        foreach (var item in Articles.Take(3))
+        foreach (var item in listArticle.Take(3))
         {
 
             <div class="col-md-4">
@@ -24,7 +24,7 @@
 @code {
 
     [Parameter]
-    public List<ArticleDTO>? Articles { get; set; }
+    public List<ArticleDTO>? listArticle { get; set; }
 
     protected void EditRow(long id) => uriHelper.NavigateTo($"chitietbaiviet/{id}");
 }

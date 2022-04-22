@@ -1,19 +1,45 @@
 ﻿@page "/"
-
-
+ 
+@inject NavigationManager navigationManager
+@inject IAuthService auth
+@inject IArticleService _client
+@using CmsWebsite.Client.Blazor.Services.Article
+@using CmsWebsite.Share.Models.Article
+@using CmsWebsite.Client.Blazor.Pages.Components;
 <PageTitle>Trang quản trị hệ thống</PageTitle>
 
 <AuthorizeView>
-    <Authorized> 
+    <Authorized>
         <p style="text-align:center">Xin chào @(context.User.Identity.Name), bạn đã vào trang quản trị hệ thống !</p>
     </Authorized>
- @*   <NotAuthorized>
-       Không có quyền truy cập
+    <NotAuthorized>
+        <TrangChu listArticle=@articles></TrangChu> @*THÔNG TIN CHÍNH*@
     </NotAuthorized>
     <Authorizing>
         <h1>Đang truyền dữ liệu ...</h1>
-    </Authorizing>*@
+    </Authorizing>
 </AuthorizeView>
 
 
+@functions {
 
+    int col = 10;
+
+    [CascadingParameter]
+    Task<AuthenticationState> AuthenticationState { get; set; }
+
+    protected List<ArticleDTO> articles { get; set; }
+    protected override async Task OnInitializedAsync()
+    {
+        articles = await _client.GetListArticle();
+    }
+
+    protected override async Task OnParametersSetAsync()
+    {
+        if (!(await AuthenticationState).User.Identity.IsAuthenticated)
+        {
+            col = 9;
+        }
+    }
+
+}

@@ -1,57 +1,105 @@
-﻿
-@using CmsWebsite.Client.Blazor.Services.Category
+﻿@using CmsWebsite.Client.Blazor.Services.Category
 @using CmsWebsite.Client.Blazor.Services.Article
+@using CmsWebsite.Share.Models.Category;
 @using CmsWebsite.Share.Models.Article
 @inject ICategoryService _clientCategory
 @inject IArticleService _clientArticle
+@inject NavigationManager uriHelper
+ 
 
 <RadzenCard Style="width: 100%;">
-    @if (Articless != null)
+    @if (listArticle != null)
     {
         <div class="row">
             <div class="col-md-8">
-                <RadzenImage Path=@Articless[0].ImageFile Style="width:100%;height:60%;" />
-                <label class="m-2" style="font-weight:700;font-size:22px">@Articless[0].Title</label>
-                <p class="wrapper-p mr-2">@Articless[0].Description</p>
+                <RadzenImage Path=@listArticle[0].ImageFile Style="width:100%;height:60%;" />
+                <label class="m-2" style="font-weight:700;font-size:22px">@listArticle[0].Title</label>
+                <p class="wrapper-p mr-2">@listArticle[0].Description</p>
             </div>
 
             <div class="col-md-4">
-                <RadzenImage Path=@Articless[1].ImageFile Style="width: 100%;" class="rounded"/>
-                <RadzenCard >
-                    <span class="wrapper-p">@Articless[1].Title</span>
-                    @for (var i = 2; i < Articless.Count; i++)
+                <RadzenImage Path=@listArticle[1].ImageFile Style="width: 100%;" class="rounded" />
+                <RadzenCard>
+                    <span class="wrapper-p">@listArticle[1].Title</span>
+                    @for (var i = 2; i < 5; i++) // LẤY 5 BÀI VIẾT TIẾP THEO
                     {
                         <hr />
-                        <span class="wrapper-p">@Articless[i].Title</span>
+                        <span class="wrapper-p">@listArticle[i].Title</span>
                     }
                 </RadzenCard>
             </div>
         </div>
     }
+
+</RadzenCard>
+
+
+
+<RadzenCard Style="width: 100%;">
+    @flag
    
+    @if(listArticleGetByAbbreviation != null)
+    {
+        <div class="row">
+            <div class="col-md-8">
+                <RadzenImage Path=@listArticleGetByAbbreviation[0].ImageFile Style="width:100%;height:60%;" />
+                <label class="m-2" style="font-weight:700;font-size:22px">@listArticleGetByAbbreviation[0].Title</label>
+            </div>
+
+            <div class="col-md-4">
+                @foreach (var item in listArticleGetByAbbreviation)
+                {
+                    <span @onclick="() => EditRow(item.ArticleID)">
+                        <img src="@item.ImageFile" class="rounded mr-2" style="width: 95px; height: 80px;">
+                        <p class="wrapper-p" style="font-size:13px">@item.Description</p>
+                    </span>
+                }
+
+            </div>
+        </div>
+    }
+    
+
 </RadzenCard>
 
 @code {
 
     [Parameter]
-    public string? Abbreviation { get; set; }
+    public List<ArticleDTO>? listArticle { get; set; }
 
+    public List<ArticleDTO>? listArticleGetByAbbreviation = null;
 
-    public List<ArticleDTO>? Articless { get; set; }
-
+    public int flag = 0;
 
     protected override async Task OnInitializedAsync()
     {
         try
-        {
+        { 
             var list = await _clientCategory.GetListCategory();
-            long categoryId = list.Where(i => i.Abbreviation == Abbreviation).FirstOrDefault().CategoryId;
-            Articless = await _clientArticle.GetListArticleCategoryByCategoryId(categoryId);
-
+            //ArticleGetByAbbreviation("0a858018-d08f-41a6-9e59-591b8bd9752e");
         }
         catch (Exception ex)
         {
 
         }
     }
+
+
+    public async void ArticleGetByAbbreviation(string Abbreviation)
+    {
+        try
+        {
+            var list = await _clientCategory.GetListCategory();
+            long categoryId = list.Where(i => i.Abbreviation == Abbreviation).FirstOrDefault().CategoryId;
+            listArticleGetByAbbreviation = await _clientArticle.GetListArticleCategoryByCategoryId(categoryId);
+        }
+        catch (Exception ex)
+        {
+             
+        }
+
+    }
+
+    protected void EditRow(long id) => uriHelper.NavigateTo($"chitietbaiviet/{id}");
+
 }

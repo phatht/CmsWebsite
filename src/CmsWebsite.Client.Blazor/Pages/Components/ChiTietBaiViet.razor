@@ -3,7 +3,6 @@
 @using CmsWebsite.Share.Models.Article
 @inject IArticleService _articleService
 @inherits LayoutComponentBase
-@layout ContentLayout
 
 @if (article != null)
 {
@@ -13,27 +12,29 @@
                 Tác giả: @article.Author
                 &nbsp;&nbsp;&nbsp
                 <RadzenIcon Icon="today" Style="color:#e35d5dd9" /> @article.CreatedDate.ToString("dd/MM/yyyy HH:mm")
-                &nbsp;&nbsp;&nbsp 
+                &nbsp;&nbsp;&nbsp
                 <button type="button" class="btn" style="font-size:14px"><RadzenIcon Icon="favorite_border" Style="color:blue" />Thích</button>
-                 &nbsp;&nbsp;&nbsp
+                &nbsp;&nbsp;&nbsp
                 <button type="button" class="btn" style="font-size:14px"><RadzenIcon Icon="share" />Chia sẽ Facebook</button>
             </p>
             <RadzenPanel Style="width: 100%;">
                 <HeaderTemplate>
                     <div class="col align-self-center">
                         <p style="text-transform: uppercase;font-size:30px">@(article.Title)</p>
+                        <hr style="border: none; background-color: rgba(0,0,0,.08); height: 1px; margin: 1rem 0;" />
+                        <b> @article.Description </b>
                     </div>
-                    <hr />
+
                 </HeaderTemplate>
                 <ChildContent>
-                    @article.Description
+                    @article.SummaryArticle
                 </ChildContent>
             </RadzenPanel>
         </div>
     </div>
 }
 
-
+    
 @code {
     [Parameter]
     public long articleId { set; get; }

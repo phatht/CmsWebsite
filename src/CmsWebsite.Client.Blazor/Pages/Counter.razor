@@ -1,5 +1,4 @@
 ﻿@page "/counter"
-@layout ContentLayout
 <PageTitle>Counter</PageTitle>
 
 <h1>Counter</h1>
@@ -7,10 +6,7 @@
 <p role="status">Current count: @currentCount</p>
 
 <button class="btn btn-primary" @onclick="IncrementCount">Click me</button>
-<video controls="controls" width="600px" height="500px">
-    <source src="uploads/2022/4/articles/Electric  - 5 Minute Countdown.mp4" />
-</video>
-
+ 
 @code {
     private int currentCount = 0;
 
