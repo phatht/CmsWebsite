@@ -79,3 +79,7 @@ a, .btn-link {
 h6 {
     color: #479cc8
 }
+
+div span {
+    cursor:pointer
+}
