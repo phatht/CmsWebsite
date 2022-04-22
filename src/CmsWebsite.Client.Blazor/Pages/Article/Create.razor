@@ -1,4 +1,6 @@
 ﻿@page "/article/create"
+@layout ContentLayout;
+
 @using CmsWebsite.Client.Blazor.Services.Article
 @using CmsWebsite.Client.Blazor.Services.Category
 @using CmsWebsite.Client.Blazor.Services.ArticleCategory
@@ -6,7 +8,6 @@
 @using CmsWebsite.Share.Models.Article
 @using CmsWebsite.Share.Models.ArticleCategory
 @using CmsWebsite.Share.Models.Category
-@using CmsWebsite.Share.Method
 
 @using System.Text.Json
 @using System.Net.Http.Headers
@@ -28,13 +29,13 @@
     Submit: truyền 1 function
 *@
 <div class="container-fluid">
-    <div class="row text-center"
+    <div class="row text-center">
         <h2>Tạo Bài Viết</h2>
     </div>
-    <div class="row"
+    <div class="row">
         <RadzenTemplateForm TItem="ArticleCreateRequest" Data="@article" Submit=@CreateArticle>
             <DataAnnotationsValidator/>
-            <ValidationSummary/>
+            @*<ValidationSummary/>*@
             <div class="row">
                 <div class="col-md-6">
                             <div class="row my-3">
@@ -75,7 +76,7 @@
                             </div>
 
                 </div>
-                <div class="col-md-6"
+                <div class="col-md-6">
                         <div class="row my-3">
                             <div class="col-md-3 align-items-center d-flex">
                                 <RadzenLabel Component="Description" Text="Mô tả: " />
@@ -107,23 +108,7 @@
                                     </FooterTemplate>
                                 </RadzenDatePicker>
                             </div>
-                        </div
-                        <div class="row my-3">
-                            <div class="col-md-3 align-items-center d-flex">
-                                <RadzenLabel Component="PublishDate" Text="Chọn ngày xuất bản: " />
-                            </div>
-                            <div class="col-md-9">
-                                <RadzenDatePicker  @bind-Value=@article.ExpireDate TValue="DateTime" ShowTime="true" ShowSeconds="true"
-                                                    HoursStep="1.5" MinutesStep="5" SecondsStep="10" DateFormat="MM/dd/yyyy HH:mm">
-                                    <FooterTemplate>
-                                        <RadzenButton Click=@NextDay Text="Hôm sau" />
-                                        <RadzenButton Click=@NextWeek Text="Tuần sau" />
-                                        <RadzenButton Click=@NextMonth Text="Tháng sau" />
-
-                                    </FooterTemplate>
-                                </RadzenDatePicker>
-                            </div>
-                        </div
+                        </div>
                 </div>
             </div>
                 <div class="row my-3">
@@ -268,18 +253,18 @@
     {
         article.PublishDate = DateTime.Now;
     }
-    void NextDay()
-    {
-        article.ExpireDate = DateTime.Now.AddDays(1);
-    }
-    void NextWeek()
-    {
-        article.ExpireDate = DateTime.Now.AddDays(7);
-    }
-    void NextMonth()
-    {
-        article.ExpireDate = DateTime.Now.AddMonths(1);
-    }
+    //void NextDay()
+    //{
+    //    article.ExpireDate = DateTime.Now.AddDays(1);
+    //}
+    //void NextWeek()
+    //{
+    //    article.ExpireDate = DateTime.Now.AddDays(7);
+    //}
+    //void NextMonth()
+    //{
+    //    article.ExpireDate = DateTime.Now.AddMonths(1);
+    //}
     async Task<CurrentUser> getCurrentUser()
     {
         var claimsPrincipal = (await AuthenticationStateProvider.GetAuthenticationStateAsync()).User;

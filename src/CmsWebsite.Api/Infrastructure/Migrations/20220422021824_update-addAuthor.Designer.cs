@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CmsWebsite.Api.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20220421085647_update-addAuthorAndNullAttribute")]
-    partial class updateaddAuthorAndNullAttribute
+    [Migration("20220422021824_update-addAuthor")]
+    partial class updateaddAuthor
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -102,9 +102,10 @@ namespace CmsWebsite.Api.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("ArticleID"), 1L, 1);
 
                     b.Property<string>("Author")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime?>("CreatedDate")
+                    b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime?>("DateDeleted")
@@ -122,21 +123,23 @@ namespace CmsWebsite.Api.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("KeyWords")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("LastModifiedDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("NumberOfViews")
+                    b.Property<int>("NumberOfViews")
                         .HasColumnType("int");
 
-                    b.Property<DateTime?>("PublishDate")
+                    b.Property<DateTime>("PublishDate")
                         .HasColumnType("datetime2");
 
                     b.Property<int>("Status")
                         .HasColumnType("int");
 
                     b.Property<string>("SubHead")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("SummaryArticle")
@@ -187,6 +190,7 @@ namespace CmsWebsite.Api.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("CategoryId"), 1L, 1);
 
                     b.Property<string>("Abbreviation")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("CategoryName")
@@ -203,10 +207,10 @@ namespace CmsWebsite.Api.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("Level")
+                    b.Property<int>("Level")
                         .HasColumnType("int");
 
-                    b.Property<long?>("ParentCategoryId")
+                    b.Property<long>("ParentCategoryId")
                         .HasColumnType("bigint");
 
                     b.Property<bool>("isDeleted")
