@@ -18,7 +18,7 @@
         public int NumberOfViews { get; set; }
         public bool isDeleted { get; set; }
         public DateTime? DateDeleted { get; set; }
-        //public string Author { get; set; }
+        public string Author { get; set; }
 
     }
 

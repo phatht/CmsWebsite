@@ -4,16 +4,45 @@
 @inject IArticleService _articleService
 @inherits LayoutComponentBase
 @layout ContentLayout
-@existingArticle.Description
+
+@if (article != null)
+{
+    <div class="container">
+        <div class="col align-self-center">
+            <p class="m-0 d-flex align-items-center">
+                Tác giả: @article.Author
+                &nbsp;&nbsp;&nbsp
+                <RadzenIcon Icon="today" Style="color:#e35d5dd9" /> @article.CreatedDate.ToString("dd/MM/yyyy HH:mm")
+                &nbsp;&nbsp;&nbsp 
+                <button type="button" class="btn" style="font-size:14px"><RadzenIcon Icon="favorite_border" Style="color:blue" />Thích</button>
+                 &nbsp;&nbsp;&nbsp
+                <button type="button" class="btn" style="font-size:14px"><RadzenIcon Icon="share" />Chia sẽ Facebook</button>
+            </p>
+            <RadzenPanel Style="width: 100%;">
+                <HeaderTemplate>
+                    <div class="col align-self-center">
+                        <p style="text-transform: uppercase;font-size:30px">@(article.Title)</p>
+                    </div>
+                    <hr />
+                </HeaderTemplate>
+                <ChildContent>
+                    @article.Description
+                </ChildContent>
+            </RadzenPanel>
+        </div>
+    </div>
+}
+
 
 @code {
     [Parameter]
     public long articleId { set; get; }
-    private ArticleDTO existingArticle { get; set; } = new ArticleDTO();
+
+    private ArticleDTO article { get; set; } = new ArticleDTO();
 
     protected async override Task OnParametersSetAsync()
     {
-        existingArticle = await _articleService.GetArticle(articleId);
-         
+        article = await _articleService.GetArticle(articleId);
+
     }
 }
