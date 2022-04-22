@@ -21,24 +21,22 @@ else
         </div>
         <div class="">
             <RadzenDataGrid @ref="grid0" AllowFiltering="true" AllowColumnResize="true"
-                        FilterMode="FilterMode.Simple" AllowSorting="true" PageSize="10"
+                        FilterMode="FilterMode.Simple" AllowSorting="true" PageSize="7"
                         AllowPaging="true" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive"
                         ShowPagingSummary="true"
                         Data="@Categories" TItem="CategoryDTO" LogicalFilterOperator="LogicalFilterOperator.Or">
                 <Columns>
-                    <RadzenDataGridColumn TItem="CategoryDTO" Title="Icon" Width="80px">
+                    <RadzenDataGridColumn TItem="CategoryDTO" Title="Ảnh Icon" Width="80px">
                         <Template Context="data">
-                            <RadzenImage Path="@data.IconFile" style="width: 40px; height: 40px; border-radius: 8px;" />
+                            <RadzenImage Path="@data.IconFile" style="width: 70px; height: 70px; border-radius: 8px;" />
                         </Template>
                     </RadzenDataGridColumn>
                     <RadzenDataGridColumn TItem="CategoryDTO" Property="CategoryName"
-                                      Title="Name" Width="140px" />
+                                      Title="Tên loại bài viết" Width="140px" />
                     <RadzenDataGridColumn TItem="CategoryDTO" Property="ParentCategoryId"
-                                      Title="Parent" Width="140px" />
-                    <RadzenDataGridColumn TItem="CategoryDTO" Property="Abbreviation"
-                                      Title="Abbreviation" Width="140px" />
+                                      Title="Thuộc loại" Width="140px" />
                     <RadzenDataGridColumn TItem="CategoryDTO" Property="Level"
-                                      Title="Level" Width="140px" />
+                                      Title="Cấp độ hiển thị" Width="140px" />
                     <RadzenDataGridColumn Width="140px" Filterable="false" TItem="CategoryDTO" Property="isDeleted"
                                       Title="Tạm ẩn">
                         <Template Context="data">

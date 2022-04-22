@@ -8,7 +8,6 @@
 @inject NavigationManager uriHelper
 @inject ICategoryService _categoryService
 @inject NotificationService NotificationService
-<h3>Create category</h3>
 
 @*
     TItem: truyền 1 class, đối tượng request để hiển thị dữ liệu
@@ -16,61 +15,58 @@
     Submit: truyền 1 function
 *@
 <div class="container-fluid">
-    <div class="row text-center">
-        <h2>Tạo Loại Bài Viết</h2>
-    </div>
     <div class="row">
         <RadzenTemplateForm TItem="CategoryCreateRequest" Data="@category" Submit=@Createcategory>
             <DataAnnotationsValidator />
             <div class="row">
-                <RadzenFieldset>
-                    <div class="row my-3">
-                        <div class="col-md-3 align-items-center d-flex">
-                            <RadzenLabel Component="CategoryName" Text="Tên loại bài viết: " />
-                        </div>
-                        <div class="col-md-9">
-                            <RadzenTextBox Placeholder="Nhập loại bài viết" Name="CategoryName" @bind-Value="@category.CategoryName" />
-                            <ValidationMessage For="@(() => category.CategoryName)" />
+                <div class="row my-3">
+                    <div class="col-md-3 align-items-center d-flex">
+                        <RadzenLabel Component="CategoryName" Text="Tên loại bài viết: " />
+                    </div>
+                    <div class="col-md-9">
+                        <RadzenTextBox Placeholder="Nhập loại bài viết" Name="CategoryName" @bind-Value="@category.CategoryName"
+                                       Style="width:100%;" />
+                        <ValidationMessage For="@(() => category.CategoryName)" />
 
-                        </div>
                     </div>
-                    <div class="row my-3">
-                        <div class="col-md-3 align-items-center d-flex">
-                            <RadzenLabel Component="ParentCategoryId" Text="Thuộc loại bài viết" />
-                        </div>
-                        <div class="col-md-9">
-                            <RadzenDropDown Name="ParentCategoryId" AllowClear="true" Data="@categories" TextProperty="CategoryName" ValueProperty="CategoryId"
-                                            @bind-Value=@category.ParentCategoryId Placeholder="Chọn loại bài viết.." />
+                </div>
+                <div class="row my-3">
+                    <div class="col-md-3 align-items-center d-flex">
+                        <RadzenLabel Component="ParentCategoryId" Text="Thuộc loại bài viết" />
+                    </div>
+                    <div class="col-md-9">
+                        <RadzenDropDown Name="ParentCategoryId" AllowClear="true" Style="width:100%;"
+                                        Data="@categories" TextProperty="CategoryName" ValueProperty="CategoryId"
+                                        @bind-Value=@category.ParentCategoryId Placeholder="Chọn loại bài viết.." />
 
-                        </div>
                     </div>
-                    @*<div class="row">
-                        <div class="col-md-3 align-items-center d-flex">
-                        <RadzenLabel Component="Level" Text="Level" />
-                        </div>
-                        <div class="col-md-9">
-                        <RadzenDropDown Name="Level" Data="@MyLevels" TextProperty="EnumName" ValueProperty="EnumValue"
-                        @bind-Value=@category.Level Placeholder="Select Level..." />
+                </div>
+                @*<div class="row">
+                    <div class="col-md-3 align-items-center d-flex">
+                    <RadzenLabel Component="Level" Text="Level" />
+                    </div>
+                    <div class="col-md-9">
+                    <RadzenDropDown Name="Level" Data="@MyLevels" TextProperty="EnumName" ValueProperty="EnumValue"
+                    @bind-Value=@category.Level Placeholder="Select Level..." />
 
-                        </div>
-                        </div>*@
-                    <div class="row my-3">
-                        <div class="col-md-3 align-items-center d-flex">
-                            <RadzenLabel Component="ImageFile" Text="Ảnh đại diện loại bài viết" />
-                        </div>
-                        <div class="col-md-9">
-                            <RadzenImage Path=@($"{ImgUrl}") Style="width: 300px; height: 300px; border: black solid 0.5px " />
-                            <InputFile OnChange="@HandleSelected" accept=".jpg, .jpeg, .png" />
-                            <ValidationMessage For="@(() => category.IconFile)" />
-                        </div>
                     </div>
-                    <div class="row my-3 justify-content-center">
-                        <div class="col-md-3  d-flex align-items-end justify-content-center">
-                            <RadzenButton ButtonType="ButtonType.Submit" Text="Save" />
-                            <RadzenButton ButtonStyle="ButtonStyle.Light" Style="display: inline-block; margin-left: 10px;" ButtonType="ButtonType.Button" Click=@Back Text="Back" />
-                        </div>
+                    </div>*@
+                <div class="row my-3">
+                    <div class="col-md-3 align-items-center d-flex">
+                        <RadzenLabel Component="IconFile" Text="Icon" />
                     </div>
-                </RadzenFieldset>
+                    <div class="col-md-9">
+                        <RadzenImage Path=@($"{ImgUrl}") Style="width: 100%; height: 300px; border: black solid 0.5px " />
+                        <InputFile OnChange="@HandleSelected" accept=".jpg, .jpeg, .png" />
+                        <ValidationMessage For="@(() => category.IconFile)" />
+                    </div>
+                </div>
+                <div class="row my-3 justify-content-center">
+                    <div class="col-md-3  d-flex align-items-end justify-content-center">
+                        <RadzenButton ButtonType="ButtonType.Submit" Text="Lưu" />
+                        <RadzenButton ButtonStyle="ButtonStyle.Light" Style="display: inline-block; margin-left: 10px;" ButtonType="ButtonType.Button" Click=@Back Text="Trở về" />
+                    </div>
+                </div>
             </div>
         </RadzenTemplateForm>
     </div>

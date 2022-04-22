@@ -15,30 +15,19 @@
 @inject NavigationManager uriHelper
 @inject NotificationService NotificationService
 <div class="container-fluid">
-    <div class="row text-center">
-        <h2>Sửa Bài Viết</h2>
-    </div>
     <div class="row">
-        <RadzenTemplateForm TItem="ArticleUpdateRequest" Data="@existingArticle" Submit=@UpdateArticle>
+        <RadzenTemplateForm TItem="ArticleUpdateRequest" Data="@existingArticle" Submit=@Update>
             <DataAnnotationsValidator />
             @*<ValidationSummary/>*@
             <div class="row">
                 <div class="col-md-6">
                     <div class="row my-3">
                         <div class="col-md-3 align-items-center d-flex">
-                            <RadzenLabel Component="Title" Text="Tiêu đề: " />
+                            <RadzenLabel Component="KeyWords" Text="Tác giả: " />
                         </div>
                         <div class="col-md-9">
-                            <RadzenTextBox Name="Title" @bind-Value="@existingArticle.Title" Placeholder="Nhập tiêu đề bài viết.." />
-                            <ValidationMessage For="@(() => existingArticle.Title)" />
-                        </div>
-                    </div>
-                    <div class="row my-3">
-                        <div class="col-md-3 align-items-center d-flex">
-                            <RadzenLabel Component="SubHead" Text="Tiêu đề phụ: " />
-                        </div>
-                        <div class="col-md-9">
-                            <RadzenTextBox Name="SubHead" @bind-Value="@existingArticle.SubHead" Placeholder="Tiêu đề phụ bài viết(SEO)..." />
+                            <RadzenTextBox Name="KeyWords" @bind-Value="@existingArticle.Author" Placeholder="Tác giả bài viết..."
+                                           Style="width:100%;" />
 
                         </div>
                     </div>
@@ -47,19 +36,35 @@
                             <RadzenLabel Component="KeyWords" Text="Từ khoá SEO" />
                         </div>
                         <div class="col-md-9">
-                            <RadzenTextBox Name="KeyWords" @bind-Value="@existingArticle.KeyWords" Placeholder="Từ khoá SEO cho bài viết..." />
+                            <RadzenTextBox Name="KeyWords" @bind-Value="@existingArticle.KeyWords" Placeholder="Từ khoá SEO cho bài viết..."
+                                           Style="width:100%;" />
 
                         </div>
                     </div>
                     <div class="row my-3">
                         <div class="col-md-3 align-items-center d-flex">
-                            <RadzenLabel Component="KeyWords" Text="Tác giả: " />
+                            <RadzenLabel Component="Title" Text="Tiêu đề: " />
                         </div>
                         <div class="col-md-9">
-                            <RadzenTextBox Name="KeyWords" @bind-Value="@existingArticle.Author" Placeholder="Tác giả bài viết..." />
+                            @*<RadzenTextBox Name="Title" @bind-Value="@article.Title" />*@
+                            <RadzenTextArea Rows="5" @bind-Value="@existingArticle.Title" MaxLength="500" Placeholder="Nhập tiêu đề bài viết.."
+                                            Style="width:100%;" />
+                            <ValidationMessage For="@(() => existingArticle.Title)" />
+                        </div>
+                    </div>
+                    <div class="row my-3">
+                        <div class="col-md-3 align-items-center d-flex">
+                            <RadzenLabel Component="SubHead" Text="Tiêu đề phụ: " />
+                        </div>
+                        <div class="col-md-9">
+                            @*<RadzenTextBox Name="SubHead" @bind-Value="@article.SubHead" Placeholder="Tiêu đề phụ bài viết(SEO)..." Style="width:100%;" />*@
+                            <RadzenTextArea Rows="2" @bind-Value="@existingArticle.SubHead" MaxLength="500" Placeholder="Tiêu đề phụ bài viết(SEO)..."
+                                            Style="width:100%;" />
 
                         </div>
                     </div>
+
+
 
                 </div>
                 <div class="col-md-6">
@@ -68,7 +73,10 @@
                             <RadzenLabel Component="Description" Text="Mô tả: " />
                         </div>
                         <div class="col-md-9">
-                            <RadzenTextBox Name="Description" @bind-Value="@existingArticle.Description" Placeholder="Tóm tắt bài viết" />
+                            @*<RadzenTextBox Name="Description" @bind-Value="@article.Description"  />*@
+                            <RadzenTextArea Rows="5" @bind-Value="@existingArticle.Description" MaxLength="500" Placeholder="Tóm tắt bài viết"
+                                            Style="width:100%;" />
+
                             <ValidationMessage For="@(() => existingArticle.Description)" />
                         </div>
                     </div>
@@ -78,7 +86,8 @@
                         </div>
                         <div class="col-md-9">
                             <RadzenDropDown AllowClear=true Name="Categories" Data="@Categories" TextProperty="CategoryName" ValueProperty="CategoryId"
-                                            @bind-Value=@ac.CategoryID Placeholder="Bài viết thuộc loại..." />
+                                            @bind-Value=@ac.CategoryID Placeholder="Bài viết thuộc loại..."
+                                            Style="width:100%;" />
 
                         </div>
                     </div>
@@ -88,7 +97,7 @@
                         </div>
                         <div class="col-md-9">
                             <RadzenDatePicker @bind-Value=@existingArticle.PublishDate TValue="DateTime" ShowTime="true" ShowSeconds="true"
-                                              HoursStep="1.5" MinutesStep="5" SecondsStep="10" DateFormat="MM/dd/yyyy HH:mm">
+                                              HoursStep="1.5" MinutesStep="5" SecondsStep="10" DateFormat="MM/dd/yyyy HH:mm" Style="width:100%;">
                                 <FooterTemplate>
                                     <RadzenButton Click=@OnTodayClick Text="Hôm nay" />
                                 </FooterTemplate>
@@ -98,37 +107,37 @@
                 </div>
             </div>
             <div class="row my-3">
-                <div class="col-md-3 align-items-center d-flex">
+                <div class="col-md-2 align-items-center d-flex">
                     <RadzenLabel Component="SummaryArticle" Text="Nội dung: " />
                 </div>
-                <div class="col-md-9">
-                    <RadzenTextBox Name="Description" @bind-Value="@existingArticle.SummaryArticle" Placeholder="Tóm tắt bài viết" />
+                <div class="col-md-10">
+                    <RadzenHtmlEditor Style="height: 400px; margin-bottom: 1rem; width:100%;"
+                                      Name="SummaryArticle" @bind-Value=@existingArticle.SummaryArticle
+                                      UploadUrl="" />
                     <ValidationMessage For="@(() => existingArticle.SummaryArticle)" />
-                    <ValidationMessage For="@(() => existingArticle.SummaryArticle)" />
-                    @*<RadzenTextBox Name="SummaryArticle" @bind-Value="@existingArticle.SummaryArticle" Placeholder="Nội dung của bài viết.."/>*@
+                    @*<RadzenTextBox Name="SummaryArticle" @bind-Value="@article.SummaryArticle" Placeholder="Nội dung của bài viết.."/>*@
 
                 </div>
             </div>
             <div class="row my-3">
-                <div class="col-md-3 align-items-center d-flex">
+                <div class="col-md-2 align-items-center d-flex">
                     <RadzenLabel Component="ImageFile" Text="Ảnh đại diện bài viết: " />
                 </div>
-                <div class="col-md-9">
+                <div class="col-md-10">
                     <RadzenImage Path=@($"{ImgUrl}") Style="width: 100%; height: 250px; border: black solid 0.5px " />
-                    <InputFile OnChange="@HandleSelected" accept=".jpg, .jpeg, .png"/>
+                    <InputFile OnChange="@HandleSelected" accept=".jpg, .jpeg, .png" />
                     <ValidationMessage For="@(() => existingArticle.ImageFile)" />
 
                 </div>
             </div>
             <div class="row justify-content-center">
                 <div class="col-md-3  d-flex align-items-end justify-content-center">
-                    <RadzenButton ButtonType="ButtonType.Submit" Text="Save" />
-                    <RadzenButton ButtonStyle="ButtonStyle.Light" Style="display: inline-block; margin-left: 10px;" ButtonType="ButtonType.Button" Click=@Back Text="Back" />
+                    <RadzenButton ButtonType="ButtonType.Submit" Text="Lưu" />
+                    <RadzenButton ButtonStyle="ButtonStyle.Light" Style="display: inline-block; margin-left: 10px;" ButtonType="ButtonType.Button" Click=@Back Text="Trở về" />
                 </div>
             </div>
         </RadzenTemplateForm>
     </div>
-
 </div>
 
 @code {
@@ -189,7 +198,7 @@
         }
     }
 
-    async Task UpdateArticle()
+    async Task Update()
     {
         existingArticle.ImageFile = ImgUrl;
         //nếu file có sự thay đổi thì xoá file củ
