@@ -44,9 +44,9 @@ namespace CmsWebsite.Client.Blazor.Services.Article
             return result;
         }
 
-        public async Task<bool> UpdateArticle(long id, ArticleDTO article)
+        public async Task<bool> UpdateArticle(long id, ArticleUpdateRequest request)
         {
-            var result = await _httpClient.PutAsJsonAsync($"api/article/{id}", article);
+            var result = await _httpClient.PutAsJsonAsync($"api/article/{id}", request);
             return result.IsSuccessStatusCode;
         }
 
@@ -66,6 +66,12 @@ namespace CmsWebsite.Client.Blazor.Services.Article
         public async Task<List<ArticleDTO>> GetListArticleCategoryByCategoryId(long categoryId)
         {
             var result = await _httpClient.GetFromJsonAsync<List<ArticleDTO>>($"api/article/GetArticleByCategoryId/{categoryId}");
+            return result;
+        }
+
+        public async Task<ArticleUpdateRequest> GetUpdateArticle(long id)
+        {
+            var result = await _httpClient.GetFromJsonAsync<ArticleUpdateRequest>($"api/article/{id}");
             return result;
         }
     }

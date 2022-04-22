@@ -15,7 +15,7 @@ namespace CmsWebsite.Api.Domain.Service
 
         Task<Article> DeleteArticle(long id);
 
-        Task<Article> PutArticleAsync(long id, ArticleDTO article);
+        Task<Article> PutArticleAsync(long id, ArticleUpdateRequest request);
 
         Task<Article> SoftDeleteArticle(long id, bool isDeleted);
 
@@ -78,7 +78,7 @@ namespace CmsWebsite.Api.Domain.Service
             }
         }
 
-        public async Task<Article> PutArticleAsync(long id, ArticleDTO article)
+        public async Task<Article> PutArticleAsync(long id, ArticleUpdateRequest request)
         {
             var existingArticle = await GetArticleAsync(id);
 
@@ -87,12 +87,14 @@ namespace CmsWebsite.Api.Domain.Service
                 throw new NotFoundException($"Article {id} is not found.");
             }
 
-            existingArticle.Description = article.Description;
-            existingArticle.Title = article.Title;
-            existingArticle.ImageFile = article.ImageFile;
-            existingArticle.KeyWords = article.KeyWords;
-            existingArticle.SubHead = article.SubHead;
-            existingArticle.SummaryArticle = article.SummaryArticle;
+            existingArticle.Description = request.Description;
+            existingArticle.Title = request.Title;
+            existingArticle.ImageFile = request.ImageFile;
+            existingArticle.KeyWords = request.KeyWords;
+            existingArticle.SubHead = request.SubHead;
+            existingArticle.SummaryArticle = request.SummaryArticle;
+            existingArticle.LastModifiedDate = DateTime.Now;
+            existingArticle.Author = request.Author;
             try
             {
                 _unitOfWork.ArticleRepository.Update(existingArticle);

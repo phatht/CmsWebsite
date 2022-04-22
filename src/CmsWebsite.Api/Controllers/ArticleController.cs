@@ -38,7 +38,7 @@ namespace CmsWebsite.Api.Controllers
 
         // PUT: api/article/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutArticle(long id, ArticleDTO article)
+        public async Task<IActionResult> PutArticle(long id, ArticleUpdateRequest article)
         {
             if (id != article.ArticleID)
             {

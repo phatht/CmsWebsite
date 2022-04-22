@@ -15,71 +15,78 @@
     Data: truyền 1 biến object để bind dữ liệu
     Submit: truyền 1 function
 *@
-
-<RadzenTemplateForm TItem="CategoryCreateRequest" Data="@category" Submit=@Createcategory>
-    <div class="row">
-        <RadzenFieldset>
-            <div class="row">
-                <div class="col-md-3 align-items-center d-flex">
-                    <RadzenLabel Component="CategoryName" Text="Category Name" />
-                </div>
-                <div class="col-md-9">
-                    <RadzenTextBox Name="CategoryName" @bind-Value="@category.CategoryName" />
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-3 align-items-center d-flex">
-                    <RadzenLabel Component="ParentCategoryId" Text="Parent Category" />
-                </div>
-                <div class="col-md-9">
-                    <RadzenDropDown Name="ParentCategoryId" AllowClear="true" Data="@categories" TextProperty="CategoryName" ValueProperty="CategoryId"
-                                    @bind-Value=@category.ParentCategoryId Placeholder="Select Parent..." />
-
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-3 align-items-center d-flex">
-                    <RadzenLabel Component="Level" Text="Level" />
-                </div>
-                <div class="col-md-9">
-                    <RadzenDropDown Name="Level" Data="@MyLevels" TextProperty="EnumName" ValueProperty="EnumValue"
-                                    @bind-Value=@category.Level Placeholder="Select Level..." />
-
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-3 align-items-center d-flex">
-                    <RadzenLabel Component="ImageFile" Text="ImageFile" />
-                </div>
-                <div class="col-md-9">
-                    <RadzenImage Path=@($"{ImgUrl}") Style="width: 300px; height: 300px; border: black solid 0.5px " />
-                    <InputFile OnChange="@HandleSelected" accept=".jpg, .jpeg, .png" />
-
-                </div>
-            </div>
-            <div class="row justify-content-center">
-                <div class="col-md-3  d-flex align-items-end justify-content-center">
-                    <RadzenButton ButtonType="ButtonType.Submit" Text="Save" />
-                    <RadzenButton ButtonStyle="ButtonStyle.Light" Style="display: inline-block; margin-left: 10px;" ButtonType="ButtonType.Button" Click=@Back Text="Back" />
-                </div>
-            </div>
-        </RadzenFieldset>
+<div class="container-fluid">
+    <div class="row text-center">
+        <h2>Tạo Loại Bài Viết</h2>
     </div>
-</RadzenTemplateForm>
+    <div class="row">
+        <RadzenTemplateForm TItem="CategoryCreateRequest" Data="@category" Submit=@Createcategory>
+            <DataAnnotationsValidator />
+            <div class="row">
+                <RadzenFieldset>
+                    <div class="row my-3">
+                        <div class="col-md-3 align-items-center d-flex">
+                            <RadzenLabel Component="CategoryName" Text="Tên loại bài viết: " />
+                        </div>
+                        <div class="col-md-9">
+                            <RadzenTextBox Placeholder="Nhập loại bài viết" Name="CategoryName" @bind-Value="@category.CategoryName" />
+                            <ValidationMessage For="@(() => category.CategoryName)" />
+
+                        </div>
+                    </div>
+                    <div class="row my-3">
+                        <div class="col-md-3 align-items-center d-flex">
+                            <RadzenLabel Component="ParentCategoryId" Text="Thuộc loại bài viết" />
+                        </div>
+                        <div class="col-md-9">
+                            <RadzenDropDown Name="ParentCategoryId" AllowClear="true" Data="@categories" TextProperty="CategoryName" ValueProperty="CategoryId"
+                                            @bind-Value=@category.ParentCategoryId Placeholder="Chọn loại bài viết.." />
+
+                        </div>
+                    </div>
+                    @*<div class="row">
+                        <div class="col-md-3 align-items-center d-flex">
+                        <RadzenLabel Component="Level" Text="Level" />
+                        </div>
+                        <div class="col-md-9">
+                        <RadzenDropDown Name="Level" Data="@MyLevels" TextProperty="EnumName" ValueProperty="EnumValue"
+                        @bind-Value=@category.Level Placeholder="Select Level..." />
+
+                        </div>
+                        </div>*@
+                    <div class="row my-3">
+                        <div class="col-md-3 align-items-center d-flex">
+                            <RadzenLabel Component="ImageFile" Text="Ảnh đại diện loại bài viết" />
+                        </div>
+                        <div class="col-md-9">
+                            <RadzenImage Path=@($"{ImgUrl}") Style="width: 300px; height: 300px; border: black solid 0.5px " />
+                            <InputFile OnChange="@HandleSelected" accept=".jpg, .jpeg, .png" />
+                            <ValidationMessage For="@(() => category.IconFile)" />
+                        </div>
+                    </div>
+                    <div class="row my-3 justify-content-center">
+                        <div class="col-md-3  d-flex align-items-end justify-content-center">
+                            <RadzenButton ButtonType="ButtonType.Submit" Text="Save" />
+                            <RadzenButton ButtonStyle="ButtonStyle.Light" Style="display: inline-block; margin-left: 10px;" ButtonType="ButtonType.Button" Click=@Back Text="Back" />
+                        </div>
+                    </div>
+                </RadzenFieldset>
+            </div>
+        </RadzenTemplateForm>
+    </div>
+</div>
+
 
 @code {
     //[Inject] private IcategoryService _client { get; set; }
-    public class EnumLevels
-    {
-        public Level EnumValue { get; set; }
-        public string EnumName { get; set; }
-    }
-    List<EnumLevels> MyLevels { get; set; } = new List<EnumLevels>();
+    //public class EnumLevels
+    //{
+    //    public Level EnumValue { get; set; }
+    //    public string EnumName { get; set; }
+    //}
+    //List<EnumLevels> MyLevels { get; set; } = new List<EnumLevels>();
 
-    private CategoryCreateRequest category = new CategoryCreateRequest()
-        {
-            Level = 0
-        };
+    private CategoryCreateRequest category = new CategoryCreateRequest();
     private List<CategoryDTO> categories;
 
     //xử lí ảnh
@@ -93,11 +100,12 @@
     protected override async Task OnInitializedAsync()
     {
         categories = await _categoryService.GetListCategory();
+        ImgUrl = "/img/empty.jpg";
         // load the list
-        foreach (Level item in Enum.GetValues(typeof(Level)))
-        {
-            MyLevels.Add(new EnumLevels { EnumName = item.ToString(), EnumValue = item });
-        }
+        //foreach (Level item in Enum.GetValues(typeof(Level)))
+        //{
+        //    MyLevels.Add(new EnumLevels { EnumName = item.ToString(), EnumValue = item });
+        //}
     }
 
     async Task HandleSelected(InputFileChangeEventArgs e)
@@ -119,7 +127,7 @@
                         await _categoryService.DeleteCategoryImage(ImgUrl);
 
                     var response = await _categoryService.UploadCategoryImage(content);
-                    ImgUrl = response.loadPathFile;
+                    category.IconFile = ImgUrl = response.loadPathFile;
 
                     //kiểm tra file đã thay đổi hay chưa nếu thay đổi rồi thì save lại
                     stateChanged = true;

@@ -129,7 +129,7 @@
                     </div>
                     <div class="col-md-9">
                         <RadzenImage Path=@($"{ImgUrl}")  Style="width: 100%; height: 250px; border: black solid 0.5px " />
-                        <InputFile OnChange="@HandleSelected"/>
+                        <InputFile OnChange="@HandleSelected" accept=".jpg, .jpeg, .png"/>
                         <ValidationMessage For="@(() => article.ImageFile)" />
 
                     </div>
@@ -148,7 +148,7 @@
 @code {
     private ArticleCreateRequest article = new ArticleCreateRequest()
         {
-            PublishDate = DateTime.Now.AddHours(1)
+            PublishDate = DateTime.Now,
         };
 
     private ArticleCategoryRequest ac = new ArticleCategoryRequest();
@@ -171,6 +171,7 @@
         article.UserId = userInfor.Id;
         article.Author = userInfor.FullName;
         Categories = await _categoryService.GetListCategory();
+        ImgUrl = "/img/empty.jpg";
 
     }
 

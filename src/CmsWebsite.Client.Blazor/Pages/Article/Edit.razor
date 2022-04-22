@@ -1,4 +1,5 @@
 ﻿@page "/article/edit/{articleId:long}"
+@layout ContentLayout
 @using CmsWebsite.Client.Blazor.Services.Article
 @using CmsWebsite.Client.Blazor.Services.ArticleCategory
 @using CmsWebsite.Client.Blazor.Services.Category
@@ -13,89 +14,110 @@
 @inject IArticleCategoryService _acService
 @inject NavigationManager uriHelper
 @inject NotificationService NotificationService
-<h3>Edit Article</h3>
-
-<RadzenTemplateForm TItem="ArticleDTO" Data="@existingArticle" Submit=@UpdateArticle>
-
-
+<div class="container-fluid">
+    <div class="row text-center">
+        <h2>Sửa Bài Viết</h2>
+    </div>
     <div class="row">
-        <RadzenFieldset>
+        <RadzenTemplateForm TItem="ArticleUpdateRequest" Data="@existingArticle" Submit=@UpdateArticle>
+            <DataAnnotationsValidator />
+            @*<ValidationSummary/>*@
             <div class="row">
-                <div class="col-md-3 align-items-center d-flex">
-                    <RadzenLabel Component="Title" Text="Title" />
-                </div>
-                <div class="col-md-9">
-                    <RadzenTextBox Name="Title" @bind-Value="@existingArticle.Title" />
-                </div>
-            </div>
+                <div class="col-md-6">
+                    <div class="row my-3">
+                        <div class="col-md-3 align-items-center d-flex">
+                            <RadzenLabel Component="Title" Text="Tiêu đề: " />
+                        </div>
+                        <div class="col-md-9">
+                            <RadzenTextBox Name="Title" @bind-Value="@existingArticle.Title" Placeholder="Nhập tiêu đề bài viết.." />
+                            <ValidationMessage For="@(() => existingArticle.Title)" />
+                        </div>
+                    </div>
+                    <div class="row my-3">
+                        <div class="col-md-3 align-items-center d-flex">
+                            <RadzenLabel Component="SubHead" Text="Tiêu đề phụ: " />
+                        </div>
+                        <div class="col-md-9">
+                            <RadzenTextBox Name="SubHead" @bind-Value="@existingArticle.SubHead" Placeholder="Tiêu đề phụ bài viết(SEO)..." />
 
-            <div class="row">
-                <div class="col-md-3 align-items-center d-flex">
-                    <RadzenLabel Component="Description" Text="Description" />
-                </div>
-                <div class="col-md-9">
-                    <RadzenTextBox Name="Description" @bind-Value="@existingArticle.Description" />
-                </div>
-            </div>
+                        </div>
+                    </div>
+                    <div class="row my-3">
+                        <div class="col-md-3 align-items-center d-flex">
+                            <RadzenLabel Component="KeyWords" Text="Từ khoá SEO" />
+                        </div>
+                        <div class="col-md-9">
+                            <RadzenTextBox Name="KeyWords" @bind-Value="@existingArticle.KeyWords" Placeholder="Từ khoá SEO cho bài viết..." />
 
-            <div class="row">
-                <div class="col-md-3 align-items-center d-flex">
-                    <RadzenLabel Component="SummaryArticle" Text="Summary Article" />
-                </div>
-                <div class="col-md-9">
-                    
-                </div>
-            </div>
+                        </div>
+                    </div>
+                    <div class="row my-3">
+                        <div class="col-md-3 align-items-center d-flex">
+                            <RadzenLabel Component="KeyWords" Text="Tác giả: " />
+                        </div>
+                        <div class="col-md-9">
+                            <RadzenTextBox Name="KeyWords" @bind-Value="@existingArticle.Author" Placeholder="Tác giả bài viết..." />
 
-
-            <div class="row">
-                <div class="col-md-3 align-items-center d-flex">
-                    <RadzenLabel Component="KeyWords" Text="KeyWords" />
-                </div>
-                <div class="col-md-9">
-                    <RadzenTextBox Name="KeyWords" @bind-Value="@existingArticle.KeyWords" />
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-md-3 align-items-center d-flex">
-                    <RadzenLabel Component="SubHead" Text="SubHead" />
-                </div>
-                <div class="col-md-9">
-                    <RadzenTextBox Name="SubHead" @bind-Value="@existingArticle.SubHead" />
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-3 align-items-center d-flex">
-                    <RadzenLabel Component="Categories" Text="Categories" />
-                </div>
-                <div class="col-md-9">
-                    <RadzenDropDown AllowClear=true Name="Level" Data="@Categories" TextProperty="CategoryName" ValueProperty="CategoryId"
-                                    @bind-Value=@ac.CategoryID Placeholder="Select Category..." />
+                        </div>
+                    </div>
 
                 </div>
-            </div>
+                <div class="col-md-6">
+                    <div class="row my-3">
+                        <div class="col-md-3 align-items-center d-flex">
+                            <RadzenLabel Component="Description" Text="Mô tả: " />
+                        </div>
+                        <div class="col-md-9">
+                            <RadzenTextBox Name="Description" @bind-Value="@existingArticle.Description" Placeholder="Tóm tắt bài viết" />
+                            <ValidationMessage For="@(() => existingArticle.Description)" />
+                        </div>
+                    </div>
+                    <div class="row justify-content-center my-3">
+                        <div class="col-md-3 align-items-center d-flex">
+                            <RadzenLabel Component="Categories" Text="Loại bài viết: " />
+                        </div>
+                        <div class="col-md-9">
+                            <RadzenDropDown AllowClear=true Name="Categories" Data="@Categories" TextProperty="CategoryName" ValueProperty="CategoryId"
+                                            @bind-Value=@ac.CategoryID Placeholder="Bài viết thuộc loại..." />
 
-            <div class="row">
-                <div class="col-md-3 align-items-center d-flex">
-                    <RadzenLabel Component="PublishDate" Text="PublishDate" />
-                </div>
-                <div class="col-md-9">
-                    <RadzenDatePicker @bind-Value=@existingArticle.PublishDate TValue="DateTime" ShowTime="true" ShowSeconds="true"
-                                      HoursStep="1.5" MinutesStep="5" SecondsStep="10" DateFormat="MM/dd/yyyy HH:mm">
-                        <FooterTemplate>
-                            <RadzenButton Click=@OnTodayClick Text="Today" />
-                        </FooterTemplate>
-                    </RadzenDatePicker>
+                        </div>
+                    </div>
+                    <div class="row my-3">
+                        <div class="col-md-3 align-items-center d-flex">
+                            <RadzenLabel Component="PublishDate" Text="Chọn ngày xuất bản: " />
+                        </div>
+                        <div class="col-md-9">
+                            <RadzenDatePicker @bind-Value=@existingArticle.PublishDate TValue="DateTime" ShowTime="true" ShowSeconds="true"
+                                              HoursStep="1.5" MinutesStep="5" SecondsStep="10" DateFormat="MM/dd/yyyy HH:mm">
+                                <FooterTemplate>
+                                    <RadzenButton Click=@OnTodayClick Text="Hôm nay" />
+                                </FooterTemplate>
+                            </RadzenDatePicker>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div class="row">
+            <div class="row my-3">
                 <div class="col-md-3 align-items-center d-flex">
-                    <RadzenLabel Component="ImageFile" Text="ImageFile" />
+                    <RadzenLabel Component="SummaryArticle" Text="Nội dung: " />
                 </div>
                 <div class="col-md-9">
-                    <RadzenImage Path=@($"{ImgUrl}") Style="width: 300px; height: 300px; border: black solid 0.5px " />
-                    <InputFile OnChange="@HandleSelected" accept=".jpg, .jpeg, .png" />
+                    <RadzenTextBox Name="Description" @bind-Value="@existingArticle.SummaryArticle" Placeholder="Tóm tắt bài viết" />
+                    <ValidationMessage For="@(() => existingArticle.SummaryArticle)" />
+                    <ValidationMessage For="@(() => existingArticle.SummaryArticle)" />
+                    @*<RadzenTextBox Name="SummaryArticle" @bind-Value="@existingArticle.SummaryArticle" Placeholder="Nội dung của bài viết.."/>*@
+
+                </div>
+            </div>
+            <div class="row my-3">
+                <div class="col-md-3 align-items-center d-flex">
+                    <RadzenLabel Component="ImageFile" Text="Ảnh đại diện bài viết: " />
+                </div>
+                <div class="col-md-9">
+                    <RadzenImage Path=@($"{ImgUrl}") Style="width: 100%; height: 250px; border: black solid 0.5px " />
+                    <InputFile OnChange="@HandleSelected" accept=".jpg, .jpeg, .png"/>
+                    <ValidationMessage For="@(() => existingArticle.ImageFile)" />
+
                 </div>
             </div>
             <div class="row justify-content-center">
@@ -104,12 +126,13 @@
                     <RadzenButton ButtonStyle="ButtonStyle.Light" Style="display: inline-block; margin-left: 10px;" ButtonType="ButtonType.Button" Click=@Back Text="Back" />
                 </div>
             </div>
-        </RadzenFieldset>
+        </RadzenTemplateForm>
     </div>
-</RadzenTemplateForm>
+
+</div>
 
 @code {
-    private ArticleDTO existingArticle { get; set; } = new ArticleDTO();
+    private ArticleUpdateRequest existingArticle { get; set; } = new ArticleUpdateRequest();
     private ArticleCategoryDTO ac = new ArticleCategoryDTO();
     private List<CategoryDTO> Categories { get; set; } = new List<CategoryDTO>();
     [Parameter]
@@ -126,7 +149,7 @@
 
     protected async override Task OnParametersSetAsync()
     {
-        existingArticle = await _articleService.GetArticle(articleId);
+        existingArticle = await _articleService.GetUpdateArticle(articleId);
         Categories = await _categoryService.GetListCategory();
         ac = await _acService.GetArticleCategory(articleId);
         FirstFile = ImgUrl = existingArticle.ImageFile;

@@ -9,8 +9,9 @@ namespace CmsWebsite.Client.Blazor.Services.Article
         Task<List<ArticleDTO>> GetListArticle();
         Task<List<ArticleDTO>> GetListArticleCategoryByCategoryId(long CategoryId);
         Task<ArticleDTO> GetArticle(long id);
-        Task<long> CreateArticle(ArticleCreateRequest arRequest);
-        Task<bool> UpdateArticle(long id, ArticleDTO article);
+        Task<ArticleUpdateRequest> GetUpdateArticle(long id);
+        Task<long> CreateArticle(ArticleCreateRequest request);
+        Task<bool> UpdateArticle(long id, ArticleUpdateRequest request);
         Task<bool> DeleteArticle(long id, bool isDeleted);
         Task<bool> DeleteArticleImage(string fileName);
         Task<UploadFileResponse> UploadArticleImage(MultipartFormDataContent content);

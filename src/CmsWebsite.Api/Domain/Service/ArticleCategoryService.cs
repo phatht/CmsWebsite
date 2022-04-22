@@ -65,7 +65,16 @@ namespace CmsWebsite.Api.Domain.Service
         }
         public async Task<ArticleCategories> GetArticleCategory(long id)
         {
-            return await _unitOfWork.ArticleCategoryRepository.FindAsync(id);
+            var ac = await _unitOfWork.ArticleCategoryRepository.FindAsync(id);
+            if (ac == null)
+            {
+                return new ArticleCategories()
+                {
+                    ArticleID = id,
+                    CategoryID = 0
+                };
+            }
+            return ac;
         }
 
         public async Task<ArticleCategories> PutArticleCategory(long articleId, ArticleCategories ac)
@@ -91,7 +100,7 @@ namespace CmsWebsite.Api.Domain.Service
             }
         }
 
-      
+
     }
 
 }

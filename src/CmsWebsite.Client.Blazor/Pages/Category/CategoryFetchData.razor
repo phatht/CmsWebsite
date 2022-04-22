@@ -13,51 +13,57 @@
 }
 else
 {
-    <NavLink class="nav-link" href="category/create">
-        Thêm loại bài viết
-    </NavLink>
-    <RadzenDataGrid @ref="grid0" AllowFiltering="true" AllowColumnResize="true"
-                FilterMode="FilterMode.Simple" AllowSorting="true" PageSize="10"
-                AllowPaging="true" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive"
-                ShowPagingSummary="true"
-                Data="@Categories" TItem="CategoryDTO" LogicalFilterOperator="LogicalFilterOperator.Or">
-        <Columns>
-            <RadzenDataGridColumn TItem="CategoryDTO" Title="Icon" Width="80px">
-                <Template Context="data">
-                    <RadzenImage Path="@data.IconFile" style="width: 40px; height: 40px; border-radius: 8px;" />
-                </Template>
-            </RadzenDataGridColumn>
-            <RadzenDataGridColumn TItem="CategoryDTO" Property="CategoryName"
-                              Title="Name" Width="140px" />
-            <RadzenDataGridColumn TItem="CategoryDTO" Property="ParentCategoryId"
-                              Title="Parent" Width="140px" />
-            <RadzenDataGridColumn TItem="CategoryDTO" Property="Abbreviation"
-                              Title="Abbreviation" Width="140px" />
-            <RadzenDataGridColumn TItem="CategoryDTO" Property="Level"
-                              Title="Level" Width="140px" />
-            <RadzenDataGridColumn Width="140px" Filterable="false" TItem="CategoryDTO" Property="isDeleted"
-                              Title="Tạm ẩn">
-                <Template Context="data">
-                    <RadzenCheckBox @bind-Value=@data.isDeleted Name="isDeleted" TValue="bool"
-                                Change="@((args) => IsDeleted(data.CategoryId, args))" />
-                    <RadzenLabel Text="Tạm ẩn" Component="isDeleted" Style="margin-left: 8px; vertical-align: middle;" />
-                </Template>
-            </RadzenDataGridColumn>
-            <RadzenDataGridColumn TItem="CategoryDTO" Filterable="false" Sortable="false" Property="Edit" TextAlign="TextAlign.Center" Width="120px">
-                <Template Context="data">
-                    <RadzenButton Class="m-1" ButtonStyle="Radzen.ButtonStyle.Secondary" Icon="edit"
-                              Click="@((args) => EditRow(data.CategoryId))" @onclick:stopPropagation="true" />
-                </Template>
-            </RadzenDataGridColumn>
-            @*<RadzenDataGridColumn TItem="CategoryDTO" Context="order" Filterable="false" Property="Delete" Sortable="false" TextAlign="TextAlign.Center" Width="60px">
-                <Template Context="data">
-                <RadzenButton Class="m-1" ButtonStyle="ButtonStyle.Danger" Icon="delete"
-                Click="@((args) => DeleteRow(data.CategoryId))" @onclick:stopPropagation="true" />
-                </Template>
-                </RadzenDataGridColumn>*@
+    <div class="container-fluid">
+        <div class="row mb-3">
+            <div class="col">
+                <RadzenButton Click=@(arg => uriHelper.NavigateTo("category/create")) Text="Thêm loại bài viết" Icon="add_circle_outline" ButtonStyle="ButtonStyle.Secondary" />
+            </div>
+        </div>
+        <div class="">
+            <RadzenDataGrid @ref="grid0" AllowFiltering="true" AllowColumnResize="true"
+                        FilterMode="FilterMode.Simple" AllowSorting="true" PageSize="10"
+                        AllowPaging="true" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive"
+                        ShowPagingSummary="true"
+                        Data="@Categories" TItem="CategoryDTO" LogicalFilterOperator="LogicalFilterOperator.Or">
+                <Columns>
+                    <RadzenDataGridColumn TItem="CategoryDTO" Title="Icon" Width="80px">
+                        <Template Context="data">
+                            <RadzenImage Path="@data.IconFile" style="width: 40px; height: 40px; border-radius: 8px;" />
+                        </Template>
+                    </RadzenDataGridColumn>
+                    <RadzenDataGridColumn TItem="CategoryDTO" Property="CategoryName"
+                                      Title="Name" Width="140px" />
+                    <RadzenDataGridColumn TItem="CategoryDTO" Property="ParentCategoryId"
+                                      Title="Parent" Width="140px" />
+                    <RadzenDataGridColumn TItem="CategoryDTO" Property="Abbreviation"
+                                      Title="Abbreviation" Width="140px" />
+                    <RadzenDataGridColumn TItem="CategoryDTO" Property="Level"
+                                      Title="Level" Width="140px" />
+                    <RadzenDataGridColumn Width="140px" Filterable="false" TItem="CategoryDTO" Property="isDeleted"
+                                      Title="Tạm ẩn">
+                        <Template Context="data">
+                            <RadzenCheckBox @bind-Value=@data.isDeleted Name="isDeleted" TValue="bool"
+                                        Change="@((args) => IsDeleted(data.CategoryId, args))" />
+                            <RadzenLabel Text="Tạm ẩn" Component="isDeleted" Style="margin-left: 8px; vertical-align: middle;" />
+                        </Template>
+                    </RadzenDataGridColumn>
+                    <RadzenDataGridColumn TItem="CategoryDTO" Filterable="false" Sortable="false" Property="Edit" TextAlign="TextAlign.Center" Width="120px">
+                        <Template Context="data">
+                            <RadzenButton Class="m-1" ButtonStyle="Radzen.ButtonStyle.Secondary" Icon="edit"
+                                      Click="@((args) => EditRow(data.CategoryId))" @onclick:stopPropagation="true" />
+                        </Template>
+                    </RadzenDataGridColumn>
+                    @*<RadzenDataGridColumn TItem="CategoryDTO" Context="order" Filterable="false" Property="Delete" Sortable="false" TextAlign="TextAlign.Center" Width="60px">
+                        <Template Context="data">
+                        <RadzenButton Class="m-1" ButtonStyle="ButtonStyle.Danger" Icon="delete"
+                        Click="@((args) => DeleteRow(data.CategoryId))" @onclick:stopPropagation="true" />
+                        </Template>
+                        </RadzenDataGridColumn>*@
 
-        </Columns>
-    </RadzenDataGrid>
+                </Columns>
+            </RadzenDataGrid>
+        </div>
+    </div>
 }
 @code {
     protected List<CategoryDTO> Categories { get; set; }

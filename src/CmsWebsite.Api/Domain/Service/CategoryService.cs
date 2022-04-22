@@ -16,7 +16,7 @@ namespace CmsWebsite.Api.Domain.Service
         Task<Category> DeleteCategory(long id);
         Task<Category> SoftDeleteCategory(long id, bool isDeleted);
 
-        Task<Category> PutCategoryAsync(long id, CategoryDTO category);
+        Task<Category> PutCategoryAsync(long id, CategoryUpdateRequest request);
     }
     public class CategoryService : ICategoryService
     {
@@ -52,8 +52,20 @@ namespace CmsWebsite.Api.Domain.Service
                     ParentCategoryId = request.ParentCategoryId,
                     Abbreviation = Guid.NewGuid().ToString(),
                     IconFile = request.IconFile,
-                    Level = (int)request.Level,
+                    //Level = (int)request.Level,
                 };
+
+                if (request.ParentCategoryId == 0)
+                {
+                    category.Level = 1;
+                }
+                else
+                {
+                    var parent = await GetCategoryAsync(request.ParentCategoryId);
+                    category.Level = parent.Level + 1;
+                }
+
+
                 var result = await _unitOfWork.CategoryRepository.AddAsync(category);
                 await _unitOfWork.CommitAsync();
 
@@ -66,7 +78,7 @@ namespace CmsWebsite.Api.Domain.Service
             }
         }
 
-        public async Task<Category> PutCategoryAsync(long id, CategoryDTO category)
+        public async Task<Category> PutCategoryAsync(long id, CategoryUpdateRequest request)
         {
             var existingCategory = await _unitOfWork.CategoryRepository.FindAsync(id);
 
@@ -75,10 +87,18 @@ namespace CmsWebsite.Api.Domain.Service
                 throw new NotFoundException($"Article {id} is not found.");
             }
 
-            existingCategory.ParentCategoryId = category.ParentCategoryId;
-            existingCategory.CategoryName = category.CategoryName;
-            existingCategory.IconFile = category.IconFile;
-            existingCategory.Level = category.Level;
+            existingCategory.CategoryName = request.CategoryName;
+            existingCategory.IconFile = request.IconFile;
+
+            if (request.ParentCategoryId == 0)
+            {
+                existingCategory.Level = 1;
+            }
+            else
+            {
+                var parent = await GetCategoryAsync(request.ParentCategoryId);
+                existingCategory.Level = parent.Level + 1;
+            }
 
             try
             {

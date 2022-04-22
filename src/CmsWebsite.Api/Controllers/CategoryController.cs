@@ -42,11 +42,11 @@ namespace CmsWebsite.Api.Controllers
         // PUT: api/Category/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutCategory(long id, CategoryDTO category)
+        public async Task<IActionResult> PutCategory(long id, CategoryUpdateRequest request)
         {
             try
             {
-                await _categoryService.PutCategoryAsync(id, category);
+                await _categoryService.PutCategoryAsync(id, request);
             }
             catch (Exception ex)
             {

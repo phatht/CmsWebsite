@@ -32,23 +32,13 @@ else
                     <RadzenImage Path="@($"{data.ImageFile}")" style="width: 40px; height: 40px; border-radius: 8px;" />
                 </Template>
             </RadzenDataGridColumn>
-            <RadzenDataGridColumn TItem="ArticleDTO" Property="Title"
-                              Title="Title" Width="140px" />
-            <RadzenDataGridColumn TItem="ArticleDTO" Property="Description"
-                              Title="Description" Width="140px" />
-            <RadzenDataGridColumn TItem="ArticleDTO" Property="SummaryArticle"
-                              Title="Summary Article" Width="140px" />
-
-            <RadzenDataGridColumn TItem="ArticleDTO" Property="CreatedDate"
-                              Title="Created Date" Width="140px" FormatString="{0:d}" />
+                              
+            <RadzenDataGridColumn TItem="ArticleDTO" Property="Author"
+                              Title="Tác giả" Width="140px" />
             <RadzenDataGridColumn TItem="ArticleDTO" Property="PublishDate"
-                              Title="Publish Date" Width="140px" FormatString="{0:d}" />
-            <RadzenDataGridColumn TItem="ArticleDTO" Property="LastModifiedDate"
-                              Title="Last Modified Date" Width="160px" FormatString="{0:d}" />
+                              Title="Ngày đăng bài" Width="140px" FormatString="{0:d}" />
             <RadzenDataGridColumn TItem="ArticleDTO" Property="NumberOfViews"
-                              Title="Number Of Views" />
-            <RadzenDataGridColumn Width="140px" TItem="ArticleDTO" Property="Status"
-                              Title="Status" />
+                              Title="Lượt xem" Width="140px" />
             <RadzenDataGridColumn Width="140px" Filterable="false" TItem="ArticleDTO" Property="isDeleted"
                               Title="Tạm ẩn">
                 <Template Context="data">
@@ -115,32 +105,32 @@ else
         }
     }
     #region DeleteRow Example
-    //protected async Task DeleteRow(long id)
-    //{
-    //    try
-    //    {
-    //        var confirmed = await DialogService.Confirm(
-    //           "Bạn có chắc muốn xoá?", "Xoá bài viết", options: new ConfirmOptions()
-    //               {
-    //                   OkButtonText = "Đồng ý",
-    //                   CancelButtonText = "Không"
-    //               });
-    //        if (confirmed == true)
-    //        {
-    //            var result = await _client.DeleteArticle(id);
-    //            if (result != null)
-    //            {
-    //                var itemToRemove = Articles.Single(r => r.ArticleID == id);
-    //                Articles.Remove(itemToRemove);
-    //                await grid0.Reload();
-    //                NotificationService.Notify(new NotificationMessage { Severity = NotificationSeverity.Success, Summary = "Thông báo sự kiện", Detail = "Đã xoá thành công", Duration = 4000 });
-    //            }
-    //        }
-    //    }
-    //    catch (System.Exception exception)
-    //    {
-    //        NotificationService.Notify(new NotificationMessage { Severity = NotificationSeverity.Error, Summary = "Thông báo sự kiện", Detail = $"{exception}", Duration = 4000 });
-    //    }
-    //}
+        //protected async Task DeleteRow(long id)
+        //{
+        //    try
+        //    {
+        //        var confirmed = await DialogService.Confirm(
+        //           "Bạn có chắc muốn xoá?", "Xoá bài viết", options: new ConfirmOptions()
+        //               {
+        //                   OkButtonText = "Đồng ý",
+        //                   CancelButtonText = "Không"
+        //               });
+        //        if (confirmed == true)
+        //        {
+        //            var result = await _client.DeleteArticle(id);
+        //            if (result != null)
+        //            {
+        //                var itemToRemove = Articles.Single(r => r.ArticleID == id);
+        //                Articles.Remove(itemToRemove);
+        //                await grid0.Reload();
+        //                NotificationService.Notify(new NotificationMessage { Severity = NotificationSeverity.Success, Summary = "Thông báo sự kiện", Detail = "Đã xoá thành công", Duration = 4000 });
+        //            }
+        //        }
+        //    }
+        //    catch (System.Exception exception)
+        //    {
+        //        NotificationService.Notify(new NotificationMessage { Severity = NotificationSeverity.Error, Summary = "Thông báo sự kiện", Detail = $"{exception}", Duration = 4000 });
+        //    }
+        //}
     #endregion
 }
