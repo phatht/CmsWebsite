@@ -1,11 +1,11 @@
 ﻿@page "/"
- 
 @inject NavigationManager navigationManager
 @inject IAuthService auth
 @inject IArticleService _client
 @using CmsWebsite.Client.Blazor.Services.Article
 @using CmsWebsite.Share.Models.Article
 @using CmsWebsite.Client.Blazor.Pages.Components;
+
 <PageTitle>Trang quản trị hệ thống</PageTitle>
 
 <AuthorizeView>
@@ -13,7 +13,9 @@
         <p style="text-align:center">Xin chào @(context.User.Identity.Name), bạn đã vào trang quản trị hệ thống !</p>
     </Authorized>
     <NotAuthorized>
-        <TrangChu listArticle=@articles></TrangChu> @*THÔNG TIN CHÍNH*@
+        <div>
+            <TrangChu listArticle=@articles></TrangChu> @*THÔNG TIN CHÍNH*@
+        </div>
     </NotAuthorized>
     <Authorizing>
         <h1>Đang truyền dữ liệu ...</h1>
