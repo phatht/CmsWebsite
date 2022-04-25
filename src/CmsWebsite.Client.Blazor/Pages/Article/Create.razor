@@ -125,8 +125,7 @@
                     <RadzenLabel Component="SummaryArticle" Text="Nội dung: " />
                 </div>
                 <div class="col-md-10">
-                    <RadzenHtmlEditor style="height: 400px; margin-bottom: 1rem; width:100%;" Name="SummaryArticle" @bind-Value=@article.SummaryArticle
-                                      UploadUrl="" Change=@OnChange Paste=@OnPaste Execute=@OnExecute />
+                    <EditorComponent EditorHeight="200px" EditorWidth="600px" ></EditorComponent>
                     <ValidationMessage For="@(() => article.SummaryArticle)" />
                     @*<RadzenTextBox Name="SummaryArticle" @bind-Value="@article.SummaryArticle" Placeholder="Nội dung của bài viết.."/>*@
 

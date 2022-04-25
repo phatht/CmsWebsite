@@ -8,6 +8,8 @@
 
 	<ItemGroup>
 		<PackageReference Include="Blazored.LocalStorage" Version="4.2.0" />
+		<PackageReference Include="Blazored.Video" Version="1.0.0" />
+		<PackageReference Include="CKEditor" Version="3.6.4" />
 		<PackageReference Include="Microsoft.AspNetCore.Authentication.Cookies" Version="2.2.0" />
 		<PackageReference Include="Microsoft.AspNetCore.Components.Authorization" Version="6.0.3" />
 		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="6.0.3" />
