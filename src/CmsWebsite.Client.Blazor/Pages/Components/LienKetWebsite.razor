@@ -1,12 +1,20 @@
-﻿<div>
+﻿@*<div>
     <marquee> @DayOfWeek(), @DateTime.Now.ToString("dd/MM/yyy")</marquee>
-</div>
+</div>*@
 
 <RadzenCard>
-    <RadzenTextBox Class="w-100" Placeholder="Tìm kiếm thông tin" />
+    <div class="input-group">
+        <RadzenTextBox class="form-control"  Placeholder="Tìm kiếm thông tin" />
+        <RadzenButton  class="btn btn-outline-secondary" Icon="search" ButtonStyle="ButtonStyle.Success"  />
+    </div>
+
 </RadzenCard>
-<RadzenCard>
 
+<RadzenCard> 
+     <marquee>Hôm nay @DayOfWeek(), @DateTime.Now.ToString("dd/MM/yyy")</marquee>
+</RadzenCard>
+
+<RadzenCard>
     <h6><RadzenIcon Icon="label" />LIÊN KẾT WEBSITE</h6>
     <RadzenDropDown AllowClear="true" TValue="string" Class="w-100" Placeholder="Tìm kiếm thông tin"
                     FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive"
@@ -33,24 +41,24 @@
     }
 
     private string DayOfWeek()
-    { 
+    {
         int day = (int)DateTime.Now.DayOfWeek;
         switch (day)
         {
             case 1:
-                return "Thứ hai";
+                return "thứ hai";
             case 2:
-                return "Thứ ba";
+                return "thứ ba";
             case 3:
-                return "Thứ tư";
+                return "thứ tư";
             case 4:
-                return "Thứ năm";
+                return "thứ năm";
             case 5:
-                return "Thứ sáu";
+                return "thứ sáu";
             case 6:
-                return "Thứ bảy";
+                return "hứ bảy";
             default:
-                return "Chủ nhật";
+                return "chủ nhật";
 
         }
     }
