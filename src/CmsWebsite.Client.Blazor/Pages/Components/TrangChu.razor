@@ -5,11 +5,12 @@
 @inject ICategoryService _clientCategory
 @inject IArticleService _clientArticle
 @inject NavigationManager uriHelper
- 
 
-<RadzenCard Style="width: 100%;">
-    @if (listArticle != null)
-    {
+
+
+@if (listArticle != null)
+{
+    <RadzenCard Style="width: 100%;">
         <div class="row">
             <div class="col-md-8">
                 <RadzenImage Path=@listArticle[0].ImageFile Style="width:100%;height:60%;" />
@@ -21,7 +22,7 @@
                 <RadzenImage Path=@listArticle[1].ImageFile Style="width: 100%;" class="rounded" />
                 <RadzenCard>
                     <span class="wrapper-p">@listArticle[1].Title</span>
-                    @for (var i = 2; i < 5; i++) // LẤY 5 BÀI VIẾT TIẾP THEO
+                    @for (var i = 2; i < 4; i++) // LẤY 4 BÀI VIẾT TIẾP THEO
                     {
                         <hr />
                         <span class="wrapper-p">@listArticle[i].Title</span>
@@ -29,54 +30,59 @@
                 </RadzenCard>
             </div>
         </div>
-    }
+    </RadzenCard>
+}
+else
+{
+    <RadzenProgressBar Value="100" ShowValue="false" Mode="ProgressBarMode.Indeterminate" />
+}
 
-</RadzenCard>
+@if (_listArticleGetByAbbreviation != null)
+{
+    <RadzenCard Style="width: 100%;">
 
-
-
-<RadzenCard Style="width: 100%;">
-    @flag
-   
-    @if(listArticleGetByAbbreviation != null)
-    {
-        <div class="row">
-            <div class="col-md-8">
-                <RadzenImage Path=@listArticleGetByAbbreviation[0].ImageFile Style="width:100%;height:60%;" />
-                <label class="m-2" style="font-weight:700;font-size:22px">@listArticleGetByAbbreviation[0].Title</label>
+        <div class="row wrapper">
+            @*@_category.CategoryName*@
+            <h6><RadzenIcon Icon="label" />@_category.CategoryName</h6>
+            <div class="col-md-7">
+                <RadzenImage Path=@_listArticleGetByAbbreviation[0].ImageFile Style="width:100%;height:60%;" />
+                <label class="m-2" style="font-weight:700;font-size:22px">@_listArticleGetByAbbreviation[0].Title</label>
             </div>
 
-            <div class="col-md-4">
-                @foreach (var item in listArticleGetByAbbreviation)
+            <div class="col-md-5 ">
+                @foreach (var item in _listArticleGetByAbbreviation)
                 {
-                    <span @onclick="() => EditRow(item.ArticleID)">
-                        <img src="@item.ImageFile" class="rounded mr-2" style="width: 95px; height: 80px;">
-                        <p class="wrapper-p" style="font-size:13px">@item.Description</p>
-                    </span>
+                    <div class="clearfix">
+                        <span @onclick="() => EditRow(item.ArticleID)">
+                            <img src="@item.ImageFile" class="rounded  mr-2" style="width: 95px; height: 80px;">
+
+                            <span class="wrapper-p float-left" style="font-size:13px">@item.Description</span>
+                        </span>
+                    </div>
                 }
 
             </div>
         </div>
-    }
-    
+    </RadzenCard>
+}
 
-</RadzenCard>
+
 
 @code {
 
     [Parameter]
     public List<ArticleDTO>? listArticle { get; set; }
 
-    public List<ArticleDTO>? listArticleGetByAbbreviation = null;
+    public List<ArticleDTO>? _listArticleGetByAbbreviation = null;
 
-    public int flag = 0;
+    public CategoryDTO _category = null;
 
     protected override async Task OnInitializedAsync()
     {
         try
-        { 
+        {
             var list = await _clientCategory.GetListCategory();
-            //ArticleGetByAbbreviation("0a858018-d08f-41a6-9e59-591b8bd9752e");
+            await ArticleGetByAbbreviation("0a858018-d08f-41a6-9e59-591b8bd9752e");
         }
         catch (Exception ex)
         {
@@ -85,17 +91,17 @@
     }
 
 
-    public async void ArticleGetByAbbreviation(string Abbreviation)
+    public async Task ArticleGetByAbbreviation(string Abbreviation)
     {
         try
         {
             var list = await _clientCategory.GetListCategory();
-            long categoryId = list.Where(i => i.Abbreviation == Abbreviation).FirstOrDefault().CategoryId;
-            listArticleGetByAbbreviation = await _clientArticle.GetListArticleCategoryByCategoryId(categoryId);
+            _category = list.Where(i => i.Abbreviation == Abbreviation).FirstOrDefault();
+            _listArticleGetByAbbreviation = await _clientArticle.GetListArticleCategoryByCategoryId(_category.CategoryId);
         }
         catch (Exception ex)
         {
-             
+
         }
 
     }

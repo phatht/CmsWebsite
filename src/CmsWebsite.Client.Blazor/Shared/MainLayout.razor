@@ -56,31 +56,8 @@
             <NotAuthorized>
 
                 <RadzenMenu Style="width:100%">
-                    <RadzenMenuItem Icon="menu" Text="Tất cả">
-                        @*<div class="top-row">*@
-                        <div class="row">
-                            <table class="table table-hover">
-                                <tbody>
-                                    <tr>
-                                        <td>Giới thiệu</td>
-                                        <td>Tin tổng hợp</td>
-                                        <td>Tin hoạt động</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Chương trình phối hợp</td>
-                                        <td>Văn bản hướng dẫn</td>
-                                        <td>Thành đoàn</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Đối ngoại kiều bào</td>
-                                        <td>Dân tộc - tôn giáo</td>
-                                        <td>Thư viện ảnh</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                        @*</div>*@
-                    </RadzenMenuItem>
+                    <RadzenMenuItem Icon="home" Path="/"></RadzenMenuItem>
+                    
                     <RadzenMenuItem Text="Giới thiệu">
                         <RadzenMenuItem Text="Giới thiệu chung" Path="counter">
                         </RadzenMenuItem>
@@ -96,18 +73,22 @@
                     <RadzenMenuItem Text="Giám sát & phản biện"></RadzenMenuItem>
                     <RadzenMenuItem Text="Dân tộc - tôn giáo"></RadzenMenuItem>
                     <RadzenMenuItem Text="Đối ngoại kiều bào"></RadzenMenuItem>
-
+                    <RadzenMenuItem Icon="menu" Path="menu">
+                      
+                        
+                       
+                    </RadzenMenuItem>
                 </RadzenMenu>
 
             </NotAuthorized>
         </AuthorizeView>
-        <div>
+        @*<div>
             <AuthorizeView>
                 <NotAuthorized>
                     <TinMoi listArticle=@articles />
                 </NotAuthorized>
             </AuthorizeView>
-        </div>
+        </div>*@
         <div class="content">
             @Body
         </div>
