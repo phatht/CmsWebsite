@@ -1,0 +1,64 @@
+﻿body {
+    display: flex;
+    align-items: center;
+    ju stify-content: center;
+    back ground: #ddd;
+    mi n-height: 100vh;
+    pa dding: 30px;
+}
+
+. car ds {
+    display: flex;
+}
+
+.car d {
+    ma rgin: 10px;
+    widt h: 300px;
+    back ground: #fff;
+    bo rder-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+
+    .image {
+        img {
+            max-width: 100%;
+            border-top-left-radius: 5px;
+            border-top-right-radius: 5px;
+        }
+    }
+
+    .content {
+        padding: 20px 30px;
+    }
+}
+
+.card.is-loading {
+    .image,
+    h2,
+    p {
+        background: #eee;
+        background: linear-gradient(110deg, #ececec 8%, #f5f5f5 18%, #ececec 33%);
+        border-radius: 5px;
+        background-size: 200% 100%;
+        animation: 1.5s shine linear infinite;
+    }
+
+    .image {
+        height: 200px;
+        border-bottom-left-radius: 0;
+        border-bottom-right-radius: 0;
+    }
+
+    h2 {
+        height: 30px;
+    }
+
+    p {
+        height: 70px;
+    }
+}
+
+@keyframes shine {
+    to {
+        background-position-x: -200%;
+    }
+}
