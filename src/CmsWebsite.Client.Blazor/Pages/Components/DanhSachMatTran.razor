@@ -1,12 +1,12 @@
-﻿<RadzenCard>
-    <h6>ỦY BAN MẶT TRẬN CÁC TỈNH THÀNH PHỐ</h6>
-    <RadzenListBox AllowFiltering="true" Placeholder="Tìm kiếm thông tin"
-                   FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive"
-                   FilterOperator="StringFilterOperator.Contains" 
-                   @bind-Value=@value
-                   Data=@List TextProperty="Name"
-                   ValueProperty="Link" Change=@(args => OnChange(args, "ListBox with custom filter operator")) Style="height:200px;font-size:small"  Class="w-100" />
-</RadzenCard>
+﻿
+<h6>ỦY BAN MẶT TRẬN CÁC TỈNH THÀNH PHỐ</h6>
+<RadzenListBox AllowFiltering="true" Placeholder="Tìm kiếm thông tin"
+                FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive"
+                FilterOperator="StringFilterOperator.Contains" 
+                @bind-Value=@value
+                Data=@List TextProperty="Name"
+                ValueProperty="Link" Change=@(args => OnChange(args, "ListBox with custom filter operator")) Style="height:200px;font-size:small"  Class="w-100" />
+
 @code {
     private string value = string.Empty;
     List<Item> List = new List<Item>() {

@@ -6,7 +6,7 @@
 @using CmsWebsite.Share.Models.Article
 @using CmsWebsite.Client.Blazor.Pages.Components;
 
-<link href="_content/Radzen.Blazor/css/default.css" rel="stylesheet">
+<link href="_content/Radzen.Blazor/css/@(currentTheme).css" rel="stylesheet" />
 <div class="page">
     <RadzenDialog />
     <RadzenNotification />
@@ -49,7 +49,7 @@
                     </NavLink>
                 </NotAuthorized>
             </AuthorizeView>
-
+             
         </div>
 
         <AuthorizeView>
@@ -98,6 +98,10 @@
     <AuthorizeView>
         <NotAuthorized>
             <div class="col-md-3">
+                
+                @*<RadzenButton Variant="Variant.Outlined" Click=@(args => OnClick("default")) ButtonStyle="ButtonStyle.Dark" />*@
+                <RadzenButton Variant="Variant.Outlined" Click=@(args => OnClick("material")) ButtonStyle="ButtonStyle.Dark" />
+
                 <LienKetWebsite></LienKetWebsite>
                 <DanhSachMatTran></DanhSachMatTran>
                 <VanBanPhapLuat></VanBanPhapLuat>
@@ -111,6 +115,7 @@
 @functions {
 
     int col = 10;
+    string currentTheme = "standard";
 
     [CascadingParameter]
     Task<AuthenticationState> AuthenticationState { get; set; }
@@ -128,5 +133,9 @@
             col = 9;
         }
     }
+    void OnClick(string theme)
+    {
+        currentTheme = theme;
 
+    }
 }

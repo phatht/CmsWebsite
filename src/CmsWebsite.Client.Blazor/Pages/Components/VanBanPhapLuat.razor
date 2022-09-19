@@ -1,69 +1,56 @@
-﻿<RadzenCard>
-    <h6>VĂN BẢN</h6>
+﻿
+<h6>VĂN BẢN</h6>
 
-    <RadzenTabs Change=@OnChange TabPosition="TabPosition.Top"
-                RenderMode="TabRenderMode.Client" >
-        <Tabs>
-            <RadzenTabsItem Text="HƯỚNG DẪN" Style="font-size:x-small">
-                <div class="col-md-12 p-1">
-                    <RadzenTextBox Style="font-size:small" Class="w-100" Placeholder="Tìm kiếm văn bản" />
+<RadzenTabs Change=@OnChange TabPosition="TabPosition.TopRight"
+            RenderMode="TabRenderMode.Client">
+    <Tabs>
+        <RadzenTabsItem Text="H.DẪN">
+            <div class="col-md-12 p-1">
+                <RadzenTextBox Class="w-100" Placeholder="Tìm kiếm văn bản" />
+            </div>
+            <div class="col-md-12 p-1">
+                <RadzenDropDown Placeholder="Loại" AllowClear="true" TValue="string" Class="w-100" />
+            </div>
+            <div class="row">
+                <div class="col-md-5">
+                    <RadzenDropDown Placeholder="Năm" TValue="int" Data=@years AllowFiltering="true" />
                 </div>
-                <div class="col-md-12 p-1">
-                    <RadzenDropDown Style="font-size:small" Placeholder="Loại" AllowClear="true" TValue="string" Class="w-100" />
+                <div class="col-md-6">
+                    <RadzenButton Text="Tìm" Icon="search" ButtonStyle="ButtonStyle.Success" />
                 </div>
-                <div class="row">
-                    <div class="col-md-5">
-                        <RadzenDropDown Style="font-size:small" Placeholder="Năm" TValue="int" Data=@years AllowFiltering="true" />
-                    </div> 
-                    <div class="col-md-6">
-                        <RadzenButton Style="font-size:small" Text="Tìm" Icon="search" ButtonStyle="ButtonStyle.Success" />
-                    </div>
-                </div>
-            </RadzenTabsItem>
-            <RadzenTabsItem Text="PHÁP LUẬT" Style="font-size:x-small">
-            </RadzenTabsItem>
-        </Tabs>
-    </RadzenTabs>
+            </div>
+        </RadzenTabsItem>
+        <RadzenTabsItem Text="LUẬT">
+        </RadzenTabsItem>
+        <RadzenTabsItem Text="XEM NHIỀU">
+            <table class="table table-hover" width="100%">
+
+                <tbody>
+                    <tr>
+                        <td>
+                            Hội nghị tổng kết công tác phối hợp giữa Chủ tịch nước và Đoàn Chủ tịch UBTƯ MTTQ Việt Nam
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Gìn giữ bản sắc văn hóa và tinh thần tương thân tương ái trong mỗi kiều bào tại Nhật Bản
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Tình hình thực hiện thí điểm mô hình Trưởng ban Dân vận cấp ủy đồng thời là Chủ tịch Ủy ban MTTQ Việt Nam ở cấp tỉnh, cấp huyện
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </RadzenTabsItem>
+        <RadzenTabsItem Text="TIN MỚI">
+        </RadzenTabsItem>
+    </Tabs>
+</RadzenTabs>
 
 
-    <RadzenTabs Change=@OnChange TabPosition="TabPosition.Top"
-                RenderMode="TabRenderMode.Client">
-        <Tabs>
-            <RadzenTabsItem Text="XEM NHIỀU" Style="font-size:x-small">
-                <table class="table table-hover" style="font-size:x-small" width="100%">
 
-                    <tbody>
-                        <tr>
-
-                            <td>
-                                Hội nghị tổng kết công tác phối hợp giữa Chủ tịch nước và Đoàn Chủ tịch UBTƯ MTTQ Việt Nam
-                            </td>
-
-                        </tr>
-                        <tr>
-
-                            <td>
-                                Gìn giữ bản sắc văn hóa và tinh thần tương thân tương ái trong mỗi kiều bào tại Nhật Bản
-                            </td>
-
-
-                        </tr>
-                        <tr>
-
-                            <td>
-                                Tình hình thực hiện thí điểm mô hình Trưởng ban Dân vận cấp ủy đồng thời là Chủ tịch Ủy ban MTTQ Việt Nam ở cấp tỉnh, cấp huyện
-                            </td>
-
-                        </tr>
-                    </tbody>
-                </table>
-            </RadzenTabsItem>
-            <RadzenTabsItem Text="TIN MỚI" Style="font-size:x-small">
-            </RadzenTabsItem>
-        </Tabs>
-    </RadzenTabs>
-
-</RadzenCard>
 
 @code {
 

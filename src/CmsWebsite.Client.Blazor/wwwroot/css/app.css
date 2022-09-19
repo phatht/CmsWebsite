@@ -78,7 +78,8 @@ a, .btn-link {
 
 h6 {
     color: #a51725;
-    font-size: xx-small !important
+    padding: 35px 0px 0px 0px;
+    /*font-size: xx-small !important*/
 }
 
 div span {

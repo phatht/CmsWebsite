@@ -15,7 +15,7 @@
 		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="6.0.3" />
 		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="6.0.3" PrivateAssets="all" />
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
-		<PackageReference Include="Radzen.Blazor" Version="3.20.11" />
+		<PackageReference Include="Radzen.Blazor" Version="4.0.0" />
 	</ItemGroup>
 
 	<ItemGroup>

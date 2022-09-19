@@ -1,25 +1,24 @@
-﻿@*<div>
-    <marquee> @DayOfWeek(), @DateTime.Now.ToString("dd/MM/yyy")</marquee>
-</div>*@
- <div class="d-flex flex-row my-3">
-      <div class="input-group">
-        <RadzenTextBox class="form-control" Style="font-size:small"  Placeholder="Tìm kiếm thông tin" />
-        <RadzenButton  class="btn btn-outline-secondary" Icon="search" ButtonStyle="ButtonStyle.Success"  />
+﻿
+
+<div class="d-flex flex-row my-3">
+    <div class="input-group">
+        <RadzenTextBox class="form-control" Placeholder="Tìm kiếm thông tin" />
+        <RadzenButton class="btn btn-outline-secondary" Icon="search" ButtonStyle="ButtonStyle.Success" />
     </div>
 
- </div>
+</div>
 
- <div class="d-flex flex-row">
-      <marquee>Hôm nay @DayOfWeek(), @DateTime.Now.ToString("dd/MM/yyy")</marquee>
- </div>
- 
-<RadzenCard>
-    <h6>LIÊN KẾT WEBSITE</h6>
-    <RadzenDropDown AllowClear="true" TValue="string" Class="w-100" Placeholder="Tìm kiếm thông tin"
-                    FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" Style="font-size:small"
-                    FilterOperator="StringFilterOperator.Contains" AllowFiltering="true"
-                    Data=@List TextProperty="Name" ValueProperty="Link" />
-</RadzenCard>
+<div class="d-flex flex-row">
+    <marquee>Hôm nay @DayOfWeek(), @DateTime.Now.ToString("dd/MM/yyy")</marquee>
+</div>
+
+
+<h6>LIÊN KẾT WEBSITE</h6>
+<RadzenDropDown AllowClear="true" TValue="string" Class="w-100" Placeholder="Tìm kiếm thông tin"
+                FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive"
+                FilterOperator="StringFilterOperator.Contains" AllowFiltering="true"
+                Data=@List TextProperty="Name" ValueProperty="Link" />
+
 @code {
 
     List<Item> List = new List<Item>() {
@@ -61,5 +60,6 @@
 
         }
     }
+
 
 }

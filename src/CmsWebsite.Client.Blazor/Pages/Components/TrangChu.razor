@@ -9,7 +9,7 @@
 
 @if (listArticle != null)
 {
-    <RadzenCard Style="width: 100%;">
+    <RadzenCard Style="width: 100%;" class="m-1">
         <div class="row">
             <div class="col-md-8">
 
@@ -22,14 +22,14 @@
 
             <div class="col-md-4">
                 <RadzenImage Path=@listArticle[1].ImageFile Style="width: 100%;" class="rounded" />
-                <RadzenCard>
+               
                     <span class="wrapper-p">@listArticle[1].Title</span>
                     @for (var i = 2; i < 4; i++) // LẤY 4 BÀI VIẾT TIẾP THEO
                     {
                         <hr />
                         <span class="wrapper-p">@listArticle[i].Title</span>
                     }
-                </RadzenCard>
+                
             </div>
         </div>
     </RadzenCard>
@@ -43,11 +43,11 @@ else
 
 @if (_listArticleGetByAbbreviation != null)
 {
-    <RadzenCard Style="width: 100%;">
+    <RadzenCard Style="width: 100%;" class="m-1">
 
         <div class="row wrapper">
             @*@_category.CategoryName*@
-            <h6><RadzenIcon Icon="label" />@_category.CategoryName</h6>
+            <h6>@_category.CategoryName</h6>
             <div class="col-md-7">
                 <RadzenImage Path=@_listArticleGetByAbbreviation[0].ImageFile Style="width:100%;height:60%;" />
                 <label class="m-2" style="font-weight:700;font-size:22px">@_listArticleGetByAbbreviation[0].Title</label>
@@ -56,7 +56,7 @@ else
             <div class="col-md-5 ">
                 @foreach (var item in _listArticleGetByAbbreviation)
                 {
-                     <RadzenCard>
+                     <RadzenCard class="m-1">
                         <span @onclick="() => EditRow(item.ArticleID)"> 
                             
                             <div style="float:left"><img src="@item.ImageFile" class="rounded  mr-2" style="width: 95px; height: 80px;"> </div>
