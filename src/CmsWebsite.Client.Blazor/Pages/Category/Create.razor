@@ -55,7 +55,7 @@
                         <RadzenLabel Component="IconFile" Text="Icon" />
                     </div>
                     <div class="col-md-9">
-                        <RadzenImage Path=@($"{ImgUrl}") Style="width: 100%; height: 300px; border: black solid 0.5px " />
+                        <RadzenImage Path=@($"{ImgUrl}") Style="max-width: 100%; display: block; margin-bottom: 5px;" />
                         <InputFile OnChange="@HandleSelected" accept=".jpg, .jpeg, .png" />
                         <ValidationMessage For="@(() => category.IconFile)" />
                     </div>

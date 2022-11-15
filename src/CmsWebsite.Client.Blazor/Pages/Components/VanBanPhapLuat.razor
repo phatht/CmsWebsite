@@ -1,23 +1,25 @@
 ﻿
 <h6>VĂN BẢN</h6>
-
+<style>
+    ul[role=tablist] {
+        justify-content: flex-start !important;
+        white-space: nowrap !important;
+        overflow-y: hidden !important;
+    }
+</style>
 <RadzenTabs Change=@OnChange TabPosition="TabPosition.TopRight"
-            RenderMode="TabRenderMode.Client">
+            RenderMode="TabRenderMode.Client" >
     <Tabs>
-        <RadzenTabsItem Text="H.DẪN">
-            <div class="col-md-12 p-1">
+        <RadzenTabsItem Text="HƯỚNG DẪN">
+            <div>
                 <RadzenTextBox Class="w-100" Placeholder="Tìm kiếm văn bản" />
             </div>
-            <div class="col-md-12 p-1">
+            <div class="mt-2">
                 <RadzenDropDown Placeholder="Loại" AllowClear="true" TValue="string" Class="w-100" />
             </div>
-            <div class="row">
-                <div class="col-md-5">
-                    <RadzenDropDown Placeholder="Năm" TValue="int" Data=@years AllowFiltering="true" />
-                </div>
-                <div class="col-md-6">
-                    <RadzenButton Text="Tìm" Icon="search" ButtonStyle="ButtonStyle.Success" />
-                </div>
+            <div class="d-flex justify-content-between mt-2">
+                <RadzenDropDown Placeholder="Năm" TValue="int" Data=@years AllowFiltering="true" Style="width: 60%" />
+                <RadzenButton Text="Tìm" Icon="search" ButtonStyle="ButtonStyle.Success" />
             </div>
         </RadzenTabsItem>
         <RadzenTabsItem Text="LUẬT">

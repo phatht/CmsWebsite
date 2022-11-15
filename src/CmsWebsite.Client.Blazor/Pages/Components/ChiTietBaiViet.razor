@@ -2,22 +2,26 @@
 @using CmsWebsite.Client.Blazor.Services.Article
 @using CmsWebsite.Share.Models.Article
 @inject IArticleService _articleService
+@inject NavigationManager MyNavigationManager
 @inherits LayoutComponentBase
 
 @if (article != null)
 {
     <div class="container">
         <div class="col align-self-center">
-            <p class="m-0 d-flex align-items-center">
-                Tác giả: @article.Author
+            <div class="m-0 d-flex align-items-center">
+                <span>Tác giả: @article.Author</span>
                 &nbsp;&nbsp;&nbsp
-                <RadzenIcon Icon="today" Style="color:#e35d5dd9" /> @article.CreatedDate.ToString("dd/MM/yyyy HH:mm")
+                <div class="d-flex"><RadzenIcon Icon="today" Style="color:#e35d5dd9" /><span class="ms-1">@article.CreatedDate.ToString("dd/MM/yyyy HH:mm")</span></div>
                 &nbsp;&nbsp;&nbsp
-                <button type="button" class="btn" style="font-size:14px"><RadzenIcon Icon="favorite_border" Style="color:blue" />Thích</button>
+                <button type="button" class="btn d-flex" style="font-size:14px"><RadzenIcon Icon="favorite_border" Style="color:blue" /><span class="ms-1">Thích</span></button>
                 &nbsp;&nbsp;&nbsp
-                <button type="button" class="btn" style="font-size:14px"><RadzenIcon Icon="share" />Chia sẽ Facebook</button>
-            </p>
-            <RadzenPanel Style="width: 100%;">
+                <a class="d-flex text-decoration-none text-reset" style="font-size:14px;" href="https://www.facebook.com/sharer/sharer.php?p[url]=@MyNavigationManager.Uri">
+                    <RadzenIcon Icon="share" />
+                    <span class="ms-1">Chia sẻ Facebook</span>
+                </a>
+            </div>
+            <RadzenPanel>
                 <HeaderTemplate>
                     <div class="col align-self-center">
                         <p style="text-transform: uppercase;font-size:30px">@(article.Title)</p>
@@ -27,7 +31,7 @@
 
                 </HeaderTemplate>
                 <ChildContent>
-                    @article.SummaryArticle
+                    <div style="max-width: 100%">@((MarkupString)article.SummaryArticle)</div>
                 </ChildContent>
             </RadzenPanel>
         </div>

@@ -23,8 +23,6 @@ namespace CmsWebsite.Client.Blazor.Services.Category
             return result.IsSuccessStatusCode;
         }
 
-
-
         public async Task<CategoryDTO> GetCategory(long id)
         {
             var result = await _httpClient.GetFromJsonAsync<CategoryDTO>($"api/category/{id}");

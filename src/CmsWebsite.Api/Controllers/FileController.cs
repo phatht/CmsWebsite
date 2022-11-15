@@ -21,8 +21,23 @@ namespace CmsWebsite.Api.Controllers
         }
         #endregion
 
-        #region Upload  
+        [HttpPost("[action]")]
+        public async Task<IActionResult> UploadImageEditor(IFormFile file)
+        {
+            try
+            {
+                var result = await _fileService.UploadFile(file, "articles");
+                var url = Url.Content($"https://localhost:5400/{result.loadPathFile}").Replace('\\', '/');
+                Console.WriteLine(url);
+                return Ok(new { Url = url });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
 
+        #region Upload  
         [HttpPost("[action]")]
         public async Task<IActionResult> Upload([Required] IList<IFormFile> UploadFiles, string? subDirectory)
         {

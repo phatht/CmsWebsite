@@ -113,7 +113,7 @@
                 <div class="col-md-10">
                     <RadzenHtmlEditor Style="height: 400px; margin-bottom: 1rem; width:100%;"
                                       Name="SummaryArticle" @bind-Value=@existingArticle.SummaryArticle
-                                      UploadUrl="" />
+                                      UploadUrl="@uploadPath" />
                     <ValidationMessage For="@(() => existingArticle.SummaryArticle)" />
                     @*<RadzenTextBox Name="SummaryArticle" @bind-Value="@article.SummaryArticle" Placeholder="Nội dung của bài viết.."/>*@
 
@@ -124,7 +124,7 @@
                     <RadzenLabel Component="ImageFile" Text="Ảnh đại diện bài viết: " />
                 </div>
                 <div class="col-md-10">
-                    <RadzenImage Path=@($"{ImgUrl}") Style="width: 100%; height: 250px; border: black solid 0.5px " />
+                    <RadzenImage Path=@($"{ImgUrl}") Style="max-width: 100%; display: block; margin-bottom: 5px;" />
                     <InputFile OnChange="@HandleSelected" accept=".jpg, .jpeg, .png" />
                     <ValidationMessage For="@(() => existingArticle.ImageFile)" />
 
@@ -154,7 +154,7 @@
     private bool isSave = false;
     private int count = 0;
 
-    public string uploadPath;
+    public string uploadPath = "http://localhost:5200/api/file/uploadimageeditor";
 
     protected async override Task OnParametersSetAsync()
     {
@@ -162,8 +162,6 @@
         Categories = await _categoryService.GetListCategory();
         ac = await _acService.GetArticleCategory(articleId);
         FirstFile = ImgUrl = existingArticle.ImageFile;
-        uploadPath = $"api/File/Upload?subDirectory=articles";
-
     }
     async Task HandleSelected(InputFileChangeEventArgs e)
     {
