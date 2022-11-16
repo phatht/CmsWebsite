@@ -74,5 +74,10 @@ namespace CmsWebsite.Client.Blazor.Services.Article
             var result = await _httpClient.GetFromJsonAsync<ArticleUpdateRequest>($"api/article/{id}");
             return result;
         }
+
+        public async Task LikeArticle(long id)
+        {
+            await _httpClient.GetAsync($"api/Article/LikeArticle?id={id}");
+        }
     }
 }

@@ -2,8 +2,6 @@
 using CmsWebsite.Api.Domain.Service;
 using CmsWebsite.Share.Models.Article;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Hosting;
-using System;
 
 namespace CmsWebsite.Api.Controllers
 {
@@ -16,6 +14,13 @@ namespace CmsWebsite.Api.Controllers
         public ArticleController(IArticleService IArticleService)
         {
             _articleService = IArticleService;
+        }
+
+        [HttpGet(nameof(LikeArticle))]
+        public async Task<ActionResult> LikeArticle(long id)
+        {
+            await _articleService.PostLikeArticle(id);
+            return Ok();
         }
 
         // GET: api/article
@@ -91,10 +96,10 @@ namespace CmsWebsite.Api.Controllers
         [HttpDelete("soft/{id}")]
         public async Task<IActionResult> SoftDeleteArticle(long id, bool isDeleted)
         {
-            
+
             try
             {
-                await _articleService.SoftDeleteArticle(id,isDeleted);
+                await _articleService.SoftDeleteArticle(id, isDeleted);
             }
             catch (Exception ex)
             {
