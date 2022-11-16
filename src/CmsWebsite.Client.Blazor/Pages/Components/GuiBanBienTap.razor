@@ -1,0 +1,81 @@
+﻿@page "/components/guibanbientap"
+
+ 
+
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+            <RadzenFieldset Text="Gửi ban biên tập">
+               
+                <div class="row my-1">
+                    <div class="col-md-2 align-items-center d-flex">
+                        <RadzenLabel Text="Họ tên" />
+                    </div>
+                    <div class="col-md-4">
+                        <RadzenTextBox style="width: 100%;" Name="txtHoTen" />
+                    </div>
+                    <div class="col-md-2 align-items-center d-flex">
+                       <RadzenLabel Text="Số điện thoại" />
+                    </div>
+                    <div class="col-md-4">
+                        <RadzenTextBox style="width: 100%;" Name="txtSoDienThoai" />
+                    </div>
+                </div> 
+                <div class="row my-1">
+                    <div class="col-md-2 align-items-center d-flex">
+                        <RadzenLabel Text="Địa chỉ" />
+                    </div>
+                    <div class="col-md-4">
+                        <RadzenTextBox style="width: 100%;" Name="txtDiaChi" />
+                    </div>
+                    <div class="col-md-2 align-items-center d-flex">
+                        <RadzenLabel Text="Email" />
+                    </div>
+                    <div class="col-md-4">
+                        <RadzenTextBox style="width: 100%;" Name="txtEmail" />
+                    </div>
+                </div>
+                <div class="row my-1">
+                    <div class="col-md-2 align-items-center d-flex">
+                        <RadzenLabel  Text="Tiêu đề" />
+                    </div>
+                    <div class="col-md-10">
+                        @*<RadzenTextBox Name="Title" @bind-Value="@article.Title" />*@
+                        <RadzenTextArea Rows="2" MaxLength="500" Placeholder="Nhập tiêu đề bài viết.."
+                                        Style="width:100%;" /> 
+                    </div>
+                </div>
+                <div class="row my-1">
+                    <div class="col-md-2 align-items-center d-flex">
+                        <RadzenLabel Text="Mô tả" />
+                    </div>
+                    <div class="col-md-10">
+                        @*<RadzenTextBox Name="Title" @bind-Value="@article.Title" />*@
+                        <RadzenTextArea Rows="2" MaxLength="500" Placeholder="Nhập mô tả bài viết.."
+                                        Style="width:100%;" />
+                    </div>
+                </div>
+                <div class="row my-1">
+                    <div class="col-md-2 align-items-center d-flex">
+                        <RadzenLabel Text="Nội dung" />
+                    </div>
+                    <div class="col-md-10">
+                        @*<RadzenTextBox Name="Title" @bind-Value="@article.Title" />*@
+                        <RadzenTextArea Rows="5" MaxLength="500" Placeholder="Nhập Nội dung bài viết.."
+                                        Style="width:100%;" />
+                    </div>
+                </div>
+                <div class="row my-1 justify-content-center">
+                   
+                        <RadzenButton ButtonType="ButtonType.Submit" Text="Gửi" />
+                     
+                </div>
+            </RadzenFieldset>
+        </div>
+    </div>
+</div>
+
+@code {
+
+}

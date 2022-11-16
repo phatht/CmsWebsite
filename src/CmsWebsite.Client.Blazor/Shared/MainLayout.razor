@@ -2,9 +2,11 @@
 @inject NavigationManager navigationManager
 @inject IAuthService auth
 @inject IArticleService _client
+@inject NavigationManager uriHelper
 @using CmsWebsite.Client.Blazor.Services.Article
 @using CmsWebsite.Share.Models.Article
 @using CmsWebsite.Client.Blazor.Pages.Components;
+
 
 <link href="_content/Radzen.Blazor/css/@(currentTheme).css" rel="stylesheet" />
 <div class="page">
@@ -48,7 +50,7 @@
                     </NavLink>
                 </NotAuthorized>
             </AuthorizeView>
-             
+
         </div>
 
         <AuthorizeView>
@@ -56,7 +58,7 @@
 
                 <RadzenMenu Style="width:100%">
                     <RadzenMenuItem Icon="home" Path="/"></RadzenMenuItem>
-                    
+
                     <RadzenMenuItem Text="Giới thiệu">
                         <RadzenMenuItem Text="Giới thiệu chung" Path="counter">
                         </RadzenMenuItem>
@@ -73,20 +75,20 @@
                     <RadzenMenuItem Text="Dân tộc - tôn giáo"></RadzenMenuItem>
                     <RadzenMenuItem Text="Đối ngoại kiều bào"></RadzenMenuItem>
                     <RadzenMenuItem Icon="menu" Path="menu">
-                      
-                        
-                       
+
+
+
                     </RadzenMenuItem>
                 </RadzenMenu>
 
             </NotAuthorized>
         </AuthorizeView>
         @*<div>
-            <AuthorizeView>
-                <NotAuthorized>
-                    <TinMoi listArticle=@articles />
-                </NotAuthorized>
-            </AuthorizeView>
+        <AuthorizeView>
+        <NotAuthorized>
+        <TinMoi listArticle=@articles />
+        </NotAuthorized>
+        </AuthorizeView>
         </div>*@
         <div class="content">
             @Body
@@ -96,11 +98,14 @@
 
     <AuthorizeView>
         <NotAuthorized>
-            <div class="col-md-3">
-                
-                @*<RadzenButton Variant="Variant.Outlined" Click=@(args => OnClick("default")) ButtonStyle="ButtonStyle.Dark" />*@
-                <RadzenButton Variant="Variant.Outlined" Click=@(args => OnClick("material")) ButtonStyle="ButtonStyle.Dark" />
+            <div class="col-md-3 my-2">
 
+                @*<RadzenButton Variant="Variant.Outlined" Click=@(args => OnClick("default")) ButtonStyle="ButtonStyle.Dark" />*@
+                <RadzenButton Variant="Variant.Outlined" Click=@(args => ChangeThem()) ButtonStyle="ButtonStyle.Dark" Icon="@modeTheme" />
+                <RadzenButton Click=@(arg => uriHelper.NavigateTo("components/guibanbientap")) ButtonStyle="ButtonStyle.Secondary" Shade="Shade.Lighter">
+                    <span class="rz-button-text">Gửi bài viết</span>
+                    <RadzenIcon Icon="forward_to_inbox" />
+                </RadzenButton>
                 <LienKetWebsite></LienKetWebsite>
                 <DanhSachMatTran></DanhSachMatTran>
                 <VanBanPhapLuat></VanBanPhapLuat>
@@ -115,6 +120,7 @@
 
     int col = 10;
     string currentTheme = "standard";
+    string modeTheme = "dark_mode";
 
     [CascadingParameter]
     Task<AuthenticationState> AuthenticationState { get; set; }
@@ -132,9 +138,21 @@
             col = 9;
         }
     }
-    void OnClick(string theme)
+    void ChangeThem()
     {
-        currentTheme = theme;
+        if (currentTheme == "material")
+
+        {
+            currentTheme = "standard";
+            modeTheme = "dark_mode";
+        }
+        else
+        { 
+            currentTheme = "material";
+            modeTheme = "light_mode";
+
+        }
+       
 
     }
 }
