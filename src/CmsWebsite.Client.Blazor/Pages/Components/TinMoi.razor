@@ -1,24 +1,24 @@
 ﻿@using CmsWebsite.Share.Models.Article
 @inject NavigationManager uriHelper
 <div class="row">
-
+    
     @if (listArticle != null)
     {
         foreach (var item in listArticle.Take(3))
         {
-
-            <div class="col-md-4">
-                <div class="wrapper m-2">
-                    <span @onclick="() => EditRow(item.ArticleID)">
-                        <img src="@item.ImageFile" class="rounded float-left mr-2" style="width: 95px; height: 80px;">
-                        <p class="wrapper-p" style="font-size:13px">@item.Description</p>
-                    </span>
+          
+                <div class="col-md-4">
+                    <div class="wrapper m-2">
+                        <span @onclick="() => EditRow(item.ArticleID)">
+                            <img src="@item.ImageFile" class="rounded float-left mr-2" style="width: 95px; height: 80px;">
+                            <p class="wrapper-p" style="font-size:13px">@item.Description</p>
+                        </span>
+                    </div>
                 </div>
-            </div>
-
+           
         }
     }
-
+    
 </div>
 
 @code {

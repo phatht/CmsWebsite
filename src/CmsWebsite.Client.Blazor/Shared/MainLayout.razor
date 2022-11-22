@@ -24,17 +24,17 @@
     <div class="col-md-@col">
 
         <div class="top-row">
-            <div class="col-md-4">
+            <div class="col-md-3">
                 <a href="/">
-                    <RadzenImage Path="/img/logo.png" Style="width:255px" />
+                    <RadzenImage Path="/img/logo.png" Style="width:255px;padding-right:15px" />
                 </a>
             </div>
             <div class="col-md-1">
             </div>
-            <div class="col-md-5 icons-wrapper d-flex">
-                <button type="button" class="btn d-flex" style="font-size:14px"><RadzenIcon Icon="facebook" /><span class="ms-1">Facebook</span></button>
-                <button type="button" class="btn d-flex" style="font-size:14px"><RadzenIcon Icon="call" /><span class="ms-1">Mobile</span></button>
-                <button type="button" class="btn d-flex" style="font-size:14px"><RadzenIcon Icon="mark_email_read" /><span class="ms-1">Email</span></button>
+            <div class="col-md-6 icons-wrapper d-flex">
+                @*<button type="button" class="btn d-flex" style="font-size:14px"><RadzenIcon Icon="facebook" /><span class="ms-1">Facebook</span></button>*@
+                <button type="button" class="btn d-flex" style="font-size:14px"><RadzenIcon Icon="call" Style="color:green" /><span class="ms-1">(025 111 222)</span></button>
+                <button type="button" class="btn d-flex" style="font-size:14px"><RadzenIcon Icon="mark_email_read" Style="color:red" /><span class="ms-1">Email</span></button>
             </div>
             <AuthorizeView>
                 <Authorized>
@@ -44,11 +44,11 @@
                         </NavLink>
                     </div>
                 </Authorized>
-                <NotAuthorized>
+               @* <NotAuthorized>
                     <NavLink class="nav-link" href="login" style="float:right" title="Đăng nhập quản trị">
                         <RadzenIcon Icon="manage_accounts" />
                     </NavLink>
-                </NotAuthorized>
+                </NotAuthorized>*@
             </AuthorizeView>
 
         </div>
@@ -101,8 +101,8 @@
             <div class="col-md-3 my-2">
 
                 @*<RadzenButton Variant="Variant.Outlined" Click=@(args => OnClick("default")) ButtonStyle="ButtonStyle.Dark" />*@
-                <RadzenButton Variant="Variant.Outlined" Click=@(args => ChangeThem()) ButtonStyle="ButtonStyle.Dark" Icon="@modeTheme" />
-                <RadzenButton Click=@(arg => uriHelper.NavigateTo("components/guibanbientap")) ButtonStyle="ButtonStyle.Secondary" Shade="Shade.Lighter">
+                <RadzenButton Variant="Variant.Flat" Shade="Shade.Lighter" ButtonStyle="ButtonStyle.Light" Click=@(args => ChangeThem()) Icon="@modeTheme" />
+                <RadzenButton Variant="Variant.Flat" Shade="Shade.Lighter" ButtonStyle="ButtonStyle.Light" Click=@(arg => uriHelper.NavigateTo("components/guibanbientap")) >
                     <span class="rz-button-text">Gửi bài viết</span>
                     <RadzenIcon Icon="forward_to_inbox" />
                 </RadzenButton>
