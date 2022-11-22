@@ -137,7 +137,7 @@
                 <div class="col-md-10">
                     @if (VideoUrl != null)
                     {
-                        <video controls width="250" style="display: block;">
+                        <video controls width="250" Style="display: block; margin-bottom: 5px;">
                             <source src="@VideoUrl" type="video/mp4">not supported.
                         </video>
                     }
@@ -170,6 +170,7 @@
 
     public string uploadPath = "http://localhost:5200/api/file/uploadimageeditor";
 
+    [Parameter]
     public string VideoUrl { get; set; }
     public string videoFile;
 
@@ -198,9 +199,9 @@
 
                     //chỉ xoá file nếu img thay đổi lần 2
                     if (!string.IsNullOrEmpty(ImgUrl) && stateChanged)
-                        await _articleService.DeleteArticleImage(ImgUrl);
+                        await _articleService.DeleteArticleFile(ImgUrl);
 
-                    var response = await _articleService.UploadArticleImage(content);
+                    var response = await _articleService.UploadArticleFile(content);
                     ImgUrl = response.loadPathFile;
                     //Console.WriteLine(response);
                     //kiểm tra file đã thay đổi hay chưa nếu thay đổi rồi thì save lại
@@ -225,17 +226,15 @@
                 var trustedFileName = file.Name;
                 var fileContent = new StreamContent(file.OpenReadStream(maxFileSize));
 
-                //content.Headers.ContentDisposition = new ContentDispositionHeaderValue("form-data");
-                //content.Add(new StreamContent(readStream, Convert.ToInt32(readStream.Length)), "UploadFiles", trustedFileName);
-
                 content.Add(fileContent, "UploadFiles", trustedFileName);
 
                 //chỉ xoá file nếu file thay đổi lần 2
                 if (!string.IsNullOrEmpty(VideoUrl) && stateChanged)
-                    await _articleService.DeleteArticleImage(VideoUrl);
+                    await _articleService.DeleteArticleFile(VideoUrl);
 
-                var response = await _articleService.UploadArticleImage(content);
+                var response = await _articleService.UploadArticleFile(content);
                 VideoUrl = response.loadPathFile;
+                Console.WriteLine(VideoUrl);
                 //Console.WriteLine(response);
                 //kiểm tra file đã thay đổi hay chưa nếu thay đổi rồi thì save lại
                 stateChanged = true;
@@ -256,8 +255,8 @@
         //FirstFile = ImgUrl;
         if (stateChanged && count > 0)
         {
-            await _articleService.DeleteArticleImage(firstFile);
-            await _articleService.DeleteArticleImage(videoFile);
+            await _articleService.DeleteArticleFile(firstFile);
+            await _articleService.DeleteArticleFile(videoFile);
         }
         //lưu trạng thái save file
         isSave = true;
@@ -295,7 +294,7 @@
         }
         else
         {
-            await _articleService.DeleteArticleImage(existingArticle.ImageFile);
+            await _articleService.DeleteArticleFile(existingArticle.ImageFile);
             Console.WriteLine(JsonSerializer.Serialize(existingArticle, new JsonSerializerOptions() { WriteIndented = true }));
         }
     }
@@ -310,8 +309,8 @@
         // cách này chỉ áp dụng cho lần đầu
         if (stateChanged && !isSave)
         {
-            await _articleService.DeleteArticleImage(ImgUrl);
-            await _articleService.DeleteArticleImage(VideoUrl);
+            await _articleService.DeleteArticleFile(ImgUrl);
+            await _articleService.DeleteArticleFile(VideoUrl);
         }
 
         uriHelper.NavigateTo("article");

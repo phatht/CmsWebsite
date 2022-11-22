@@ -13,8 +13,8 @@ namespace CmsWebsite.Client.Blazor.Services.Article
         Task<long> CreateArticle(ArticleCreateRequest request);
         Task<bool> UpdateArticle(long id, ArticleUpdateRequest request);
         Task<bool> DeleteArticle(long id, bool isDeleted);
-        Task<bool> DeleteArticleImage(string fileName);
-        Task<UploadFileResponse> UploadArticleImage(MultipartFormDataContent content);
+        Task<bool> DeleteArticleFile(string fileName);
+        Task<UploadFileResponse> UploadArticleFile(MultipartFormDataContent content);
         Task LikeArticle(long id, bool like);
     }
 }

@@ -26,7 +26,7 @@ namespace CmsWebsite.Client.Blazor.Services.Article
             return result.IsSuccessStatusCode;
         }
 
-        public async Task<bool> DeleteArticleImage(string fileName)
+        public async Task<bool> DeleteArticleFile(string fileName)
         {
             var result = await _httpClient.DeleteAsync($"api/file/delete?fileName={fileName}");
             return result.IsSuccessStatusCode;
@@ -50,7 +50,7 @@ namespace CmsWebsite.Client.Blazor.Services.Article
             return result.IsSuccessStatusCode;
         }
 
-        public async Task<UploadFileResponse> UploadArticleImage(MultipartFormDataContent content)
+        public async Task<UploadFileResponse> UploadArticleFile(MultipartFormDataContent content)
         {
             var response = await _httpClient.PostAsync($"api/file/upload?subDirectory=articles", content);
             if (!response.IsSuccessStatusCode)

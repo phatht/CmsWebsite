@@ -24,16 +24,18 @@
                 {
                     <button type="button" @onclick="handleLike" class="btn d-flex" style="font-size:14px"><RadzenIcon Icon="favorite" Style="color: #f92f60;" /><span class="ms-1">Thích @currentLike</span></button>
                 }
-                &nbsp;&nbsp;&nbsp
+               &nbsp;&nbsp;&nbsp
                 <a class="d-flex text-decoration-none text-reset" style="font-size:14px" href="https://www.facebook.com/sharer/sharer.php?p[url]=@MyNavigationManager.Uri">
                     <RadzenIcon Icon="facebook" Style="color:darkblue" />
                     <span class="ms-1">Chia sẻ Facebook</span>
                 </a>
-                &nbsp;&nbsp;&nbsp
-                <a class="d-flex text-decoration-none text-reset" style="font-size:14px;">
+                @*&nbsp;&nbsp;&nbsp
+                <a class="d-flex text-decoration-none text-reset" style="font-size:14px;" data-href="@MyNavigationManager.Uri" data-oaid="3853758560685742933" data-layout="1" data-color="blue" data-customize=false>
                     <RadzenIcon Icon="share" />
                     <span class="ms-1">Chia sẻ Zalo</span>
-                </a>
+                </a>*@
+                &nbsp;&nbsp;&nbsp
+                <div class="zalo-share-button" data-href="@MyNavigationManager.Uri" data-oaid="3853758560685742933" data-layout="1" data-color="blue" data-customize=false></div>
             </div>
             <RadzenPanel>
                 <HeaderTemplate>
@@ -48,7 +50,7 @@
                     <div style="max-width: 100%">@((MarkupString)article.SummaryArticle)</div>
                     @if (article.Video != null)
                     {
-                        <video controls max-width="100%">
+                        <video controls max-width="100%" style="width: 100%">
                             <source src="@article.Video" type="video/mp4">not supported.
                         </video>
                     }

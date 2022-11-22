@@ -1,5 +1,6 @@
 ﻿using CmsWebsite.Api.Domain.Interfaces;
 using CmsWebsite.Share.Models.Article;
+using Microsoft.AspNetCore.Hosting.Server;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
 
@@ -39,6 +40,8 @@ namespace CmsWebsite.Api.Controllers
 
         #region Upload  
         [HttpPost("[action]")]
+        [RequestSizeLimit(1024L * 1024L * 1024L)]
+        [RequestFormLimits(MultipartBodyLengthLimit = 1024L * 1024L * 1024L)]
         public async Task<IActionResult> Upload([Required] IList<IFormFile> UploadFiles, string? subDirectory)
         {
             try

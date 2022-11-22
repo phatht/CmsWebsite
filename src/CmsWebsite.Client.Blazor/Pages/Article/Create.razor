@@ -140,6 +140,20 @@
                        
                 </div>
             </div>
+            <div class="row my-3">
+                <div class="col-md-2 align-items-center d-flex">
+                    <RadzenLabel Component="ImageFile" Text="Video bài viết: " />
+                </div>
+                <div class="col-md-10">
+                    @if (VideoUrl != null)
+                    {
+                        <video controls width="250" Style="display: block; margin-bottom: 5px;">
+                            <source src="@VideoUrl" type="video/mp4">not supported.
+                        </video>
+                    }
+                    <InputFile OnChange="@HandleFiles" accept=".mp4" />
+                </div>
+            </div>
             <div class="row justify-content-center">
                 <div class="col-md-3  d-flex align-items-end justify-content-center">
                     <RadzenButton ButtonType="ButtonType.Submit" Text="Lưu" />
@@ -169,6 +183,9 @@
     private int countHtmlEditor = 0;
     public string uploadPath = "http://localhost:5200/api/file/uploadimageeditor";
 
+    public string VideoUrl { get; set; }
+    public string videoFile;
+
     protected override async Task OnInitializedAsync()
     {
         var userInfor = await getCurrentUser();
@@ -195,9 +212,9 @@
 
                     //chỉ xoá file nếu img thay đổi lần 2
                     if (!string.IsNullOrEmpty(ImgUrl) && stateChanged)
-                        await _articleService.DeleteArticleImage(ImgUrl);
+                        await _articleService.DeleteArticleFile(ImgUrl);
 
-                    var response = await _articleService.UploadArticleImage(content);
+                    var response = await _articleService.UploadArticleFile(content);
                     article.ImageFile = ImgUrl = response.loadPathFile;
                     //Console.WriteLine(JsonSerializer.Serialize(response, new JsonSerializerOptions() { WriteIndented = true }));
 
@@ -211,17 +228,50 @@
             }
         }
     }
+
+    async Task HandleFiles(InputFileChangeEventArgs e)
+    {
+        long maxFileSize = 1024 * 1024 * 1024;
+        using var content = new MultipartFormDataContent();
+        foreach (var file in e.GetMultipleFiles())
+        {
+            if (file != null)
+            {
+                var trustedFileName = file.Name;
+                var fileContent = new StreamContent(file.OpenReadStream(maxFileSize));
+
+                content.Add(fileContent, "UploadFiles", trustedFileName);
+
+                //chỉ xoá file nếu file thay đổi lần 2
+                if (!string.IsNullOrEmpty(VideoUrl) && stateChanged)
+                    await _articleService.DeleteArticleFile(VideoUrl);
+
+                var response = await _articleService.UploadArticleFile(content);
+                VideoUrl = response.loadPathFile;
+                //Console.WriteLine(response);
+                //kiểm tra file đã thay đổi hay chưa nếu thay đổi rồi thì save lại
+                stateChanged = true;
+                ++count;
+
+                //reset trạng thái save filechange file
+                isSave = false;
+            }
+        }
+    }
+
     async Task CreateArticle()
     {
         article.ImageFile = ImgUrl;
+        article.Video = VideoUrl;
         //nếu file có sự thay đổi thì xoá file củ
         //sau khi lưu lần 1 file ban đầu đã bị xoá cần lưu lại giá trị file mới
         //FirstFile = ImgUrl;
-        if (!string.IsNullOrEmpty(firstFile))
+        if (!string.IsNullOrEmpty(firstFile) || !string.IsNullOrEmpty(videoFile))
         {
             if (stateChanged && count > 0)
             {
-                await _articleService.DeleteArticleImage(firstFile);
+                await _articleService.DeleteArticleFile(firstFile);
+                await _articleService.DeleteArticleFile(videoFile);
             }
         }
         //lưu trạng thái save file
@@ -279,7 +329,7 @@
         // cách này chỉ áp dụng cho lần đầu
         if (stateChanged && !isSave)
         {
-            _articleService.DeleteArticleImage(ImgUrl);
+            _articleService.DeleteArticleFile(ImgUrl);
         }
         uriHelper.NavigateTo("article");
     }
