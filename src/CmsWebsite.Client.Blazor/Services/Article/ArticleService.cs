@@ -79,5 +79,6 @@ namespace CmsWebsite.Client.Blazor.Services.Article
         {
             await _httpClient.GetAsync($"api/Article/LikeArticle?id={id}&like={like}");
         }
+
     }
 }

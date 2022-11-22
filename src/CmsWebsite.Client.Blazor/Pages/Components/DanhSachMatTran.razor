@@ -1,11 +1,12 @@
-﻿
-<h6>ỦY BAN MẶT TRẬN CÁC TỈNH THÀNH PHỐ</h6>
+﻿@inject IJSRuntime JSRuntime;
+
+<span class="tag my-2">ỦY BAN MẶT TRẬN</span>
 <RadzenListBox AllowFiltering="true" Placeholder="Tìm kiếm thông tin"
                 FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive"
                 FilterOperator="StringFilterOperator.Contains" 
                 @bind-Value=@value
                 Data=@List TextProperty="Name"
-                ValueProperty="Link"  Change=@OnChange Style="height:200px;font-size:small"  Class="w-100" />
+                ValueProperty="Link" Change=@OnChange Style="height:200px;font-size:small"  Class="w-100" />
 
 @code {
     private string value = string.Empty;
@@ -30,12 +31,8 @@
 
     }
 
-    void OnChange()
+    async Task OnChange(object value)
     {
-        @* var str = value is List<object> ? string.Join(", ", (List<object>)value) : value; *@
-
-        Console.WriteLine($"Value changed to {str}");
+        await JSRuntime.InvokeAsync<string>("open", $"{value}", "_blank");
     }
-
-
 }

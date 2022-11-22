@@ -25,9 +25,14 @@
                     <button type="button" @onclick="handleLike" class="btn d-flex" style="font-size:14px"><RadzenIcon Icon="favorite" Style="color: #f92f60;" /><span class="ms-1">Thích @currentLike</span></button>
                 }
                 &nbsp;&nbsp;&nbsp
-                <a class="d-flex text-decoration-none text-reset" style="font-size:14px;" href="https://www.facebook.com/sharer/sharer.php?p[url]=@MyNavigationManager.Uri">
-                    <RadzenIcon Icon="share" />
+                <a class="d-flex text-decoration-none text-reset" style="font-size:14px" href="https://www.facebook.com/sharer/sharer.php?p[url]=@MyNavigationManager.Uri">
+                    <RadzenIcon Icon="facebook" Style="color:darkblue" />
                     <span class="ms-1">Chia sẻ Facebook</span>
+                </a>
+                &nbsp;&nbsp;&nbsp
+                <a class="d-flex text-decoration-none text-reset" style="font-size:14px;">
+                    <RadzenIcon Icon="share" />
+                    <span class="ms-1">Chia sẻ Zalo</span>
                 </a>
             </div>
             <RadzenPanel>
