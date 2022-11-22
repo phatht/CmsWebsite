@@ -27,7 +27,8 @@ namespace CmsWebsite.Api.Controllers
             try
             {
                 var result = await _fileService.UploadFile(file, "articles");
-                var url = Url.Content($"https://localhost:5400/{result.loadPathFile}").Replace('\\', '/');
+                var url = Url.Content($"/{result.loadPathFile}").Replace('\\', '/');
+                Console.WriteLine(url);
                 return Ok(new { Url = url });
             }
             catch (Exception ex)

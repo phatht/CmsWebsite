@@ -18,5 +18,6 @@ namespace CmsWebsite.Share.Models.Article
         public string KeyWords { get; set; }
         public string SubHead { get; set; }
         public string Author { get; set; }
+        public string? Video { get; set; }
     }
 }

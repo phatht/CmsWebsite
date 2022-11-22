@@ -5,7 +5,7 @@
                 FilterOperator="StringFilterOperator.Contains" 
                 @bind-Value=@value
                 Data=@List TextProperty="Name"
-                ValueProperty="Link" Change=@OnChange Style="height:200px;font-size:small"  Class="w-100" />
+                ValueProperty="Link"  Change=@OnChange Style="height:200px;font-size:small"  Class="w-100" />
 
 @code {
     private string value = string.Empty;
@@ -30,9 +30,9 @@
 
     }
 
-    void OnChange(object value)
+    void OnChange()
     {
-        var str = value is List<object> ? string.Join(", ", (List<object>)value) : value;
+        @* var str = value is List<object> ? string.Join(", ", (List<object>)value) : value; *@
 
         Console.WriteLine($"Value changed to {str}");
     }

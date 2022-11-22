@@ -15,30 +15,15 @@
                 &nbsp;&nbsp;&nbsp
                 <div class="d-flex"><RadzenIcon Icon="today" Style="color:#e35d5dd9" /><span class="ms-1">@article.CreatedDate.ToString("dd/MM/yyyy HH:mm")</span></div>
                 &nbsp;&nbsp;&nbsp
-                @if (thisArticle.Like == false)
+                @* <button type="button" @onclick="handleLike" class="btn d-flex" style="font-size:14px"><RadzenIcon Icon="favorite_border" Style="color: #f92f60;" /><span class="ms-1">Thích @currentLike</span></button> *@
+                @if (checkLike == false)
                 {
-                    <button type="button" @onclick="handleLike" class="btn d-flex" style="font-size:14px"><RadzenIcon Icon="favorite_border" Style="color: #f92f60;" /><span class="ms-1">Thích @article.Like</span></button>
+                    <button type="button" @onclick="handleLike" class="btn d-flex" style="font-size:14px"><RadzenIcon Icon="favorite_border" Style="color: #f92f60;" /><span class="ms-1">Thích @currentLike</span></button>
                 }
                 else
                 {
-                    <button type="button" @onclick="handleLike" class="btn d-flex" style="font-size:14px"><RadzenIcon Icon="favorite" Style="color: #f92f60;" /><span class="ms-1">Thích @(article.Like + 1)</span></button>
+                    <button type="button" @onclick="handleLike" class="btn d-flex" style="font-size:14px"><RadzenIcon Icon="favorite" Style="color: #f92f60;" /><span class="ms-1">Thích @currentLike</span></button>
                 }
-                @*@{
-            if (mayLike != null)
-            {
-            foreach (var item in mayLike)
-            {
-            if (item.Id != article.ArticleID || item.Like == false)
-            {
-            <button type="button" @onclick="handleLike" class="btn d-flex" style="font-size:14px"><RadzenIcon Icon="favorite_border" Style="color: #f92f60;" /><span class="ms-1">Thích @article.Like</span></button>
-            }
-            else if (item.Like == true && item.Id == article.ArticleID)
-            {
-            <button type="button" @onclick="handleLike" class="btn d-flex" style="font-size:14px"><RadzenIcon Icon="favorite" Style="color: #f92f60;" /><span class="ms-1">Thích @(article.Like + 1)</span></button>
-            }
-            }
-            }
-            }*@
                 &nbsp;&nbsp;&nbsp
                 <a class="d-flex text-decoration-none text-reset" style="font-size:14px;" href="https://www.facebook.com/sharer/sharer.php?p[url]=@MyNavigationManager.Uri">
                     <RadzenIcon Icon="share" />
@@ -56,6 +41,12 @@
                 </HeaderTemplate>
                 <ChildContent>
                     <div style="max-width: 100%">@((MarkupString)article.SummaryArticle)</div>
+                    @if (article.Video != null)
+                    {
+                        <video controls max-width="100%">
+                            <source src="@article.Video" type="video/mp4">not supported.
+                        </video>
+                    }
                 </ChildContent>
             </RadzenPanel>
         </div>
@@ -64,63 +55,27 @@
 
 
 @code {
+    [Parameter]
+    public int currentLike { get; set;}
+    private bool checkLike;
     private async void handleLike()
     {
-        if (thisArticle.Like == false)
+        if (checkLike == false)
         {
-            thisArticle.Like = true;
-            await _articleService.LikeArticle(articleId);
+            currentLike++;
+            checkLike = true;
+            await _articleService.LikeArticle(articleId, true);
         }
         else
         {
-            thisArticle.Like = false;
+            currentLike--;
+            checkLike = false;
+            await _articleService.LikeArticle(articleId, false);
         }
     }
-    const string key = "like";
-    class MayLike
-    {
-        public MayLike(long id)
-        {
-            Id = id;
-        }
-        public MayLike(long id, bool like)
-        {
-            Id = id;
-            Like = like;
-        }
-        public MayLike() { }
-        public long Id { get; set; }
-        public bool? Like { get; set; } = null;
-    }
-
-    List<MayLike>? mayLike; 
-    MayLike? thisArticle;
     protected override async Task OnInitializedAsync()
     {
-
-
     }
-    //private async void handleLike()
-    //{
-    //    foreach (var item in mayLike)
-    //    {
-    //        item.Id = article.ArticleID;
-    //        if (item.Like == false)
-    //        {
-    //            mayLike.Remove(new MayLike(item.Id, item.Like));
-    //            mayLike.Add(new MayLike(item.Id, item.Like));
-    //            await localStorage.SetItemAsync(key, mayLike);
-    //            item.Like = true;
-    //        }
-    //        else
-    //        {
-    //            mayLike.Remove(new MayLike(item.Id, item.Like));
-    //            mayLike.Add(new MayLike(item.Id, item.Like));
-    //            await localStorage.SetItemAsync(key, mayLike);
-    //            item.Like = false;
-    //        }
-    //    }
-    //}
 
     [Parameter]
     public long articleId { set; get; }
@@ -129,31 +84,7 @@
 
     protected async override Task OnParametersSetAsync()
     {
-        thisArticle = new MayLike(articleId);
         article = await _articleService.GetArticle(articleId);
-
-        mayLike = await localStorage.GetItemAsync<List<MayLike>>(key);
-        if (mayLike == null)
-        {
-            mayLike = new List<MayLike>();
-            thisArticle.Like = false;
-
-            mayLike.Add(thisArticle);
-            await localStorage.SetItemAsync(key, mayLike);
-        }
-        else
-        {
-            foreach (var item in mayLike)
-            {
-                if (item.Id == thisArticle.Id)
-                {
-            Console.WriteLine(thisArticle.Id);
-                    
-                thisArticle.Like = item.Like;
-                }
-            }
-            if (thisArticle.Like == null)
-                thisArticle.Like = false;
-        }
+        currentLike = article.Like;
     }
 }

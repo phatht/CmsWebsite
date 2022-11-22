@@ -130,6 +130,20 @@
 
                 </div>
             </div>
+            <div class="row my-3">
+                <div class="col-md-2 align-items-center d-flex">
+                    <RadzenLabel Component="ImageFile" Text="Video bài viết: " />
+                </div>
+                <div class="col-md-10">
+                    @if (existingArticle.Video != null)
+                    {
+                        <video controls width="250">
+                            <source src="@existingArticle.Video" type="video/mp4">not supported.
+                        </video>
+                    }
+                    <RadzenUpload Url="@uploadPath" Accept=".mp4" Style="display: block;" />
+                </div>
+            </div>
             <div class="row justify-content-center">
                 <div class="col-md-3  d-flex align-items-end justify-content-center">
                     <RadzenButton ButtonType="ButtonType.Submit" Text="Lưu" />
@@ -149,19 +163,23 @@
 
     [Parameter]
     public string ImgUrl { get; set; }
-    public string FirstFile;
+    public string firstFile;
     private bool stateChanged = false;
     private bool isSave = false;
     private int count = 0;
 
     public string uploadPath = "http://localhost:5200/api/file/uploadimageeditor";
 
+    [Parameter]
+    public string VideoUrl { get; set; }
+
     protected async override Task OnParametersSetAsync()
     {
+        VideoUrl = uploadPath;
         existingArticle = await _articleService.GetUpdateArticle(articleId);
         Categories = await _categoryService.GetListCategory();
         ac = await _acService.GetArticleCategory(articleId);
-        FirstFile = ImgUrl = existingArticle.ImageFile;
+        firstFile = ImgUrl = existingArticle.ImageFile;
     }
     async Task HandleSelected(InputFileChangeEventArgs e)
     {
@@ -204,7 +222,7 @@
         //FirstFile = ImgUrl;
         if (stateChanged && count > 0)
         {
-            await _articleService.DeleteArticleImage(FirstFile);
+            await _articleService.DeleteArticleImage(firstFile);
         }
         //lưu trạng thái save file
         isSave = true;
@@ -212,7 +230,7 @@
         stateChanged = false;
         count = 0;
         //ghi lại file vừa mới lưu
-        FirstFile = existingArticle.ImageFile;
+        firstFile = existingArticle.ImageFile;
         //cập nhật bài viết
         var updateArticle = await _articleService.UpdateArticle(articleId, existingArticle);
         if (updateArticle)

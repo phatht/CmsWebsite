@@ -114,6 +114,8 @@ namespace CmsWebsite.Api.Domain.Service
                     return true;
                 case ".jpeg":
                     return true;
+                case ".mp4":
+                    return true;
                 default:
                     return false;
             }

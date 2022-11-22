@@ -75,9 +75,9 @@ namespace CmsWebsite.Client.Blazor.Services.Article
             return result;
         }
 
-        public async Task LikeArticle(long id)
+        public async Task LikeArticle(long id, bool like)
         {
-            await _httpClient.GetAsync($"api/Article/LikeArticle?id={id}");
+            await _httpClient.GetAsync($"api/Article/LikeArticle?id={id}&like={like}");
         }
     }
 }

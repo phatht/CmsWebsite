@@ -162,7 +162,7 @@
     //#region Process ImageFile Variables
     [Parameter]
     public string ImgUrl { get; set; }
-    public string FirstFile;
+    public string firstFile;
     private bool stateChanged = false;
     private bool isSave = false;
     private int count = 0;
@@ -217,11 +217,11 @@
         //nếu file có sự thay đổi thì xoá file củ
         //sau khi lưu lần 1 file ban đầu đã bị xoá cần lưu lại giá trị file mới
         //FirstFile = ImgUrl;
-        if (!string.IsNullOrEmpty(FirstFile))
+        if (!string.IsNullOrEmpty(firstFile))
         {
             if (stateChanged && count > 0)
             {
-                await _articleService.DeleteArticleImage(FirstFile);
+                await _articleService.DeleteArticleImage(firstFile);
             }
         }
         //lưu trạng thái save file
@@ -230,7 +230,7 @@
         stateChanged = false;
         count = 0;
         //ghi lại file vừa mới lưu
-        FirstFile = article.ImageFile;
+        firstFile = article.ImageFile;
         var newArticle = await _articleService.CreateArticle(article);
         if (newArticle != null)
         {

@@ -21,7 +21,7 @@ namespace CmsWebsite.Api.Domain.Service
 
         Task<IEnumerable<Article>> GetArticleByCategoryIdAsync(long CategoryId);
 
-        Task<int> PostLikeArticle(long id);
+        Task<int> PostLikeArticle(long id, bool like);
 
     }
 
@@ -97,6 +97,7 @@ namespace CmsWebsite.Api.Domain.Service
             existingArticle.SummaryArticle = request.SummaryArticle;
             existingArticle.LastModifiedDate = DateTime.Now;
             existingArticle.Author = request.Author;
+            existingArticle.Video = request.Video;
             try
             {
                 _unitOfWork.ArticleRepository.Update(existingArticle);
@@ -189,12 +190,15 @@ namespace CmsWebsite.Api.Domain.Service
 
         }
 
-        public async Task<int> PostLikeArticle(long id)
+        public async Task<int> PostLikeArticle(long id, bool like)
         {
             try
             {
                 var entity = await _unitOfWork.ArticleRepository.FindAsync(id);
-                entity.Like += 1;
+                if (like == true)
+                    entity.Like += 1;
+                else
+                    entity.Like -= 1;
                 await _unitOfWork.CommitAsync();
                 return entity.Like;
 

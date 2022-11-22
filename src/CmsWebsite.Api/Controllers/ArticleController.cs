@@ -17,9 +17,9 @@ namespace CmsWebsite.Api.Controllers
         }
 
         [HttpGet(nameof(LikeArticle))]
-        public async Task<ActionResult> LikeArticle(long id)
+        public async Task<ActionResult> LikeArticle(long id, bool like)
         {
-            await _articleService.PostLikeArticle(id);
+            await _articleService.PostLikeArticle(id, like);
             return Ok();
         }
 

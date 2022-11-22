@@ -29,7 +29,7 @@ namespace CmsWebsite.Share.Models.Article
 
         public string? SubHead { get; set; }
 
-
+        public string? Video { get; set; }
     }
 
 }
