@@ -66,6 +66,7 @@ namespace CmsWebsite.Api.Domain.Service
                     PublishDate = DateTime.Now,
                     ExpireDate = DateTime.Now,
                     NumberOfViews = 0,
+                    Video = request.Video
                 };
 
                 var result = await _unitOfWork.ArticleRepository.AddAsync(article);

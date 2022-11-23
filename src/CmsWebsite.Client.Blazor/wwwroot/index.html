@@ -33,6 +33,14 @@
     <script src="_framework.blazor.sever.js"></script>
     <script src="Radzen.Blazor/Radzen.Blazor.js"></script>
     <script src="https://sp.zalo.me/plugins/sdk.js"></script>
+    <script>
+        function loadZaloDSK() {
+            ZaloSocialSDK.reload();
+        }
+        function loadVideo() {
+            document.getElementById("videoArticle").load();
+        }
+    </script>
 </body>
 
 </html>

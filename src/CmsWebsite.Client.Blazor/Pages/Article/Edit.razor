@@ -14,6 +14,7 @@
 @inject IArticleCategoryService _acService
 @inject NavigationManager uriHelper
 @inject NotificationService NotificationService
+@inject IJSRuntime JSRuntime
 <div class="container-fluid">
     <div class="row">
         <RadzenTemplateForm TItem="ArticleUpdateRequest" Data="@existingArticle" Submit=@Update>
@@ -137,9 +138,11 @@
                 <div class="col-md-10">
                     @if (VideoUrl != null)
                     {
-                        <video controls width="250" Style="display: block; margin-bottom: 5px;">
-                            <source src="@VideoUrl" type="video/mp4">not supported.
-                        </video>
+                        <div style="width: 100%; padding-top: 56.25%; height: 0px; position: relative; margin-bottom: 5px;">
+                            <video id="videoArticle" controls style="width: 100%; height: 100%; position: absolute; top: 0; left: 0;">
+                                <source src="@VideoUrl" type="video/mp4">not supported.
+                            </video>
+                        </div>
                     }
                     <InputFile OnChange="@HandleFiles" accept=".mp4" />
                 </div>
@@ -173,6 +176,7 @@
     [Parameter]
     public string VideoUrl { get; set; }
     public string videoFile;
+    public bool changeVideo = false;
 
     protected async override Task OnParametersSetAsync()
     {
@@ -229,15 +233,19 @@
                 content.Add(fileContent, "UploadFiles", trustedFileName);
 
                 //chỉ xoá file nếu file thay đổi lần 2
-                if (!string.IsNullOrEmpty(VideoUrl) && stateChanged)
+                if (!string.IsNullOrEmpty(VideoUrl) && changeVideo)
                     await _articleService.DeleteArticleFile(VideoUrl);
 
                 var response = await _articleService.UploadArticleFile(content);
                 VideoUrl = response.loadPathFile;
-                Console.WriteLine(VideoUrl);
+
+                // Load lại video khi thay đổi
+                if (!string.IsNullOrEmpty(VideoUrl) && changeVideo)
+                    await JSRuntime.InvokeVoidAsync("loadVideo");
+
                 //Console.WriteLine(response);
                 //kiểm tra file đã thay đổi hay chưa nếu thay đổi rồi thì save lại
-                stateChanged = true;
+                changeVideo = true;
                 ++count;
 
                 //reset trạng thái save filechange file
@@ -253,7 +261,7 @@
         //nếu file có sự thay đổi thì xoá file củ
         //sau khi lưu lần 1 file ban đầu đã bị xoá cần lưu lại giá trị file mới
         //FirstFile = ImgUrl;
-        if (stateChanged && count > 0)
+        if (stateChanged && changeVideo && count > 0)
         {
             await _articleService.DeleteArticleFile(firstFile);
             await _articleService.DeleteArticleFile(videoFile);
@@ -262,6 +270,7 @@
         isSave = true;
         //reset trạng thái
         stateChanged = false;
+        changeVideo = false;
         count = 0;
         //ghi lại file vừa mới lưu
         firstFile = existingArticle.ImageFile;
@@ -307,7 +316,7 @@
     {
         //đổi file nhưng mà chưa save lại thì xoá đi file đó để tránh rác
         // cách này chỉ áp dụng cho lần đầu
-        if (stateChanged && !isSave)
+        if (stateChanged && changeVideo && !isSave)
         {
             await _articleService.DeleteArticleFile(ImgUrl);
             await _articleService.DeleteArticleFile(VideoUrl);

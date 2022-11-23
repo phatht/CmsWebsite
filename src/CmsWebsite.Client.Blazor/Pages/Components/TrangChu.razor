@@ -21,13 +21,13 @@
             </div>
 
             <div class="col-md-4">
-                <RadzenImage Path=@listArticle[1].ImageFile Style="width: 100%;" class="rounded" />
+                <RadzenImage @onclick="() => EditRow(listArticle[1].ArticleID)" Path=@listArticle[1].ImageFile Style="width: 100%;" class="rounded" />
                
-                    <span class="wrapper-p">@listArticle[1].Title</span>
+                   @* <span class="wrapper-p">@listArticle[1].Title</span>*@
                     @for (var i = 2; i < 4; i++) // LẤY 4 BÀI VIẾT TIẾP THEO
                     {
                         <hr />
-                        <span class="wrapper-p">@listArticle[i].Title</span>
+                    <span class="wrapper-p" @onclick="() => EditRow(listArticle[i].ArticleID)">@listArticle[i].Title</span>
                     }
                 
             </div>
@@ -56,9 +56,8 @@ else
             <div class="col-md-5 ">
                 @foreach (var item in _listArticleGetByAbbreviation)
                 {
-                     <RadzenCard class="m-1">
-                        <span @onclick="() => EditRow(item.ArticleID)"> 
-                            
+                     <RadzenCard class="m-1">  
+                        <span @onclick="() => EditRow(item.ArticleID)">  
                             <div style="float:left"><img src="@item.ImageFile" class="rounded  mr-2" style="width: 95px; height: 80px;"> </div>
                             <div > <span class="wrapper-p" style="font-size:13px">@item.Description</span> </div>
                             

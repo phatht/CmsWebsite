@@ -11,6 +11,7 @@ namespace CmsWebsite.Api.Infrastructure.Data
         public DbSet<Article> Article { get; set; }
         public DbSet<ArticleCategories> ArticleCategories { get; set; }
         public DbSet<Category> Categories { get; set; }
+        public DbSet<GuestArticle> GuestArticle { get; set; }
 
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
