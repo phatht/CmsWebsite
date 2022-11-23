@@ -10,6 +10,7 @@ namespace CmsWebsite.Api.Infrastructure.Data
         public IArticleRepository _articleRepository;
         public ICategoryRepository _categoryRepository;
         public IArticleCategoryRepository _articleCategoryRepository;
+        public IGuestArticleRepository _guestArticleRepository;
 
         public IArticleRepository ArticleRepository
         {
@@ -31,6 +32,13 @@ namespace CmsWebsite.Api.Infrastructure.Data
             get
             {
                 return _articleCategoryRepository = _articleCategoryRepository ?? new ArticleCategoryRepository(_context);
+            }
+        }
+        public IGuestArticleRepository GuestArticleRepository
+        {
+            get
+            {
+                return _guestArticleRepository = _guestArticleRepository ?? new GuestArticleRepository(_context);
             }
         }
         public UnitOfWork(ApplicationDbContext context)

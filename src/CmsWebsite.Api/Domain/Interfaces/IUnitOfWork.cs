@@ -5,6 +5,7 @@
         IArticleRepository ArticleRepository { get; }
         ICategoryRepository CategoryRepository { get; }
         IArticleCategoryRepository ArticleCategoryRepository { get; }
+        IGuestArticleRepository GuestArticleRepository { get; }
         Task CommitAsync();
         Task RollbackAsync();
     }

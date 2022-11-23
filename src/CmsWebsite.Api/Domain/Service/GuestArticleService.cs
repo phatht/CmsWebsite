@@ -1,4 +1,5 @@
-﻿using CmsWebsite.Api.Domain.Interfaces;
+﻿using CmsWebsite.Api.Domain.Exceptions;
+using CmsWebsite.Api.Domain.Interfaces;
 using CmsWebsite.Api.Domain.Models;
 using CmsWebsite.Share.Models.GuestArticle;
 
@@ -15,29 +16,92 @@ namespace CmsWebsite.Api.Domain.Service
             _unitOfWork = unitOfWork;
         }
 
-        public Task<GuestArticle> DeleteGuestArticle(long id)
+        public async Task<GuestArticle> DeleteGuestArticle(long id)
         {
-            throw new NotImplementedException();
+            var guestArticle = await _unitOfWork.GuestArticleRepository.FindAsync(id);
+
+            if (guestArticle == null)
+            {
+                throw new NotFoundException($"Article {id} is not found.");
+            }
+
+            try
+            {
+                _unitOfWork.GuestArticleRepository.Remove(guestArticle);
+                await _unitOfWork.CommitAsync();
+
+                return guestArticle;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Error when delete article {ex}", ex.Message);
+                throw ex;
+            }
         }
 
-        public Task<IEnumerable<GuestArticle>> GetGuestArticleAsync()
+        public async Task<IEnumerable<GuestArticle>> GetGuestArticleAsync()
         {
-            throw new NotImplementedException();
+            return await _unitOfWork.GuestArticleRepository.ListAsync();
         }
 
-        public Task<GuestArticle> GetGuestArticleAsync(long id)
+        public async Task<GuestArticle> GetGuestArticleAsync(long id)
         {
-            throw new NotImplementedException();
+            return await _unitOfWork.GuestArticleRepository.FindAsync(id);
         }
 
-        public Task<long> PutGuestArticleAsync(GuestArticleCreateRequest request)
+        public async Task<long> PutGuestArticleAsync(GuestArticleCreateRequest request)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var guestArticle = new GuestArticle()
+                {
+                    FullName = request.FullName,
+                    Phone = request.Phone,
+                    Address = request.Address,
+                    Title = request.Title,
+                    Description = request.Description,
+                    SummaryArticle = request.SummaryArticle,
+                    CreatedDate = DateTime.Now
+                };
+
+                var result = await _unitOfWork.GuestArticleRepository.AddAsync(guestArticle);
+                await _unitOfWork.CommitAsync();
+
+                return result.GuestArticleID;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Error when create article {ex}", ex.Message);
+                throw;
+            }
         }
 
-        public Task<GuestArticle> PutGuestArticleAsync(long id, GuestArticleUpdateRequest request)
+        public async Task<GuestArticle> PutGuestArticleAsync(long id, GuestArticleUpdateRequest request)
         {
-            throw new NotImplementedException();
+            var guestArticle = await GetGuestArticleAsync(id);
+
+            if (guestArticle == null)
+            {
+                throw new NotFoundException($"Article {id} is not found.");
+            }
+            guestArticle.FullName = request.FullName;
+            guestArticle.Phone = request.Phone;
+            guestArticle.Address = request.Address;
+            guestArticle.Title = request.Title;
+            guestArticle.Description = request.Description;
+            guestArticle.SummaryArticle = request.SummaryArticle;
+            try
+            {
+                _unitOfWork.GuestArticleRepository.Update(guestArticle);
+                await _unitOfWork.CommitAsync();
+
+                return guestArticle;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Error when update article {ex}", ex.Message);
+                throw ex;
+            }
         }
     }
 }
