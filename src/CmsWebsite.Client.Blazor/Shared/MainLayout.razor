@@ -7,8 +7,8 @@
 @using CmsWebsite.Share.Models.Article
 @using CmsWebsite.Client.Blazor.Pages.Components;
 
-
-<link href="_content/Radzen.Blazor/css/@(currentTheme).css" rel="stylesheet" />
+ 
+<link href="css/radzen/@(currentTheme).css" rel="stylesheet" />
 <div class="page">
     <RadzenDialog />
     <RadzenNotification />
@@ -102,7 +102,7 @@
 
                 @*<RadzenButton Variant="Variant.Outlined" Click=@(args => OnClick("default")) ButtonStyle="ButtonStyle.Dark" />*@
                 <RadzenButton Variant="Variant.Flat" Shade="Shade.Lighter" ButtonStyle="ButtonStyle.Light" Click=@(args => ChangeThem()) Icon="@modeTheme" />
-                <RadzenButton Variant="Variant.Flat" Shade="Shade.Lighter" ButtonStyle="ButtonStyle.Light" Click=@(arg => uriHelper.NavigateTo("components/guibanbientap")) >
+                <RadzenButton Variant="Variant.Outlined"  ButtonStyle="ButtonStyle.Light" Click=@(arg => uriHelper.NavigateTo("components/guibanbientap")) >
                     <span class="rz-button-text">Gửi bài viết</span>
                     <RadzenIcon Icon="forward_to_inbox" />
                 </RadzenButton>
