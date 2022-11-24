@@ -1,0 +1,80 @@
+﻿@page "/guestarticle"
+@using CmsWebsite.Client.Blazor.Services.GuestArticle;
+@using CmsWebsite.Share.Models.GuestArticle;
+
+@inject IGuestArticleService GuestArticleService;
+@inject NavigationManager NavigationManager;
+@inject NotificationService NotificationService;
+@inject DialogService DialogService;
+
+@if (GuestArticles is null)
+{
+    <p>Đang tải bài viết của khách</p>
+}
+else
+{
+    <div class="container-fluid">
+        <RadzenDataGrid @ref="dataGrid" AllowFiltering="true" AllowColumnResize="true"
+                    FilterMode="FilterMode.Simple" AllowSorting="true" PageSize="7"
+                    AllowPaging="true" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive"
+                    ShowPagingSummary="true"
+                    Data="@GuestArticles" TItem="GuestArticleDTO" LogicalFilterOperator="LogicalFilterOperator.Or">
+            <Columns>
+                <RadzenDataGridColumn TItem="GuestArticleDTO" Property="Title"
+                                  Title="Tiêu đề" Width="140px" />
+                <RadzenDataGridColumn TItem="GuestArticleDTO" Property="Description"
+                                  Title="Mô tả" Width="140px" />
+                <RadzenDataGridColumn TItem="GuestArticleDTO" Property="FullName"
+                                  Title="Người gửi" Width="140px" />
+                <RadzenDataGridColumn TItem="GuestArticleDTO" Property="CreatedDate"
+                                  Title="Ngày tạo bài" Width="140px" FormatString="{0:d}" />
+                <RadzenDataGridColumn TItem="GuestArticleDTO" Filterable="false" Sortable="false" Property="Edit" TextAlign="TextAlign.Center" Width="120px">
+                    <Template Context="data">
+                        <RadzenButton Class="m-1" ButtonStyle="Radzen.ButtonStyle.Secondary" Icon="edit"
+                                  Click="@((args) => EditRow(data.GuestArticleID))" @onclick:stopPropagation="true" />
+                        <RadzenButton Class="m-1" ButtonStyle="ButtonStyle.Danger" Icon="delete"
+                                  Click="@((args) => DeleteRow(data.GuestArticleID))" @onclick:stopPropagation="true" />
+                    </Template>
+                </RadzenDataGridColumn>
+
+            </Columns>
+        </RadzenDataGrid>
+    </div>
+}
+
+@code {
+    protected List<GuestArticleDTO> GuestArticles { get; set; }
+    protected RadzenDataGrid<GuestArticleDTO> dataGrid;
+    protected override async Task OnInitializedAsync()
+    {
+        GuestArticles = await GuestArticleService.GetListGuestArticle();
+    }
+    protected void EditRow(long id) => NavigationManager.NavigateTo($"guestarticle/edit/{id}");
+    protected async Task DeleteRow(long id)
+    {
+        try
+        {
+            var confirmed = await DialogService.Confirm(
+               "Bạn có chắc muốn xoá?", "Xoá bài viết", options: new ConfirmOptions()
+                   {
+                       OkButtonText = "Đồng ý",
+                       CancelButtonText = "Không"
+                   });
+            if (confirmed == true)
+            {
+                var result = await GuestArticleService.DeleteGuestArticle(id);
+                if (result != null)
+                {
+                    var itemToRemove = GuestArticles.Single(r => r.GuestArticleID == id);
+                    GuestArticles.Remove(itemToRemove);
+                    await dataGrid.Reload();
+                    NotificationService.Notify(new NotificationMessage { Severity = NotificationSeverity.Success, Summary = "Thông báo sự kiện", Detail = "Đã xoá thành công", Duration = 4000 });
+                }
+            }
+        }
+        catch (System.Exception exception)
+        {
+            NotificationService.Notify(new NotificationMessage { Severity = NotificationSeverity.Error, Summary = "Thông báo sự kiện", Detail = $"{exception}", Duration = 4000 });
+        }
+    }
+}

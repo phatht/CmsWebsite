@@ -1,81 +1,102 @@
 ﻿@page "/components/guibanbientap"
+@using CmsWebsite.Client.Blazor.Services.GuestArticle;
+@using CmsWebsite.Share.Models.GuestArticle
 
- 
-
+@inject IGuestArticleService GuestArticleService
+@inject NotificationService NotificationService
 
 <div class="container-fluid">
     <div class="row">
         <div class="col-md-12">
             <RadzenFieldset Text="Gửi ban biên tập">
-               
-                <div class="row my-1">
-                    <div class="col-md-2 align-items-center d-flex">
-                        <RadzenLabel Text="Họ tên" />
+                <RadzenTemplateForm TItem="GuestArticleCreateRequest" Data="@guestArticle" Submit=@CreateGuestArticle>
+                    <DataAnnotationsValidator />
+                    <div class="row my-1">
+                        <div class="col-md-2 align-items-center d-flex">
+                            <RadzenLabel Text="Họ tên" />
+                        </div>
+                        <div class="col-md-4">
+                            <RadzenTextBox @bind-Value=@guestArticle.FullName style="width: 100%;" Name="txtHoTen" />
+                            <ValidationMessage For="@(() => guestArticle.FullName)" />
+                        </div>
+                        <div class="col-md-2 align-items-center d-flex">
+                            <RadzenLabel Text="Số điện thoại" />
+                        </div>
+                        <div class="col-md-4">
+                            <RadzenTextBox @bind-Value=@guestArticle.Phone style="width: 100%;" Name="txtSoDienThoai" />
+                            <ValidationMessage For="@(() => guestArticle.Phone)" />
+                        </div>
                     </div>
-                    <div class="col-md-4">
-                        <RadzenTextBox style="width: 100%;" Name="txtHoTen" />
+                    <div class="row my-1">
+                        <div class="col-md-2 align-items-center d-flex">
+                            <RadzenLabel Text="Địa chỉ" />
+                        </div>
+                        <div class="col-md-4">
+                            <RadzenTextBox @bind-Value=@guestArticle.Address style="width: 100%;" Name="txtDiaChi" />
+                            <ValidationMessage For="@(() => guestArticle.Address)" />
+                        </div>
+                        <div class="col-md-2 align-items-center d-flex">
+                            <RadzenLabel Text="Email" />
+                        </div>
+                        <div class="col-md-4">
+                            <RadzenTextBox @bind-Value=@guestArticle.Email style="width: 100%;" Name="txtEmail" />
+                            <ValidationMessage For="@(() => guestArticle.Email)" />
+                        </div>
                     </div>
-                    <div class="col-md-2 align-items-center d-flex">
-                       <RadzenLabel Text="Số điện thoại" />
+                    <div class="row my-1">
+                        <div class="col-md-2 align-items-center d-flex">
+                            <RadzenLabel Text="Tiêu đề" />
+                        </div>
+                        <div class="col-md-10">
+                            <RadzenTextArea @bind-Value=@guestArticle.Title Rows="2" MaxLength="500" Placeholder="Nhập tiêu đề bài viết.."
+                                            Style="width:100%;" />
+                            <ValidationMessage For="@(() => guestArticle.Title)" />
+                        </div>
                     </div>
-                    <div class="col-md-4">
-                        <RadzenTextBox style="width: 100%;" Name="txtSoDienThoai" />
+                    <div class="row my-1">
+                        <div class="col-md-2 align-items-center d-flex">
+                            <RadzenLabel Text="Mô tả" />
+                        </div>
+                        <div class="col-md-10">
+                            <RadzenTextArea @bind-Value=@guestArticle.Description Rows="2" MaxLength="500" Placeholder="Nhập mô tả bài viết.."
+                                            Style="width:100%;" />
+                            <ValidationMessage For="@(() => guestArticle.Description)" />
+                        </div>
                     </div>
-                </div> 
-                <div class="row my-1">
-                    <div class="col-md-2 align-items-center d-flex">
-                        <RadzenLabel Text="Địa chỉ" />
+                    <div class="row my-1">
+                        <div class="col-md-2 align-items-center d-flex">
+                            <RadzenLabel Text="Nội dung" />
+                        </div>
+                        <div class="col-md-10">
+                            <RadzenTextArea @bind-Value=@guestArticle.SummaryArticle Rows="5" MaxLength="500" Placeholder="Nhập Nội dung bài viết.."
+                                            Style="width:100%;" />
+                            <ValidationMessage For="@(() => guestArticle.SummaryArticle)" />
+                        </div>
                     </div>
-                    <div class="col-md-4">
-                        <RadzenTextBox style="width: 100%;" Name="txtDiaChi" />
-                    </div>
-                    <div class="col-md-2 align-items-center d-flex">
-                        <RadzenLabel Text="Email" />
-                    </div>
-                    <div class="col-md-4">
-                        <RadzenTextBox style="width: 100%;" Name="txtEmail" />
-                    </div>
-                </div>
-                <div class="row my-1">
-                    <div class="col-md-2 align-items-center d-flex">
-                        <RadzenLabel  Text="Tiêu đề" />
-                    </div>
-                    <div class="col-md-10">
-                        @*<RadzenTextBox Name="Title" @bind-Value="@article.Title" />*@
-                        <RadzenTextArea Rows="2" MaxLength="500" Placeholder="Nhập tiêu đề bài viết.."
-                                        Style="width:100%;" /> 
-                    </div>
-                </div>
-                <div class="row my-1">
-                    <div class="col-md-2 align-items-center d-flex">
-                        <RadzenLabel Text="Mô tả" />
-                    </div>
-                    <div class="col-md-10">
-                        @*<RadzenTextBox Name="Title" @bind-Value="@article.Title" />*@
-                        <RadzenTextArea Rows="2" MaxLength="500" Placeholder="Nhập mô tả bài viết.."
-                                        Style="width:100%;" />
-                    </div>
-                </div>
-                <div class="row my-1">
-                    <div class="col-md-2 align-items-center d-flex">
-                        <RadzenLabel Text="Nội dung" />
-                    </div>
-                    <div class="col-md-10">
-                        @*<RadzenTextBox Name="Title" @bind-Value="@article.Title" />*@
-                        <RadzenTextArea Rows="5" MaxLength="500" Placeholder="Nhập Nội dung bài viết.."
-                                        Style="width:100%;" />
-                    </div>
-                </div>
-                <div class="row my-1 justify-content-center">
-                   
+                    <div class="row my-1 justify-content-center">
                         <RadzenButton ButtonType="ButtonType.Submit" Text="Gửi" />
-                     
-                </div>
+                    </div>
+                </RadzenTemplateForm>
             </RadzenFieldset>
         </div>
     </div>
 </div>
 
 @code {
+    private GuestArticleCreateRequest guestArticle = new GuestArticleCreateRequest();
 
+    async Task CreateGuestArticle()
+    {
+        var newGuestArticle = await GuestArticleService.CreateGuestArticle(guestArticle);
+        if (newGuestArticle != null)
+        {
+            NotificationService.Notify(new NotificationMessage
+                {
+                    Severity = NotificationSeverity.Success,
+                    Summary = "Thông báo sự kiện",
+                    Detail = "Gửi bài viết thanh công!",
+                    Duration = 4000,
+                });
+        }
+    }
 }

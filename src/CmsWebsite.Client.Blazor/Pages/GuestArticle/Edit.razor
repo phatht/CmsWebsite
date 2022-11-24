@@ -1,0 +1,121 @@
+﻿@page "/guestarticle/edit/{guestArticleId:long}"
+@using CmsWebsite.Client.Blazor.Services.GuestArticle;
+@using CmsWebsite.Share.Models.GuestArticle;
+
+@inject IGuestArticleService GuestArticleService
+@inject NavigationManager NavigationManager
+@inject NotificationService NotificationService
+
+<RadzenTemplateForm TItem="GuestArticleUpdateRequest" Data="@GuestArticle" Submit=@Update>
+    <DataAnnotationsValidator />
+    <div class="row my-1">
+        <div class="col-md-2 align-items-center d-flex">
+            <RadzenLabel Text="Họ tên" />
+        </div>
+        <div class="col-md-4">
+            <RadzenTextBox @bind-Value=@GuestArticle.FullName style="width: 100%;" Name="txtHoTen" />
+            <ValidationMessage For="@(() => GuestArticle.FullName)" />
+        </div>
+        <div class="col-md-2 align-items-center d-flex">
+            <RadzenLabel Text="Số điện thoại" />
+        </div>
+        <div class="col-md-4">
+            <RadzenTextBox @bind-Value=@GuestArticle.Phone style="width: 100%;" Name="txtSoDienThoai" />
+            <ValidationMessage For="@(() => GuestArticle.Phone)" />
+        </div>
+    </div>
+    <div class="row my-1">
+        <div class="col-md-2 align-items-center d-flex">
+            <RadzenLabel Text="Địa chỉ" />
+        </div>
+        <div class="col-md-4">
+            <RadzenTextBox @bind-Value=@GuestArticle.Address style="width: 100%;" Name="txtDiaChi" />
+            <ValidationMessage For="@(() => GuestArticle.Address)" />
+        </div>
+        <div class="col-md-2 align-items-center d-flex">
+            <RadzenLabel Text="Email" />
+        </div>
+        <div class="col-md-4">
+            <RadzenTextBox @bind-Value=@GuestArticle.Email style="width: 100%;" Name="txtEmail" />
+            <ValidationMessage For="@(() => GuestArticle.Email)" />
+        </div>
+    </div>
+    <div class="row my-1">
+        <div class="col-md-2 align-items-center d-flex">
+            <RadzenLabel Text="Tiêu đề" />
+        </div>
+        <div class="col-md-10">
+            <RadzenTextArea @bind-Value=@GuestArticle.Title Rows="2" MaxLength="500" Placeholder="Nhập tiêu đề bài viết.."
+                            Style="width:100%;" />
+            <ValidationMessage For="@(() => GuestArticle.Title)" />
+        </div>
+    </div>
+    <div class="row my-1">
+        <div class="col-md-2 align-items-center d-flex">
+            <RadzenLabel Text="Mô tả" />
+        </div>
+        <div class="col-md-10">
+            <RadzenTextArea @bind-Value=@GuestArticle.Description Rows="2" MaxLength="500" Placeholder="Nhập mô tả bài viết.."
+                            Style="width:100%;" />
+            <ValidationMessage For="@(() => GuestArticle.Description)" />
+        </div>
+    </div>
+    <div class="row my-1">
+        <div class="col-md-2 align-items-center d-flex">
+            <RadzenLabel Text="Nội dung" />
+        </div>
+        <div class="col-md-10">
+            <RadzenTextArea @bind-Value=@GuestArticle.SummaryArticle Rows="5" MaxLength="500" Placeholder="Nhập Nội dung bài viết.."
+                            Style="width:100%;" />
+            <ValidationMessage For="@(() => GuestArticle.SummaryArticle)" />
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        <div class="col-md-3  d-flex align-items-end justify-content-center">
+            <RadzenButton ButtonType="ButtonType.Submit" Text="Lưu" />
+            <RadzenButton ButtonStyle="ButtonStyle.Light" Style="display: inline-block; margin-left: 10px;" ButtonType="ButtonType.Button" Click=@Back Text="Trở về" />
+        </div>
+    </div>
+</RadzenTemplateForm>
+
+@code {
+    private GuestArticleUpdateRequest GuestArticle { get; set; } = new GuestArticleUpdateRequest();
+
+    [Parameter]
+    public long guestArticleId { set; get; }
+
+    protected async override Task OnParametersSetAsync()
+    {
+        GuestArticle = await GuestArticleService.GetUpdateGuestArticle(guestArticleId);
+    }
+
+    async Task Update()
+    {
+        var updateArticle = await GuestArticleService.UpdateGuestArticle(guestArticleId, GuestArticle);
+        if (updateArticle)
+        {
+            NotificationService.Notify(new NotificationMessage
+                {
+                    Severity = NotificationSeverity.Success,
+                    Summary = "Thông báo sự kiện",
+                    Detail = "Cập nhật thành công",
+                    Duration = 4000,
+                });
+        }
+        else
+        {
+            NotificationService.Notify(new NotificationMessage
+                {
+                    Severity = NotificationSeverity.Error,
+                    Summary = "Thông báo sự kiện",
+                    Detail = "Cập nhật thất bại",
+                    Duration = 4000,
+                });
+        }
+    }
+
+    async Task Back()
+    {
+        NavigationManager.NavigateTo("guestarticle");
+    }
+}

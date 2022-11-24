@@ -4,6 +4,7 @@ using CmsWebsite.Client.Blazor.Services;
 using CmsWebsite.Client.Blazor.Services.Article;
 using CmsWebsite.Client.Blazor.Services.ArticleCategory;
 using CmsWebsite.Client.Blazor.Services.Category;
+using CmsWebsite.Client.Blazor.Services.GuestArticle;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
@@ -25,6 +26,7 @@ builder.Services.AddScoped<AuthenticationStateProvider, CustomStateProvider>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IArticleService, ArticleService>();
 builder.Services.AddScoped<IArticleCategoryService, ArticleCategoryService>();
+builder.Services.AddScoped<IGuestArticleService, GuestArticleService>();
 
 builder.Services.AddScoped<ICategoryService, CategoryService>();
 

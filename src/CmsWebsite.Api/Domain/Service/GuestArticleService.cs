@@ -5,7 +5,7 @@ using CmsWebsite.Share.Models.GuestArticle;
 
 namespace CmsWebsite.Api.Domain.Service
 {
-    public class GuestArticleService : IGuestArticle
+    public class GuestArticleService : IGuestArticleService
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly ILogger<GuestArticleService> _logger;
@@ -57,6 +57,7 @@ namespace CmsWebsite.Api.Domain.Service
                 {
                     FullName = request.FullName,
                     Phone = request.Phone,
+                    Email = request.Email,
                     Address = request.Address,
                     Title = request.Title,
                     Description = request.Description,
@@ -86,6 +87,7 @@ namespace CmsWebsite.Api.Domain.Service
             }
             guestArticle.FullName = request.FullName;
             guestArticle.Phone = request.Phone;
+            guestArticle.Email = request.Email;
             guestArticle.Address = request.Address;
             guestArticle.Title = request.Title;
             guestArticle.Description = request.Description;

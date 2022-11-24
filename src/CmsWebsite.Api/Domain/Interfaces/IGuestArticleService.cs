@@ -1,10 +1,9 @@
 ﻿using CmsWebsite.Api.Domain.Models;
-using CmsWebsite.Share.Models.Article;
 using CmsWebsite.Share.Models.GuestArticle;
 
 namespace CmsWebsite.Api.Domain.Interfaces
 {
-    public interface IGuestArticle
+    public interface IGuestArticleService
     {
         Task<IEnumerable<GuestArticle>> GetGuestArticleAsync();
 

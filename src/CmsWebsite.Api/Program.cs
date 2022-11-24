@@ -56,6 +56,7 @@ builder.Services.AddScoped<IArticleCategoryService, ArticleCategoryService>();
 builder.Services.AddScoped<IArticleService, ArticleService>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<IFileService, FileService>();
+builder.Services.AddScoped<IGuestArticleService, GuestArticleService>();
 
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 

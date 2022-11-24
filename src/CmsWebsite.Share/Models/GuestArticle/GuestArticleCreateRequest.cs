@@ -11,9 +11,12 @@ namespace CmsWebsite.Share.Models.GuestArticle
     {
         [Required(ErrorMessage = "Bạn cần nhập họ và tên.")]
         public string FullName { get; set; }
-        [MaxLength(10)]
+        [MaxLength(10, ErrorMessage = "Số điện thoại chỉ tối đa 10 số.")]
         [Required(ErrorMessage = "Bạn cần nhập số điện thoại.")]
         public string Phone { get; set; }
+        [Required(ErrorMessage = "Bạn cần nhập email.")]
+        [EmailAddress(ErrorMessage = "Email không phù hợp")]
+        public string Email { get; set; }
         [Required(ErrorMessage = "Bạn cần nhập địa chỉ.")]
         public string Address { get; set; }
         [Required(ErrorMessage = "Bạn cần nhập tiêu đề bài viết.")]

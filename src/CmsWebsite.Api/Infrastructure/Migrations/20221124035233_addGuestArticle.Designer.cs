@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CmsWebsite.Api.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20221123100054_addGuestArticle")]
+    [Migration("20221124035233_addGuestArticle")]
     partial class addGuestArticle
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -243,6 +243,10 @@ namespace CmsWebsite.Api.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Email")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
