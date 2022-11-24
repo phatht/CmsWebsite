@@ -2,7 +2,7 @@
 
 <div class="d-flex flex-row my-3">
     <div class="input-group">
-        <RadzenTextBox class="form-control" Placeholder="Tìm kiếm thông tin" />
+        <RadzenTextBox Change=@OnInput class="form-control" Placeholder="Tìm kiếm thông tin" />
         <RadzenButton class="btn btn-outline-secondary" Icon="search"
                       Variant="Variant.Flat" Shade="Shade.Lighter" ButtonStyle="ButtonStyle.Warning" />
     </div>
@@ -64,5 +64,9 @@
     async Task OnChange(object value)
     {
         await JSRuntime.InvokeAsync<string>("open", $"{value}", "_blank");
+    }
+    void OnInput(string value)
+    {
+        Console.WriteLine(value);
     }
 }

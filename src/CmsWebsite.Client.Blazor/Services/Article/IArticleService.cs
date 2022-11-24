@@ -16,5 +16,6 @@ namespace CmsWebsite.Client.Blazor.Services.Article
         Task<bool> DeleteArticleFile(string fileName);
         Task<UploadFileResponse> UploadArticleFile(MultipartFormDataContent content);
         Task LikeArticle(long id, bool like);
+        Task<List<ArticleDTO>> GetArticlesFromSearch(string ws);
     }
 }

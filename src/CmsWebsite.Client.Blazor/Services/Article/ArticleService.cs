@@ -80,5 +80,10 @@ namespace CmsWebsite.Client.Blazor.Services.Article
             await _httpClient.GetAsync($"api/Article/LikeArticle?id={id}&like={like}");
         }
 
+        public async Task<List<ArticleDTO>> GetArticlesFromSearch(string ws)
+        {
+            var result = await _httpClient.GetFromJsonAsync<List<ArticleDTO>>($"api/Article/SearchArticle/{ws}");
+            return result;
+        }
     }
 }

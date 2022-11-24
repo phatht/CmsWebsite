@@ -1,5 +1,31 @@
-﻿<h3>DanhSachTimKiem</h3>
+﻿@*@page "/danhsachtimkiem/{search:string}"
+@using CmsWebsite.Client.Blazor.Services.Article;
+@using CmsWebsite.Share.Models.Article;
+
+@inject IArticleService ArticleService
+@if (search is null)
+{
+    <p>Đang tải danh sách bài viết.</p>
+}
+else
+{
+    <h3>Tìm kiếm theo từ: "@search"</h3>
+
+    @foreach (var article in articles)
+    {
+            <p>Tiêu đề : @article.Title</p>
+    } 
+}
 
 @code {
+    [Parameter]
+    public string search { set; get; }
 
+    private List<ArticleDTO> articles { get; set; } = new List<ArticleDTO>();
+
+    protected async override Task OnParametersSetAsync()
+    {
+        articles = await ArticleService.GetArticlesFromSearch(search);
+    }
 }
+*@

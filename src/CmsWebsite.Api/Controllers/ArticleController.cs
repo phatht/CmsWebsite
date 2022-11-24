@@ -16,6 +16,14 @@ namespace CmsWebsite.Api.Controllers
             _articleService = IArticleService;
         }
 
+        [HttpGet(nameof(SearchArticle))]
+        public async Task<ActionResult<IEnumerable<Article>>> SearchArticle(string ws)
+        {
+            var articles = await _articleService.GetArticleAsync();
+            var result = articles.Where(article => article.Title.ToLower().Trim().Contains(ws)).ToList();
+            return result;
+        }
+
         [HttpGet(nameof(LikeArticle))]
         public async Task<ActionResult> LikeArticle(long id, bool like)
         {
