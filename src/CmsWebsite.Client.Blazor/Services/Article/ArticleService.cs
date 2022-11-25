@@ -82,7 +82,7 @@ namespace CmsWebsite.Client.Blazor.Services.Article
 
         public async Task<List<ArticleDTO>> GetArticlesFromSearch(string ws)
         {
-            var result = await _httpClient.GetFromJsonAsync<List<ArticleDTO>>($"api/Article/SearchArticle/{ws}");
+            var result = await _httpClient.GetFromJsonAsync<List<ArticleDTO>>($"api/Article/SearchArticle?ws={ws}");
             return result;
         }
     }

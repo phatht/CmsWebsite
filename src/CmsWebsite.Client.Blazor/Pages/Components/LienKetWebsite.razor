@@ -1,4 +1,6 @@
 ﻿@inject IJSRuntime JSRuntime;
+@inject NavigationManager NavigationManager;
+
 
 <div class="d-flex flex-row">
     <div class="input-group">
@@ -34,7 +36,7 @@
 
     }
 
-    
+
 
     async Task OnChange(object value)
     {
@@ -43,5 +45,6 @@
     void OnInput(string value)
     {
         Console.WriteLine(value);
+        NavigationManager.NavigateTo($"/danhsachtimkiem/{value}");
     }
 }

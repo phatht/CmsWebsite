@@ -19,11 +19,11 @@
                 @* <button type="button" @onclick="handleLike" class="btn d-flex" style="font-size:14px"><RadzenIcon Icon="favorite_border" Style="color: #f92f60;" /><span class="ms-1">Thích @currentLike</span></button> *@
                 @if (checkLike == false)
                 {
-                    <button type="button" @onclick="handleLike" class="btn d-flex" style="font-size:14px"><RadzenIcon Icon="favorite_border" Style="color: #f92f60;" /><span class="ms-1">Thích @currentLike</span></button>
+                    <button type="button" @onclick="handleLike" class="btn d-flex text-reset" style="font-size:14px"><RadzenIcon Icon="favorite_border" Style="color: #f92f60;" /><span class="ms-1">Thích @currentLike</span></button>
                 }
                 else
                 {
-                    <button type="button" @onclick="handleLike" class="btn d-flex" style="font-size:14px"><RadzenIcon Icon="favorite" Style="color: #f92f60;" /><span class="ms-1">Thích @currentLike</span></button>
+                    <button type="button" @onclick="handleLike" class="btn d-flex text-reset" style="font-size:14px"><RadzenIcon Icon="favorite" Style="color: #f92f60;" /><span class="ms-1">Thích @currentLike</span></button>
                 }
                &nbsp;&nbsp;&nbsp
                 <button class="btn d-flex text-decoration-none text-reset" style="font-size:14px" onclick="window.open('https://www.facebook.com/sharer/sharer.php?p[url]=@MyNavigationManager.Uri', '_blank')">
@@ -31,7 +31,7 @@
                     <span class="ms-1">Chia sẻ Facebook</span>
                 </button>
                 &nbsp;&nbsp;&nbsp
-                <button class="btn d-flex zalo-share-button" style="font-size:14px;" data-href="@MyNavigationManager.Uri" data-oaid="3853758560685742933" data-layout="icon-text" data-customize=true>
+                <button class="btn d-flex zalo-share-button text-reset" style="font-size:14px;" data-href="@MyNavigationManager.Uri" data-oaid="3853758560685742933" data-layout="icon-text" data-customize=true>
                     <img src="img/zalo-icon.png" alt="Zalo" width="20" height="20">
                     <span class="ms-1">Chia sẻ Zalo</span>
                 </button>
@@ -46,7 +46,7 @@
 
                 </HeaderTemplate>
                 <ChildContent>
-                    <div style="max-width: 100%">@((MarkupString)article.SummaryArticle)</div>
+                    <div class="text-reset" style="max-width: 100%">@((MarkupString)article.SummaryArticle)</div>
                     @if (article.Video != null)
                     {
                         <div style="width: 100%; padding-top: 56.25%; height: 0px; position: relative;">

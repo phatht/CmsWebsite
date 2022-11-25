@@ -1,31 +1,43 @@
-﻿@*@page "/danhsachtimkiem/{search:string}"
+﻿@page "/danhsachtimkiem/{search?}"
 @using CmsWebsite.Client.Blazor.Services.Article;
 @using CmsWebsite.Share.Models.Article;
 
 @inject IArticleService ArticleService
-@if (search is null)
+@if (Articles is null)
 {
-    <p>Đang tải danh sách bài viết.</p>
+    <p>Đang tải bài viết.</p>
 }
 else
 {
-    <h3>Tìm kiếm theo từ: "@search"</h3>
+    <h3>Tìm kiếm theo từ: "@Search"</h3>
 
-    @foreach (var article in articles)
-    {
-            <p>Tiêu đề : @article.Title</p>
-    } 
+    <RadzenDataList WrapItems="true" AllowPaging="true" PageSize="10" Data="@Articles" TItem="ArticleDTO">
+        <Template Context="article">
+            <RadzenCard Style="display: flex; width: 100%; padding: 15px; overflow: hidden;">
+                <a href="/chitietbaiviet/@article.ArticleID">
+                    <img src=@article.ImageFile style="object-fit: cover; width: 220px; height: 145px;" />
+                </a>
+                <div style="margin-left: 10px; overflow: hidden;">
+                    <a style="color: #000; font-size: 18px; font-weight: 700; text-decoration: none;" href="/chitietbaiviet/@article.ArticleID" onMouseOver="this.style.color='#CC0001'"
+                   onMouseOut="this.style.color='#000'">
+                        @article.Title
+                    </a>
+                    <p style="color: #999; font-size: 13px; ">@article.CreatedDate</p>
+                    <p style="display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 4">@article.Description</p>
+                </div>
+            </RadzenCard>
+        </Template>
+    </RadzenDataList>
 }
 
 @code {
     [Parameter]
-    public string search { set; get; }
+    public string? Search { get; set; }
 
-    private List<ArticleDTO> articles { get; set; } = new List<ArticleDTO>();
+    public List<ArticleDTO> Articles { get; set; }
 
     protected async override Task OnParametersSetAsync()
     {
-        articles = await ArticleService.GetArticlesFromSearch(search);
+        Articles = await ArticleService.GetArticlesFromSearch(Search);
     }
 }
-*@
