@@ -3,6 +3,7 @@
 @inject IAuthService auth
 @inject IArticleService _client
 @inject NavigationManager uriHelper
+@inject IJSRuntime JSRuntime
 @using CmsWebsite.Client.Blazor.Services.Article
 @using CmsWebsite.Share.Models.Article
 @using CmsWebsite.Client.Blazor.Pages.Components;
@@ -36,7 +37,6 @@
                             <span style="color:red; font-size:12px">TRANG THÔNG TIN ĐIỆN TỬ</span>
                             <br />
                             @DayOfWeek(), @DateTime.Now.ToString("dd/MM/yyy")
-
                         </div>
                     </div>
                 </a>
@@ -103,12 +103,16 @@
     <AuthorizeView>
         <NotAuthorized>
             <div class="col-md-3 my-2">
-                <RadzenButton Variant="Variant.Text" ButtonStyle="ButtonStyle.Warning" Click=@(args => ChangeThem())>
+                @*<RadzenButton Variant="Variant.Text" ButtonStyle="ButtonStyle.Warning" Click=@(args => ChangeThem())>
                     <RadzenIcon Icon="@modeTheme" />
-                </RadzenButton>
+                </RadzenButton>*@
                 <RadzenButton Variant="Variant.Text" ButtonStyle="ButtonStyle.Warning" Click=@(arg => uriHelper.NavigateTo("components/guibanbientap"))>
                     <RadzenIcon Icon="forward_to_inbox" />
                 </RadzenButton>
+                <RadzenButton Variant="Variant.Text" ButtonStyle="ButtonStyle.Warning" Click=@OnSearch>
+                    <RadzenIcon Icon="search" />
+                </RadzenButton>
+                <RadzenTextBox Style="@(isSearch == false ? "clip-path: polygon(0px 0px,0px 0px,0px 0px,0px 0px);" : "position: absolute; z-index: 1; top: 0; width: 268px;")" id="txtSearch" Change=@OnInput class="form-control" Placeholder="Tìm kiếm thông tin" @onblur="LostFocus" />
                 
                 <LienKetWebsite></LienKetWebsite>
                 <DanhSachMatTran></DanhSachMatTran>
@@ -121,7 +125,7 @@
 <Footer></Footer>
 
 @functions {
-
+    bool isSearch = false;
     int col = 10;
     string currentTheme = "standard";
     string modeTheme = "dark_mode";
@@ -179,5 +183,19 @@
                 return "chủ nhật";
 
         }
+    }
+    async Task OnSearch()
+    {
+        isSearch = true;
+        await JSRuntime.InvokeVoidAsync("focusSearch");
+    }
+    void OnInput(string value)
+    {
+        uriHelper.NavigateTo($"/danhsachtimkiem/{value}");
+        isSearch = false;
+    }
+    void LostFocus()
+    {
+        isSearch = false;
     }
 }
