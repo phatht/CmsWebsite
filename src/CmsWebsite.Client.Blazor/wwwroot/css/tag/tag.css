@@ -1,23 +1,17 @@
 ﻿
 .tag {
-    background: #ed143d8a;
-    /*border-radius: 3px 0 0 3px;*/
-    color: white;
-    display: inline-block;
-    height: 26px;
+   
+    display: inline-block; 
+    font-weight: 700;
     line-height: 26px;
     font-size: 11px;
     padding: 0 20px 0 23px;
     position: relative;
-    margin: 0 10px 10px 0;
-    text-decoration: none;
-    border-top-right-radius: 13px;
-    border-bottom-left-radius: 13px;
-    -webkit-transition: color 0.2s;
+     
 }
 
     .tag::before {
-        background: #fff;
+        background: red;
         border-radius: 10px;
         box-shadow: inset 0 1px rgba(0, 0, 0, 0.25);
         content: '';
@@ -38,7 +32,7 @@
         right: 0;
         top: 0; 
         z-index: 0;*/
-    }
+}
 
    /* .tag:hover {
         background-color: crimson;

@@ -83,13 +83,7 @@
 
             </NotAuthorized>
         </AuthorizeView>
-        @*<div>
-        <AuthorizeView>
-        <NotAuthorized>
-        <TinMoi listArticle=@articles />
-        </NotAuthorized>
-        </AuthorizeView>
-        </div>*@
+        
         <div class="content">
             @Body
         </div>
@@ -99,13 +93,13 @@
     <AuthorizeView>
         <NotAuthorized>
             <div class="col-md-3 my-2">
-
-                @*<RadzenButton Variant="Variant.Outlined" Click=@(args => OnClick("default")) ButtonStyle="ButtonStyle.Dark" />*@
-                <RadzenButton Variant="Variant.Flat" Shade="Shade.Lighter" ButtonStyle="ButtonStyle.Light" Click=@(args => ChangeThem()) Icon="@modeTheme" />
-                <RadzenButton Variant="Variant.Outlined"  ButtonStyle="ButtonStyle.Light" Click=@(arg => uriHelper.NavigateTo("components/guibanbientap")) >
-                    <span class="rz-button-text">Gửi bài viết</span>
-                    <RadzenIcon Icon="forward_to_inbox" />
+                <RadzenButton Variant="Variant.Text" ButtonStyle="ButtonStyle.Warning" Click=@(args => ChangeThem()) >
+                    <RadzenIcon Icon="@modeTheme" />
                 </RadzenButton>
+                <RadzenButton Variant="Variant.Text" ButtonStyle="ButtonStyle.Warning" Click=@(arg => uriHelper.NavigateTo("components/guibanbientap"))> 
+                    <RadzenIcon Icon="forward_to_inbox" />
+                </RadzenButton> 
+                @DayOfWeek(), @DateTime.Now.ToString("dd/MM/yyy") 
                 <LienKetWebsite></LienKetWebsite>
                 <DanhSachMatTran></DanhSachMatTran>
                 <VanBanPhapLuat></VanBanPhapLuat>
@@ -152,7 +146,28 @@
             modeTheme = "light_mode";
 
         }
-       
+        
+    }
+    private string DayOfWeek()
+    {
+        int day = (int)DateTime.Now.DayOfWeek;
+        switch (day)
+        {
+            case 1:
+                return "Thứ hai";
+            case 2:
+                return "Thứ ba";
+            case 3:
+                return "Thứ tư";
+            case 4:
+                return "Thứ năm";
+            case 5:
+                return "Thứ sáu";
+            case 6:
+                return "Thứ bảy";
+            default:
+                return "chủ nhật";
 
+        }
     }
 }

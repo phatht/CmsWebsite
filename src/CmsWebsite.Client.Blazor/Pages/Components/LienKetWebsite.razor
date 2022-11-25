@@ -1,16 +1,12 @@
 ﻿@inject IJSRuntime JSRuntime;
 
-<div class="d-flex flex-row my-3">
+<div class="d-flex flex-row">
     <div class="input-group">
         <RadzenTextBox Change=@OnInput class="form-control" Placeholder="Tìm kiếm thông tin" />
         <RadzenButton class="btn btn-outline-secondary" Icon="search"
                       Variant="Variant.Flat" Shade="Shade.Lighter" ButtonStyle="ButtonStyle.Warning" />
     </div>
 
-</div>
-
-<div class="d-flex flex-row">
-    <marquee>Hôm nay @DayOfWeek(), @DateTime.Now.ToString("dd/MM/yyy")</marquee>
 </div>
 
 <span class="tag my-2" >LIÊN KẾT WEBSITE</span>
@@ -38,28 +34,7 @@
 
     }
 
-    private string DayOfWeek()
-    {
-        int day = (int)DateTime.Now.DayOfWeek;
-        switch (day)
-        {
-            case 1:
-                return "thứ hai";
-            case 2:
-                return "thứ ba";
-            case 3:
-                return "thứ tư";
-            case 4:
-                return "thứ năm";
-            case 5:
-                return "thứ sáu";
-            case 6:
-                return "thứ bảy";
-            default:
-                return "chủ nhật";
-
-        }
-    }
+    
 
     async Task OnChange(object value)
     {
