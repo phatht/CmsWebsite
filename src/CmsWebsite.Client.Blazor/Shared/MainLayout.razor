@@ -7,7 +7,7 @@
 @using CmsWebsite.Share.Models.Article
 @using CmsWebsite.Client.Blazor.Pages.Components;
 
- 
+
 <link href="css/radzen/@(currentTheme).css" rel="stylesheet" />
 <div class="page">
     <RadzenDialog />
@@ -25,16 +25,25 @@
 
         <div class="top-row">
             <div class="col-md-3">
-                <a href="/">
-                    <RadzenImage Path="/img/logo.png" Style="width:255px;padding-right:15px" />
+                <a href="/" style="text-decoration: none;">
+                    <div class="row">
+                        <div class="col-md-3"> 
+                            <RadzenImage Path="/img/logo.png" style="width:70px" /> 
+                        </div>
+                        <div class="col-md-7 offset-md-2">
+                            <span style="color:red; font-weight:700;font-size:16px">MẬT TRẬN TỔ QUỐC VIỆT NAM</span>
+                            <br>
+                            <span style="color:red; font-size:12px">TRANG THÔNG TIN ĐIỆN TỬ</span>
+                            <br />
+                            @DayOfWeek(), @DateTime.Now.ToString("dd/MM/yyy")
+                        </div>
+                    </div>
                 </a>
-            </div>
-            <div class="col-md-1">
-            </div>
-            <div class="col-md-6 icons-wrapper d-flex">
+            </div> 
+            <div class="col-md-5 offset-md-2 icons-wrapper d-flex">
                 @*<button type="button" class="btn d-flex" style="font-size:14px"><RadzenIcon Icon="facebook" /><span class="ms-1">Facebook</span></button>*@
-                <button type="button" class="btn d-flex" style="font-size:14px"><RadzenIcon Icon="call" Style="color:green" /><span class="ms-1">(025 111 222)</span></button>
-                <button type="button" class="btn d-flex" style="font-size:14px"><RadzenIcon Icon="mark_email_read" Style="color:red" /><span class="ms-1">Email</span></button>
+                <button type="button" class="btn" style="font-size:14px"><RadzenIcon Icon="call" Style="color:green" /><span class="ms-1">(025 111 222)</span></button>
+                <button type="button" class="btn" style="font-size:14px"><RadzenIcon Icon="mark_email_read" Style="color:red" /><span class="ms-1">Email</span></button>
             </div>
             <AuthorizeView>
                 <Authorized>
@@ -44,10 +53,10 @@
                         </NavLink>
                     </div>
                 </Authorized>
-               @* <NotAuthorized>
-                    <NavLink class="nav-link" href="login" style="float:right" title="Đăng nhập quản trị">
-                        <RadzenIcon Icon="manage_accounts" />
-                    </NavLink>
+                @* <NotAuthorized>
+                <NavLink class="nav-link" href="login" style="float:right" title="Đăng nhập quản trị">
+                <RadzenIcon Icon="manage_accounts" />
+                </NavLink>
                 </NotAuthorized>*@
             </AuthorizeView>
 
@@ -83,7 +92,7 @@
 
             </NotAuthorized>
         </AuthorizeView>
-        
+
         <div class="content">
             @Body
         </div>
@@ -93,13 +102,13 @@
     <AuthorizeView>
         <NotAuthorized>
             <div class="col-md-3 my-2">
-                <RadzenButton Variant="Variant.Text" ButtonStyle="ButtonStyle.Warning" Click=@(args => ChangeThem()) >
+                <RadzenButton Variant="Variant.Text" ButtonStyle="ButtonStyle.Warning" Click=@(args => ChangeThem())>
                     <RadzenIcon Icon="@modeTheme" />
                 </RadzenButton>
-                <RadzenButton Variant="Variant.Text" ButtonStyle="ButtonStyle.Warning" Click=@(arg => uriHelper.NavigateTo("components/guibanbientap"))> 
+                <RadzenButton Variant="Variant.Text" ButtonStyle="ButtonStyle.Warning" Click=@(arg => uriHelper.NavigateTo("components/guibanbientap"))>
                     <RadzenIcon Icon="forward_to_inbox" />
-                </RadzenButton> 
-                @DayOfWeek(), @DateTime.Now.ToString("dd/MM/yyy") 
+                </RadzenButton>
+                
                 <LienKetWebsite></LienKetWebsite>
                 <DanhSachMatTran></DanhSachMatTran>
                 <VanBanPhapLuat></VanBanPhapLuat>
@@ -141,12 +150,12 @@
             modeTheme = "dark_mode";
         }
         else
-        { 
+        {
             currentTheme = "material";
             modeTheme = "light_mode";
 
         }
-        
+
     }
     private string DayOfWeek()
     {

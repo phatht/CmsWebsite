@@ -14,17 +14,20 @@ main[b-wkfs2j6zo5] {
 }
 
 .top-row[b-wkfs2j6zo5] {
-    background-color: white;
+    background-image: url(../../img/bg-header.webp);
+    /*background-repeat: no-repeat;*/
+    /*background-color: white;*/
     border-bottom: 1px solid #198754;
     justify-content: flex-end;
-    height: 3.5rem;
+    height: 5.5rem;
     display: flex;
     align-items: center;
+    background-size: contain
 }
 
     .top-row[b-wkfs2j6zo5]  a, .top-row[b-wkfs2j6zo5]  .btn-link {
         white-space: nowrap;
-        margin-left: 1.5rem;
+        /*margin-left: 1.5rem;*/
         text-decoration: none;
     }
 
