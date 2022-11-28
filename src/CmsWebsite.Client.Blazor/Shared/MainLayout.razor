@@ -43,8 +43,8 @@
             </div> 
             <div class="col-md-5 offset-md-2 icons-wrapper d-flex">
                 @*<button type="button" class="btn d-flex" style="font-size:14px"><RadzenIcon Icon="facebook" /><span class="ms-1">Facebook</span></button>*@
-                <button type="button" class="btn" style="font-size:14px"><RadzenIcon Icon="call" Style="color:green" /><span class="ms-1">(025 111 222)</span></button>
-                <button type="button" class="btn" style="font-size:14px"><RadzenIcon Icon="mark_email_read" Style="color:red" /><span class="ms-1">Email</span></button>
+                <button type="button" class="btn d-flex" style="font-size:14px"><RadzenIcon Icon="call" Style="color:green" /><span class="ms-1">(025 111 222)</span></button>
+                <button type="button" class="btn d-flex" style="font-size:14px"><RadzenIcon Icon="mark_email_read" Style="color:red" /><span class="ms-1">Email</span></button>
             </div>
             <AuthorizeView>
                 <Authorized>
@@ -84,12 +84,37 @@
                     <RadzenMenuItem Text="Giám sát & phản biện"></RadzenMenuItem>
                     <RadzenMenuItem Text="Dân tộc - tôn giáo"></RadzenMenuItem>
                     <RadzenMenuItem Text="Đối ngoại kiều bào"></RadzenMenuItem>
-                    <RadzenMenuItem Icon="menu" Path="menu">
-
-
-
-                    </RadzenMenuItem>
+                    <RadzenIcon Icon="menu" @onmouseover="ShowMenu"/>
                 </RadzenMenu>
+                <RadzenCard Style="@(isMenu == false ? "display: none;" : "width: 100%; position: absolute; z-index: 1; width: 97%; box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);")" @onmouseover="ShowMenu" @onmouseout="HideMenu">
+                    <div class="row">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <b>TẤT CẢ CHUYÊN MỤC</b>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><a href="/" style="color:red">Giới thiệu</a></td>
+                                    <td style="color:red">Tin tổng hợp</td>
+                                    <td style="color:red">Tin hoạt động</td>
+                                </tr>
+                                <tr>
+                                    <td>Chương trình phối hợp</td>
+                                    <td>Văn bản hướng dẫn</td>
+                                    <td>Thành đoàn</td>
+                                </tr>
+                                <tr>
+                                    <td>Đối ngoại kiều bào</td>
+                                    <td>Dân tộc - tôn giáo</td>
+                                    <td>Thư viện ảnh</td>
+                                </tr>
+
+                            </tbody>
+                        </table>
+                    </div>
+                </RadzenCard>
 
             </NotAuthorized>
         </AuthorizeView>
@@ -126,6 +151,7 @@
 
 @functions {
     bool isSearch = false;
+    bool isMenu = false;
     int col = 10;
     string currentTheme = "standard";
     string modeTheme = "dark_mode";
@@ -194,8 +220,7 @@
         uriHelper.NavigateTo($"/danhsachtimkiem/{value}");
         isSearch = false;
     }
-    void LostFocus()
-    {
-        isSearch = false;
-    }
+    void LostFocus() => isSearch = false;
+    void ShowMenu() => isMenu = true;
+    void HideMenu() => isMenu = false;
 }
