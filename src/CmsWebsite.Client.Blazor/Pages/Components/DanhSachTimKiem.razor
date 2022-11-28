@@ -3,15 +3,15 @@
 @using CmsWebsite.Share.Models.Article;
 
 @inject IArticleService ArticleService
-@if (Articles is null)
+@if (articles is null)
 {
     <p>Đang tải bài viết.</p>
 }
 else
 {
-    <h3>Tìm kiếm theo từ: "@Search"</h3>
+    <h3>Tìm kiếm theo từ: "@search"</h3>
 
-    <RadzenDataList WrapItems="true" AllowPaging="true" PageSize="10" Data="@Articles" TItem="ArticleDTO">
+    <RadzenDataList WrapItems="true" AllowPaging="true" PageSize="10" Data="@articles" TItem="ArticleDTO">
         <Template Context="article">
             <RadzenCard Style="display: flex; width: 100%; padding: 15px; overflow: hidden;">
                 <a href="/chitietbaiviet/@article.ArticleID">
@@ -32,12 +32,12 @@ else
 
 @code {
     [Parameter]
-    public string? Search { get; set; }
+    public string? search { get; set; }
 
-    public List<ArticleDTO> Articles { get; set; }
+    public List<ArticleDTO> articles { get; set; }
 
     protected async override Task OnParametersSetAsync()
     {
-        Articles = await ArticleService.GetArticlesFromSearch(Search);
+        articles = await ArticleService.GetArticlesFromSearch(search);
     }
 }

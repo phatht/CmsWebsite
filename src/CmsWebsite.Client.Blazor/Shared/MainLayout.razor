@@ -112,7 +112,7 @@
                 <RadzenButton Variant="Variant.Text" ButtonStyle="ButtonStyle.Warning" Click=@OnSearch>
                     <RadzenIcon Icon="search" />
                 </RadzenButton>
-                <RadzenTextBox Style="@(isSearch == false ? "clip-path: polygon(0px 0px,0px 0px,0px 0px,0px 0px);" : "position: absolute; z-index: 1; top: 0; width: 268px;")" id="txtSearch" Change=@OnInput class="form-control" Placeholder="Tìm kiếm thông tin" @onblur="LostFocus" />
+                <RadzenTextBox Style="@(isSearch == false ? "position: absolute; top: -9999px;" : "position: absolute; z-index: 1; top: 0; width: 268px;")" id="txtSearch" Change=@OnInput class="form-control" Placeholder="Tìm kiếm thông tin" @onblur="LostFocus" />
                 
                 <LienKetWebsite></LienKetWebsite>
                 <DanhSachMatTran></DanhSachMatTran>
@@ -180,7 +180,7 @@
             case 6:
                 return "Thứ bảy";
             default:
-                return "chủ nhật";
+                return "Chủ nhật";
 
         }
     }
