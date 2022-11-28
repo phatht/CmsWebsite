@@ -125,7 +125,7 @@
                     <RadzenLabel Component="ImageFile" Text="Ảnh đại diện bài viết: " />
                 </div>
                 <div class="col-md-10">
-                    <RadzenImage Path=@($"{ImgUrl}") Style="max-width: 100%; display: block; margin-bottom: 5px;" />
+                    <RadzenImage Path=@($"{ImgUrl}") Style="max-width: 70%; max-height: 70%; display: block; margin-bottom: 5px;" />
                     <InputFile OnChange="@HandleSelected" accept=".jpg, .jpeg, .png" />
                     <ValidationMessage For="@(() => existingArticle.ImageFile)" />
 
@@ -194,8 +194,7 @@
         {
             if (imageFile != null)
             {
-                var resizedFile = await imageFile.RequestImageFileAsync("image/png", 300, 500);
-                using (var ms = resizedFile.OpenReadStream(resizedFile.Size))
+                using (var ms = imageFile.OpenReadStream(imageFile.Size))
                 {
                     var content = new MultipartFormDataContent();
                     content.Headers.ContentDisposition = new ContentDispositionHeaderValue("form-data");
