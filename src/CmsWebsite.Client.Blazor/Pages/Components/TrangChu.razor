@@ -12,24 +12,19 @@
     <RadzenCard Style="width: 100%;" class="m-1">
         <div class="row">
             <div class="col-md-8">
-
-                <RadzenImage Path=@listArticle[0].ImageFile Style="width:100%;height:70%" />
-
-                <label class="m-2" style="font-weight:700;font-size:22px">@listArticle[0].Title</label>
+                <RadzenImage @onclick="() => EditRow(listArticle[0].ArticleID)" Path=@listArticle[0].ImageFile Style="width: 100%; height: 70%; object-fit: cover; cursor: pointer;" />
+                <label @onclick="() => EditRow(listArticle[0].ArticleID)" class="m-2" style="font-weight: 700; font-size: 22px; cursor: pointer;">@listArticle[0].Title</label>
                 <p class="wrapper-p mr-2">@listArticle[0].Description</p>
-
             </div>
 
-            <div class="col-md-4">
-                <RadzenImage @onclick="() => EditRow(listArticle[1].ArticleID)" Path=@listArticle[1].ImageFile Style="width: 100%;" class="rounded" />
-               
-                   @* <span class="wrapper-p">@listArticle[1].Title</span>*@
-                    @for (var i = 2; i < 4; i++) // LẤY 4 BÀI VIẾT TIẾP THEO
-                    {
-                        <hr />
-                    <span class="wrapper-p" @onclick="() => EditRow(listArticle[i].ArticleID)">@listArticle[i].Title</span>
-                    }
-                
+            <div class="col-md-4" style="height: 545px; overflow: scroll;">
+                <RadzenImage @onclick="() => EditRow(listArticle[1].ArticleID)" Path=@listArticle[1].ImageFile Style="width: 100%; margin-bottom: 10px; cursor: pointer;" class="rounded" />
+                <a class="text-decoration-none text-reset" href="/chitietbaiviet/@listArticle[1].ArticleID">@listArticle[1].Title</a>
+                @for (var i = 2; i < 6; i++) // LẤY 4 BÀI VIẾT TIẾP THEO
+                {
+                    <hr />
+                    <a class="text-decoration-none text-reset" href="/chitietbaiviet/@listArticle[i].ArticleID">@listArticle[i].Title</a>
+                }
             </div>
         </div>
     </RadzenCard>
@@ -48,20 +43,17 @@ else
         <div class="row wrapper">
             @*@_category.CategoryName*@
             <span class="tag">@_category.CategoryName</span>
-            <div class="col-md-7">
-                <RadzenImage Path=@_listArticleGetByAbbreviation[0].ImageFile Style="width:100%;height:60%;" />
+            <div class="col-md-7" style="cursor: pointer;" @onclick="() => EditRow(_listArticleGetByAbbreviation[0].ArticleID)">
+                <RadzenImage Path=@_listArticleGetByAbbreviation[0].ImageFile Style="width: 100%; height: 60%; object-fit: cover;" />
                 <label class="m-2" style="font-weight:700;font-size:22px">@_listArticleGetByAbbreviation[0].Title</label>
             </div>
             
             <div class="col-md-5 ">
                 @foreach (var item in _listArticleGetByAbbreviation)
                 {
-                     <RadzenCard class="m-1">  
-                        <span @onclick="() => EditRow(item.ArticleID)">  
-                            <div style="float:left"><img src="@item.ImageFile" class="rounded  mr-2" style="width: 95px; height: 80px;"> </div>
-                            <div > <span class="wrapper-p" style="font-size:13px">@item.Description</span> </div>
-                            
-                        </span>
+                    <RadzenCard class="m-1 d-flex overflow-hidden" style="cursor: pointer;" @onclick="() => EditRow(item.ArticleID)">
+                        <img src="@item.ImageFile" class="rounded mr-2" style="width: 95px; height: 75px; object-fit: cover;">
+                        <p class="wrapper-p" style="font-size:13px">@item.Description</p>
                     </RadzenCard>
                 }
 

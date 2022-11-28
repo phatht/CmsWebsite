@@ -13,6 +13,7 @@ namespace CmsWebsite.Share.Models.GuestArticle
         [Required(ErrorMessage = "Bạn cần nhập họ và tên.")]
         public string FullName { get; set; }
         [MaxLength(10, ErrorMessage = "Số điện thoại chỉ tối đa 10 số.")]
+        [Phone(ErrorMessage = "Bạn nhập sai định dạng số điện thoại.")]
         [Required(ErrorMessage = "Bạn cần nhập số điện thoại.")]
         public string Phone { get; set; }
         [Required(ErrorMessage = "Bạn cần nhập email.")]
