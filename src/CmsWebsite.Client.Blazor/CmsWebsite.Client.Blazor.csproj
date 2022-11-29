@@ -7,6 +7,10 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+	  <Content Remove="Shared\Component.razor" />
+	</ItemGroup>
+
+	<ItemGroup>
 		<PackageReference Include="Blazored.LocalStorage" Version="4.3.0" />
 		<PackageReference Include="Blazored.Video" Version="1.0.0" />
 		<PackageReference Include="Microsoft.AspNetCore.Authentication.Cookies" Version="2.2.0" />
@@ -19,6 +23,18 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\CmsWebsite.Share\CmsWebsite.Share.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <UpToDateCheckInput Remove="Shared\Component.razor" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <_ContentIncludedByDefault Remove="Shared\Component.razor" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <None Include="Pages\Components\ScrollToTop.razor" />
 	</ItemGroup>
 
 </Project>

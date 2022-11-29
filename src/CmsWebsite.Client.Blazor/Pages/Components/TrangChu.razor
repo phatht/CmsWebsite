@@ -1,11 +1,13 @@
 ﻿@using CmsWebsite.Client.Blazor.Services.Category
 @using CmsWebsite.Client.Blazor.Services.Article
+@using CmsWebsite.Share.Models.ArticleCategory;
 @using CmsWebsite.Share.Models.Category;
 @using CmsWebsite.Share.Models.Article
+@using Newtonsoft.Json;
 @inject ICategoryService _clientCategory
 @inject IArticleService _clientArticle
 @inject NavigationManager uriHelper
-
+@inject IJSRuntime JSRuntime
 
 @if (listArticle != null)
 {
@@ -38,16 +40,15 @@ else
 
 @if (_listArticleGetByAbbreviation != null)
 {
-    <RadzenCard Style="width: 100%;" class="m-1">
+    @*<RadzenCard Style="width: 100%;" class="m-1">
 
         <div class="row wrapper">
-            @*@_category.CategoryName*@
             <span class="tag">@_category.CategoryName</span>
             <div class="col-md-7" style="cursor: pointer;" @onclick="() => EditRow(_listArticleGetByAbbreviation[0].ArticleID)">
                 <RadzenImage Path=@_listArticleGetByAbbreviation[0].ImageFile Style="width: 100%; height: 60%; object-fit: cover;" />
                 <label class="m-2" style="font-weight:700;font-size:22px">@_listArticleGetByAbbreviation[0].Title</label>
             </div>
-            
+
             <div class="col-md-5 ">
                 @foreach (var item in _listArticleGetByAbbreviation)
                 {
@@ -59,10 +60,71 @@ else
 
             </div>
         </div>
-    </RadzenCard>
+    </RadzenCard>*@
 }
+@if (groupArticle != null)
+{
+    bool isLayout = false;
+    foreach (var item in groupArticle)
+    {
+        if (isLayout == false)
+        {
+            <RadzenCard Style="width: 100%; margin: 20px 0 0 3px;">
+                <div class="row wrapper">
+                    <a style="color: red; text-decoration: none; font-size: 18px; font-weight: bold; margin-bottom: 10px;" href="/baiviettheochuyenmuc/@item.Category.CategoryId">@item.Category.CategoryName.ToUpper()</a>
 
+                    <div class="col-md-7" style="cursor: pointer;" @onclick="() => EditRow(item.Articles[0].ArticleID)">
+                        <RadzenImage Path=@item.Articles[0].ImageFile Style="width: 100%; height: 60%; object-fit: cover;" />
+                        <label class="m-2" style="font-weight:700;font-size:22px">@item.Articles[0].Title</label>
+                    </div>
 
+                    <div class="col-md-5">
+                        @foreach (var article in item.Articles.Take(4))
+                        {
+                            <div class="d-flex overflow-hidden mb-3" style="cursor: pointer;" @onclick="() => EditRow(article.ArticleID)">
+                                <img src="@article.ImageFile" class="rounded mr-2" style="width: 95px; height: 75px; object-fit: cover;">
+                                <p class="wrapper-p" style="font-size:13px">@article.Description</p>
+                            </div>
+                        }
+
+                    </div>
+                </div>
+            </RadzenCard>
+            isLayout = true;
+        }
+        else
+        {
+            <RadzenCard Style="width: 100%; margin: 20px 0 0 3px;">
+
+                <a style="color: red; text-decoration: none; font-size: 18px; font-weight: bold; margin-bottom: 10px;" href="/baiviettheochuyenmuc/@item.Category.CategoryId">@item.Category.CategoryName.ToUpper()</a>
+
+                    <div style="display: flex; cursor: pointer;" @onclick="() => EditRow(item.Articles[0].ArticleID)">
+                        <RadzenImage Path=@item.Articles[0].ImageFile Style="width: 350px; height: 235px; object-fit: cover;" />
+                        <div style="margin-left: 20px;">
+                            <label style="font-weight:700; font-size:22px;">@item.Articles[0].Title</label>
+                            <p>@item.Articles[0].Description</p>
+                        </div>
+                    </div>
+                    
+                    <div class="row" style="margin-top: 20px;">
+                        @foreach (var article in item.Articles.Take(3))
+                        {
+                            <div class="col-md-4">
+                                <span @onclick="() => EditRow(article.ArticleID)">
+                                    <img src="@article.ImageFile" style="width: 100%; height: 60%; object-fit: cover;">
+                                    <p style="margin-top: 7px; font-size:13px; font-weight: 700;">@article.Title</p>
+                                </span>
+                            </div>
+                        }
+                    </div>
+                
+            </RadzenCard>
+            isLayout = false;
+        }
+
+    }
+}
+<ScrollToTop></ScrollToTop>
 
 @code {
 
@@ -73,27 +135,34 @@ else
 
     public CategoryDTO _category = null;
 
+    public List<GroupArticleByCategoryDTO>? groupArticle = new();
     protected override async Task OnInitializedAsync()
     {
         try
         {
             var list = await _clientCategory.GetListCategory();
-            await ArticleGetByAbbreviation("0a858018-d08f-41a6-9e59-591b8bd9752e");
+            //await ArticleGetByAbbreviation("2c50968e-c5e2-4e78-9878-167e30c3661b");
+            foreach (var item in list)
+            {
+                var articleByCategory = await _clientArticle.GetListArticleCategoryByCategoryId(item.CategoryId);
+                groupArticle.Add(new GroupArticleByCategoryDTO(item, articleByCategory));
+                //Console.WriteLine(Newtonsoft.Json.JsonConvert.SerializeObject(groupArticle, Formatting.Indented));
+            }
         }
         catch (Exception ex)
         {
-
+            Console.WriteLine(ex.Message);
         }
     }
 
 
-    public async Task ArticleGetByAbbreviation(string Abbreviation)
+    public async Task ArticleGetByAbbreviation(string Messageaion)
     {
         try
         {
-            var list = await _clientCategory.GetListCategory();
-            _category = list.Where(i => i.Abbreviation == Abbreviation).FirstOrDefault();
-            _listArticleGetByAbbreviation = await _clientArticle.GetListArticleCategoryByCategoryId(_category.CategoryId);
+            //var list = await _clientCategory.GetListCategory();
+            //_category = list.Where(i => i.Abbreviation == Abbreviation).FirstOrDefault();
+            //_listArticleGetByAbbreviation = await _clientArticle.GetListArticleCategoryByCategoryId(_category.CategoryId);
         }
         catch (Exception ex)
         {

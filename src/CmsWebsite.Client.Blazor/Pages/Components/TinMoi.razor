@@ -4,7 +4,7 @@
     
     @if (listArticle != null)
     {
-        foreach (var item in listArticle.Take(3))
+        foreach (var item in newArticle)
         {
           
                 <div class="col-md-4">
@@ -25,6 +25,13 @@
 
     [Parameter]
     public List<ArticleDTO>? listArticle { get; set; }
+
+    public IEnumerable<ArticleDTO> newArticle { get; set; }
+
+    protected async override Task OnParametersSetAsync()
+    {
+        newArticle = listArticle.OrderByDescending(d => d.CreatedDate).Take(3);
+    }
 
     protected void EditRow(long id) => uriHelper.NavigateTo($"chitietbaiviet/{id}");
 }

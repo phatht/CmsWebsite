@@ -267,7 +267,7 @@ namespace CmsWebsite.Api.Migrations
 
                     b.HasKey("GuestArticleID");
 
-                    b.ToTable("GuestArticle");
+                    b.ToTable("GuestArticle", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
