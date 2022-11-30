@@ -1,0 +1,59 @@
+﻿@page "/baiviettheochuyenmuc/{categoryId:long}"
+@using CmsWebsite.Client.Blazor.Services.Article;
+@using CmsWebsite.Client.Blazor.Services.Category;
+@using CmsWebsite.Share.Models.Article;
+
+@inject ICategoryService CategoryService
+@inject IArticleService ArticleService
+
+<RadzenDataList WrapItems="true" AllowPaging="true" PageSize="10" Data="@listArticle" TItem="ArticleDTO">
+    <Template Context="article">
+        @*<RadzenCard Style="width: 100%; margin: 20px 0 0 3px;">
+            <div style="display: flex; cursor: pointer;">
+                <RadzenImage Path=@article.ImageFile Style="width: 350px; height: 235px; object-fit: cover;" />
+                <div style="margin-left: 20px;">
+                    <label style="font-weight:700; font-size:22px;">@article.Title</label>
+                    <p>@article.Description</p>
+                </div>
+            </div>
+
+            <div class="row" style="margin-top: 20px;">
+                
+                    <div class="col-md-4">
+                        <span>
+                            <img src="@article.ImageFile" style="width: 100%; height: 60%; object-fit: cover;">
+                            <p style="margin-top: 7px; font-size:13px; font-weight: 700;">@article.Title</p>
+                        </span>
+                    </div>
+                
+            </div>
+
+        </RadzenCard>*@
+        <RadzenCard Style="display: flex; width: 100%; padding: 15px; overflow: hidden;">
+            <a href="/chitietbaiviet/@article.ArticleID">
+                <img src=@article.ImageFile style="object-fit: cover; width: 220px; height: 145px;" />
+            </a>
+            <div style="margin-left: 10px; overflow: hidden;">
+                <a style="color: #000; font-size: 18px; font-weight: 700; text-decoration: none;" href="/chitietbaiviet/@article.ArticleID" onMouseOver="this.style.color='#CC0001'"
+                   onMouseOut="this.style.color='#000'">
+                    @article.Title
+                </a>
+                <p style="color: #999; font-size: 13px; ">@article.CreatedDate</p>
+                <p style="display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 4">@article.Description</p>
+            </div>
+        </RadzenCard>
+    </Template>
+</RadzenDataList>
+
+@code {
+    [Parameter]
+    public long categoryId { set; get; }
+
+    public List<ArticleDTO> listArticle { set; get; }
+
+    protected async override Task OnParametersSetAsync()
+    {
+        var category = await CategoryService.GetListCategory();
+        listArticle = await ArticleService.GetListArticleCategoryByCategoryId(categoryId);
+    }
+}

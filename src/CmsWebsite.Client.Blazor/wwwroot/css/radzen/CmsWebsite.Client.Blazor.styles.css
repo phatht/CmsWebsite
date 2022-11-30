@@ -66,11 +66,11 @@ main[b-wkfs2j6zo5] {
         top: 0;
     }
 
-    .top-row[b-wkfs2j6zo5] {
+    /*.top-row[b-wkfs2j6zo5] {
         position: sticky;
         top: 0;
         z-index: 1;
-    }
+    }*/
 
     .top-row.auth[b-wkfs2j6zo5]  a:first-child {
         flex: 1;

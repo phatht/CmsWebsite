@@ -117,7 +117,7 @@ namespace CmsWebsite.Api.Controllers
             return NoContent();
         }
 
-        [HttpGet("GetArticleByCategoryId/{categoryId}")]
+        [HttpGet("GetArticleByCategoryId/{CategoryId}")]
         public async Task<ActionResult<IEnumerable<Article>>> GetArticleByCategoryIdAsync(long CategoryId)
         {
             var article = await _articleService.GetArticleByCategoryIdAsync(CategoryId);

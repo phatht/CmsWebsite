@@ -1,4 +1,9 @@
-﻿
+﻿@using CmsWebsite.Client.Blazor.Services.Article;
+@using CmsWebsite.Share.Models.Article;
+@using Newtonsoft.Json;
+
+@inject IArticleService ArticleService
+
 <span class="tag my-2">VĂN BẢN</span>
 <style>
     ul[role=tablist] {
@@ -47,6 +52,13 @@
             </table>
         </RadzenTabsItem>
         <RadzenTabsItem Text="TIN MỚI">
+            <div style="height: 300px;">
+                @foreach (var item in newArticle)
+                {
+                    <a class="text-decoration-none text-reset" href="/chitietbaiviet/@item.ArticleID">@item.Title</a>
+                    <hr />
+                }
+            </div>
         </RadzenTabsItem>
     </Tabs>
 </RadzenTabs>
@@ -55,7 +67,13 @@
 
 
 @code {
+    public List<ArticleDTO> newArticle = new();
 
+    protected async override Task OnInitializedAsync()
+    {
+        var articles = await ArticleService.GetListArticle();
+        newArticle = articles.OrderByDescending(d => d.CreatedDate).Take(3).ToList();
+    }
 
     List<int> years = new List<int>();
 
