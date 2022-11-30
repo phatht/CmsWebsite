@@ -67,14 +67,12 @@
 
 
 @code {
-    public List<ArticleDTO> articles { get; set; }
+    public List<ArticleDTO> newArticle = new();
 
-    public IEnumerable<ArticleDTO> newArticle { get; set; }
-
-    protected async override Task OnParametersSetAsync()
+    protected async override Task OnInitializedAsync()
     {
-        articles = await ArticleService.GetListArticle();
-        newArticle = articles.OrderByDescending(d => d.CreatedDate).Take(5);
+        var articles = await ArticleService.GetListArticle();
+        newArticle = articles.OrderByDescending(d => d.CreatedDate).Take(3).ToList();
     }
 
     List<int> years = new List<int>();

@@ -33,8 +33,4 @@
 	  <_ContentIncludedByDefault Remove="Shared\Component.razor" />
 	</ItemGroup>
 
-	<ItemGroup>
-	  <None Include="Pages\Components\ScrollToTop.razor" />
-	</ItemGroup>
-
 </Project>

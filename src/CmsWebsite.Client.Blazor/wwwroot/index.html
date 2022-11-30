@@ -29,24 +29,15 @@
         <a class="dismiss">🗙</a>
     </div>-->
 
+    <a id="btnScroll" class="btn-scroll" onclick="onScrollEvent()">
+        <img src="img/up-arrow.png" alt="Up arrow icon">
+    </a>
+
     <script src="_framework/blazor.webassembly.js"></script>
     <script src="_framework.blazor.sever.js"></script>
     <script src="Radzen.Blazor/Radzen.Blazor.js"></script>
     <script src="https://sp.zalo.me/plugins/sdk.js"></script>
-    <script>
-        function loadZaloDSK() {
-            ZaloSocialSDK.reload();
-        }
-        function loadVideo() {
-            document.getElementById("videoArticle").load();
-        }
-        function focusSearch() {
-            document.getElementById("txtSearch").focus();
-        }
-        function OnScrollEvent() {
-            document.documentElement.scrollTop = 0;
-        }
-    </script>
+    <script src="js/main.js"></script>
 </body>
 
 </html>
