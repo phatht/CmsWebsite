@@ -21,7 +21,7 @@ namespace CmsWebsite.Api.Controllers
             return Ok(result);
         }
         [HttpGet("{id}")]
-        public async Task<ActionResult<ArticleCategories>> GetArticleCategory(long id)
+        public async Task<ActionResult<ArticleCategories>> GetArticleCategory(Guid id)
         {
             var ac = await _articleCategoryService.GetArticleCategory(id);
             if (ac == null)
@@ -31,7 +31,7 @@ namespace CmsWebsite.Api.Controllers
             return ac;
         }
         [HttpPut("{articleId}")]
-        public async Task<ActionResult<ArticleCategories>> PutArticleCategory(long articleId, ArticleCategories ac)
+        public async Task<ActionResult<ArticleCategories>> PutArticleCategory(Guid articleId, ArticleCategories ac)
         {
             try
             {

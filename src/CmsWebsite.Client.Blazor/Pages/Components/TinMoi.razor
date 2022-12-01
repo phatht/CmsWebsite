@@ -33,5 +33,5 @@
         newArticle = articles.OrderByDescending(d => d.CreatedDate).Take(4).ToList();
     }
 
-    protected void EditRow(long id) => uriHelper.NavigateTo($"chitietbaiviet/{id}");
+    protected void EditRow(Guid id) => uriHelper.NavigateTo($"baiviet/{id}");
 }

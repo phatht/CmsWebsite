@@ -105,3 +105,27 @@ div span {
     border: 1px solid #ececec;
     cursor: pointer;
 }
+
+.menu {
+    margin-right: 0 !important;
+    padding: 18px;
+    cursor: pointer;
+    user-select: none;
+}
+
+.menu:hover {
+    background-color: #d9e3fd;
+    color: #1159f3;
+}
+
+.sub-menu {
+    display: none;
+    position: absolute;
+    width: 870px;
+    right: 12px;
+    top: 36px;
+    z-index: 3;
+    padding-top: 10px;
+    background-color: #fff;
+    box-shadow: 3px 5px 4px 0 rgba(0, 0, 0, 0.2)
+}

@@ -7,7 +7,7 @@ namespace CmsWebsite.Api.Domain.Interfaces
     {
         public Task<IEnumerable<Category>> ListAsync();
 
-        public Task<Category> FindAsync(long id);
+        public Task<Category> FindAsync(Guid id);
 
         public Task<Category> AddAsync(Category category);
 

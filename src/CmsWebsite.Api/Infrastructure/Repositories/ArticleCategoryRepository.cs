@@ -11,7 +11,7 @@ namespace CmsWebsite.Api.Infrastructure.Repositories
         {
         }
 
-        public async Task<IEnumerable<ArticleCategories>> ListByCategoryIdAsync(long CategoryId)
+        public async Task<IEnumerable<ArticleCategories>> ListByCategoryIdAsync(Guid CategoryId)
         {
              
             return await _context.ArticleCategories.Where(i => i.CategoryID == CategoryId).AsNoTracking().IgnoreQueryFilters().ToListAsync();
@@ -23,7 +23,7 @@ namespace CmsWebsite.Api.Infrastructure.Repositories
             return ac;
         }
 
-        public async Task<ArticleCategories> FindAsync(long id)
+        public async Task<ArticleCategories> FindAsync(Guid id)
         {
             var ac = await _context.ArticleCategories
                 .FirstOrDefaultAsync(r => r.ArticleID == id);

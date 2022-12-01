@@ -9,14 +9,14 @@ namespace CmsWebsite.Api.Domain.Service
     {
         Task<IEnumerable<Category>> GetCategoryAsync();
 
-        Task<Category> GetCategoryAsync(long id);
+        Task<Category> GetCategoryAsync(Guid? id);
         //create
         Task<Category> PutCategoryAsync(CategoryCreateRequest request);
 
-        Task<Category> DeleteCategory(long id);
-        Task<Category> SoftDeleteCategory(long id, bool isDeleted);
+        Task<Category> DeleteCategory(Guid id);
+        Task<Category> SoftDeleteCategory(Guid id, bool isDeleted);
 
-        Task<Category> PutCategoryAsync(long id, CategoryUpdateRequest request);
+        Task<Category> PutCategoryAsync(Guid id, CategoryUpdateRequest request);
     }
     public class CategoryService : ICategoryService
     {
@@ -36,9 +36,9 @@ namespace CmsWebsite.Api.Domain.Service
             return await _unitOfWork.CategoryRepository.ListAsync();
         }
 
-        public async Task<Category> GetCategoryAsync(long id)
+        public async Task<Category> GetCategoryAsync(Guid? id)
         {
-            return await _unitOfWork.CategoryRepository.FindAsync(id);
+            return await _unitOfWork.CategoryRepository.FindAsync((Guid) id);
         }
 
 
@@ -48,6 +48,7 @@ namespace CmsWebsite.Api.Domain.Service
             {
                 var category = new Category()
                 {
+                    CategoryId = new Guid(),
                     CategoryName = request.CategoryName,
                     ParentCategoryId = request.ParentCategoryId,
                     Abbreviation = Guid.NewGuid().ToString(),
@@ -55,7 +56,7 @@ namespace CmsWebsite.Api.Domain.Service
                     //Level = (int)request.Level,
                 };
 
-                if (request.ParentCategoryId == 0)
+                if (request.ParentCategoryId == null)
                 {
                     category.Level = 1;
                 }
@@ -78,7 +79,7 @@ namespace CmsWebsite.Api.Domain.Service
             }
         }
 
-        public async Task<Category> PutCategoryAsync(long id, CategoryUpdateRequest request)
+        public async Task<Category> PutCategoryAsync(Guid id, CategoryUpdateRequest request)
         {
             var existingCategory = await _unitOfWork.CategoryRepository.FindAsync(id);
 
@@ -90,7 +91,7 @@ namespace CmsWebsite.Api.Domain.Service
             existingCategory.CategoryName = request.CategoryName;
             existingCategory.IconFile = request.IconFile;
 
-            if (request.ParentCategoryId == 0)
+            if (request.ParentCategoryId == null)
             {
                 existingCategory.Level = 1;
             }
@@ -114,7 +115,7 @@ namespace CmsWebsite.Api.Domain.Service
             }
         }
 
-        public async Task<Category> DeleteCategory(long id)
+        public async Task<Category> DeleteCategory(Guid id)
         {
             var existingCategory = await _unitOfWork.CategoryRepository.FindAsync(id);
 
@@ -137,7 +138,7 @@ namespace CmsWebsite.Api.Domain.Service
             }
         }
 
-        public async Task<Category> SoftDeleteCategory(long id, bool isDeleted)
+        public async Task<Category> SoftDeleteCategory(Guid id, bool isDeleted)
         {
             var existingCategory = await _unitOfWork.CategoryRepository.FindAsync(id);
 

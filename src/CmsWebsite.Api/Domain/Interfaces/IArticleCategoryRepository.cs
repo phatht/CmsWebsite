@@ -4,9 +4,9 @@ namespace CmsWebsite.Api.Domain.Interfaces
 {
     public interface IArticleCategoryRepository
     {
-        public Task<IEnumerable<ArticleCategories>> ListByCategoryIdAsync(long CategoryId);
+        public Task<IEnumerable<ArticleCategories>> ListByCategoryIdAsync(Guid CategoryId);
 
-        public Task<ArticleCategories> FindAsync(long id);
+        public Task<ArticleCategories> FindAsync(Guid id);
 
         public Task<ArticleCategories> AddAsync(ArticleCategories ac);
 

@@ -7,15 +7,15 @@ namespace CmsWebsite.Api.Domain.Service
 {
     public interface IArticleCategoryService
     {
-        Task<IEnumerable<ArticleCategories>> GetArticleCategoryByCategoryIdAsync(long CategoryId);
+        Task<IEnumerable<ArticleCategories>> GetArticleCategoryByCategoryIdAsync(Guid CategoryId);
 
-        Task<ArticleCategories> GetArticleCategory(long id);
+        Task<ArticleCategories> GetArticleCategory(Guid id);
         //create
         Task<ArticleCategories> PutArticleCategory(ArticleCategoryRequest request);
 
         //Task<Article> DeleteArticle(long id);
 
-        Task<ArticleCategories> PutArticleCategory(long articleId, ArticleCategories ac);
+        Task<ArticleCategories> PutArticleCategory(Guid articleId, ArticleCategories ac);
     }
 
     public class ArticleCategoryService : IArticleCategoryService
@@ -30,7 +30,7 @@ namespace CmsWebsite.Api.Domain.Service
         }
 
 
-        public async Task<IEnumerable<ArticleCategories>> GetArticleCategoryByCategoryIdAsync(long CategoryId)
+        public async Task<IEnumerable<ArticleCategories>> GetArticleCategoryByCategoryIdAsync(Guid CategoryId)
         {
             try
             {
@@ -49,6 +49,7 @@ namespace CmsWebsite.Api.Domain.Service
             {
                 var ac = new ArticleCategories()
                 {
+                    ID = Guid.NewGuid(),
                     ArticleID = request.ArticleID,
                     CategoryID = request.CategoryID
                 };
@@ -63,7 +64,7 @@ namespace CmsWebsite.Api.Domain.Service
                 throw;
             }
         }
-        public async Task<ArticleCategories> GetArticleCategory(long id)
+        public async Task<ArticleCategories> GetArticleCategory(Guid id)
         {
             var ac = await _unitOfWork.ArticleCategoryRepository.FindAsync(id);
             if (ac == null)
@@ -71,13 +72,13 @@ namespace CmsWebsite.Api.Domain.Service
                 return new ArticleCategories()
                 {
                     ArticleID = id,
-                    CategoryID = 0
+                    CategoryID = null,
                 };
             }
             return ac;
         }
 
-        public async Task<ArticleCategories> PutArticleCategory(long articleId, ArticleCategories ac)
+        public async Task<ArticleCategories> PutArticleCategory(Guid articleId, ArticleCategories ac)
         {
             var existingAC = await GetArticleCategory(articleId);
 

@@ -6,10 +6,10 @@ namespace CmsWebsite.Client.Blazor.Services.GuestArticle
     public interface IGuestArticleService
     {
         Task<List<GuestArticleDTO>> GetListGuestArticle();
-        Task<GuestArticleDTO> GetGuestArticle(long id);
-        Task<long> CreateGuestArticle(GuestArticleCreateRequest request);
-        Task<GuestArticleUpdateRequest> GetUpdateGuestArticle(long id);
-        Task<bool> UpdateGuestArticle(long id, GuestArticleUpdateRequest request);
-        Task<bool> DeleteGuestArticle(long id);
+        Task<GuestArticleDTO> GetGuestArticle(Guid id);
+        Task<Guid> CreateGuestArticle(GuestArticleCreateRequest request);
+        Task<GuestArticleUpdateRequest> GetUpdateGuestArticle(Guid id);
+        Task<bool> UpdateGuestArticle(Guid id, GuestArticleUpdateRequest request);
+        Task<bool> DeleteGuestArticle(Guid id);
     }
 }

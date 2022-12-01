@@ -21,11 +21,11 @@
 
             <div class="col-md-4" style="height: 545px; overflow: scroll;">
                 <RadzenImage @onclick="() => EditRow(listArticle[1].ArticleID)" Path=@listArticle[1].ImageFile Style="width: 100%; margin-bottom: 10px; cursor: pointer;" class="rounded" />
-                <a class="text-decoration-none text-reset" href="/chitietbaiviet/@listArticle[1].ArticleID">@listArticle[1].Title</a>
+                <a class="text-decoration-none text-reset" href="/baiviet/@listArticle[1].ArticleID">@listArticle[1].Title</a>
                 @foreach (var article in listArticle.Skip(2).Take(4))
                 {
                     <hr />
-                    <a class="text-decoration-none text-reset" href="/chitietbaiviet/@article.ArticleID">@article.Title</a>
+                    <a class="text-decoration-none text-reset" href="/baiviet/@article.ArticleID">@article.Title</a>
                 }
             </div>
         </div>
@@ -72,7 +72,7 @@ else
         {
             <RadzenCard Style="width: 100%; margin: 20px 0 0 3px;">
                 <div class="row wrapper">
-                    <a style="color: #ffae11; text-decoration: none; font-size: 18px; font-weight: bold;" href="/baiviettheochuyenmuc/@item.Category.CategoryId">@item.Category.CategoryName.ToUpper()</a>
+                    <a style="color: #ffae11; text-decoration: none; font-size: 18px; font-weight: bold;" href="/chuyenmuc/@item.Category.CategoryId">@item.Category.CategoryName.ToUpper()</a>
 
                     <div class="col-md-7" style="cursor: pointer; margin-top: 10px;" @onclick="() => EditRow(item.Articles[0].ArticleID)">
                         <img src=@item.Articles[0].ImageFile Style="width: 100%; height: 60%; object-fit: cover;" class="rounded" />
@@ -96,7 +96,7 @@ else
         {
             <RadzenCard Style="width: 100%; margin: 20px 0 0 3px;">
 
-                <a style="color: #ffae11; text-decoration: none; font-size: 18px; font-weight: bold;" href="/baiviettheochuyenmuc/@item.Category.CategoryId">@item.Category.CategoryName.ToUpper()</a>
+                <a style="color: #ffae11; text-decoration: none; font-size: 18px; font-weight: bold;" href="/chuyenmuc/@item.Category.CategoryId">@item.Category.CategoryName.ToUpper()</a>
 
                     <div style="display: flex; cursor: pointer; margin-top: 10px;" @onclick="() => EditRow(item.Articles[0].ArticleID)">
                         <img src=@item.Articles[0].ImageFile Style="width: 350px; height: 235px; object-fit: cover;" class="rounded" />
@@ -170,6 +170,6 @@ else
 
     //}
 
-    protected void EditRow(long id) => uriHelper.NavigateTo($"chitietbaiviet/{id}");
+    protected void EditRow(Guid id) => uriHelper.NavigateTo($"baiviet/{id}");
 
 }

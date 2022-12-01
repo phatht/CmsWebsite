@@ -1,4 +1,4 @@
-﻿@page "/category/edit/{categoryId:long}"
+﻿@page "/category/edit/{categoryId:guid}"
 @using CmsWebsite.Client.Blazor.Services.Category
 @using System.Text.Json
 @using CmsWebsite.Share.Models.Category
@@ -84,7 +84,7 @@
     private List<CategoryDTO> categories { get; set; } = new List<CategoryDTO>();
 
     [Parameter]
-    public long categoryId { set; get; }
+    public Guid categoryId { set; get; }
 
     [Parameter]
     public string ImgUrl { get; set; }

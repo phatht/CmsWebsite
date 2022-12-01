@@ -9,7 +9,7 @@ namespace CmsWebsite.Share.Models.GuestArticle
 {
     public class GuestArticleUpdateRequest
     {
-        public long GuestArticleID { get; set; }
+        public Guid GuestArticleID { get; set; }
         [Required(ErrorMessage = "Bạn cần nhập họ và tên.")]
         public string FullName { get; set; }
         [MaxLength(10, ErrorMessage = "Số điện thoại chỉ tối đa 10 số.")]

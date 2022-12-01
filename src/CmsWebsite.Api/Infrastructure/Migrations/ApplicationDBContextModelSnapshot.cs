@@ -8,10 +8,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace CmsWebsite.Api.Migrations
+namespace CmsWebsite.Api.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDBContextModelSnapshot : ModelSnapshot
+    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
@@ -93,11 +93,9 @@ namespace CmsWebsite.Api.Migrations
 
             modelBuilder.Entity("CmsWebsite.Api.Domain.Models.Article", b =>
                 {
-                    b.Property<long>("ArticleID")
+                    b.Property<Guid>("ArticleID")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("ArticleID"), 1L, 1);
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Author")
                         .IsRequired()
@@ -168,17 +166,15 @@ namespace CmsWebsite.Api.Migrations
 
             modelBuilder.Entity("CmsWebsite.Api.Domain.Models.ArticleCategories", b =>
                 {
-                    b.Property<long>("ID")
+                    b.Property<Guid>("ID")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
+                        .HasColumnType("uniqueidentifier");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("ID"), 1L, 1);
+                    b.Property<Guid>("ArticleID")
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<long>("ArticleID")
-                        .HasColumnType("bigint");
-
-                    b.Property<long>("CategoryID")
-                        .HasColumnType("bigint");
+                    b.Property<Guid?>("CategoryID")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("ID");
 
@@ -187,11 +183,9 @@ namespace CmsWebsite.Api.Migrations
 
             modelBuilder.Entity("CmsWebsite.Api.Domain.Models.Category", b =>
                 {
-                    b.Property<long>("CategoryId")
+                    b.Property<Guid>("CategoryId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("CategoryId"), 1L, 1);
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Abbreviation")
                         .IsRequired()
@@ -214,8 +208,8 @@ namespace CmsWebsite.Api.Migrations
                     b.Property<int>("Level")
                         .HasColumnType("int");
 
-                    b.Property<long>("ParentCategoryId")
-                        .HasColumnType("bigint");
+                    b.Property<Guid?>("ParentCategoryId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<bool>("isDeleted")
                         .HasColumnType("bit");
@@ -227,11 +221,9 @@ namespace CmsWebsite.Api.Migrations
 
             modelBuilder.Entity("CmsWebsite.Api.Domain.Models.GuestArticle", b =>
                 {
-                    b.Property<long>("GuestArticleID")
+                    b.Property<Guid>("GuestArticleID")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("GuestArticleID"), 1L, 1);
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Address")
                         .IsRequired()
@@ -267,7 +259,7 @@ namespace CmsWebsite.Api.Migrations
 
                     b.HasKey("GuestArticleID");
 
-                    b.ToTable("GuestArticle", (string)null);
+                    b.ToTable("GuestArticle");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>

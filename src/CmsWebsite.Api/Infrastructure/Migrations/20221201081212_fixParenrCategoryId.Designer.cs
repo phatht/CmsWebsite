@@ -9,11 +9,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace CmsWebsite.Api.Migrations
+namespace CmsWebsite.Api.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20220418054636_update-softDelete")]
-    partial class updatesoftDelete
+    [Migration("20221201081212_fixParenrCategoryId")]
+    partial class fixParenrCategoryId
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -42,6 +42,10 @@ namespace CmsWebsite.Api.Migrations
 
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("bit");
+
+                    b.Property<string>("FullName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("bit");
@@ -91,13 +95,15 @@ namespace CmsWebsite.Api.Migrations
 
             modelBuilder.Entity("CmsWebsite.Api.Domain.Models.Article", b =>
                 {
-                    b.Property<long>("ArticleID")
+                    b.Property<Guid>("ArticleID")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
+                        .HasColumnType("uniqueidentifier");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("ArticleID"), 1L, 1);
+                    b.Property<string>("Author")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime?>("CreatedDate")
+                    b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime?>("DateDeleted")
@@ -107,7 +113,7 @@ namespace CmsWebsite.Api.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("ExpireDate")
+                    b.Property<DateTime?>("ExpireDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("ImageFile")
@@ -120,6 +126,9 @@ namespace CmsWebsite.Api.Migrations
 
                     b.Property<DateTime?>("LastModifiedDate")
                         .HasColumnType("datetime2");
+
+                    b.Property<int>("Like")
+                        .HasColumnType("int");
 
                     b.Property<int>("NumberOfViews")
                         .HasColumnType("int");
@@ -146,6 +155,9 @@ namespace CmsWebsite.Api.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Video")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<bool>("isDeleted")
                         .HasColumnType("bit");
 
@@ -156,34 +168,26 @@ namespace CmsWebsite.Api.Migrations
 
             modelBuilder.Entity("CmsWebsite.Api.Domain.Models.ArticleCategories", b =>
                 {
-                    b.Property<long>("ID")
+                    b.Property<Guid>("ID")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
+                        .HasColumnType("uniqueidentifier");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("ID"), 1L, 1);
+                    b.Property<Guid>("ArticleID")
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<long>("ArticleID")
-                        .HasColumnType("bigint");
-
-                    b.Property<long>("CategoryID")
-                        .HasColumnType("bigint");
+                    b.Property<Guid?>("CategoryID")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("ID");
-
-                    b.HasIndex("ArticleID");
-
-                    b.HasIndex("CategoryID");
 
                     b.ToTable("CmsArticleCategories", (string)null);
                 });
 
             modelBuilder.Entity("CmsWebsite.Api.Domain.Models.Category", b =>
                 {
-                    b.Property<long>("CategoryId")
+                    b.Property<Guid>("CategoryId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("CategoryId"), 1L, 1);
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Abbreviation")
                         .IsRequired()
@@ -206,8 +210,8 @@ namespace CmsWebsite.Api.Migrations
                     b.Property<int>("Level")
                         .HasColumnType("int");
 
-                    b.Property<long>("ParentCategoryId")
-                        .HasColumnType("bigint");
+                    b.Property<Guid?>("ParentCategoryId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<bool>("isDeleted")
                         .HasColumnType("bit");
@@ -215,6 +219,49 @@ namespace CmsWebsite.Api.Migrations
                     b.HasKey("CategoryId");
 
                     b.ToTable("CmsCategories", (string)null);
+                });
+
+            modelBuilder.Entity("CmsWebsite.Api.Domain.Models.GuestArticle", b =>
+                {
+                    b.Property<Guid>("GuestArticleID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Address")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FullName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Phone")
+                        .IsRequired()
+                        .HasMaxLength(10)
+                        .HasColumnType("nvarchar(10)");
+
+                    b.Property<string>("SummaryArticle")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("GuestArticleID");
+
+                    b.ToTable("GuestArticle");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -350,25 +397,6 @@ namespace CmsWebsite.Api.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("CmsWebsite.Api.Domain.Models.ArticleCategories", b =>
-                {
-                    b.HasOne("CmsWebsite.Api.Domain.Models.Article", "Article")
-                        .WithMany("ArticleCategories")
-                        .HasForeignKey("ArticleID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("CmsWebsite.Api.Domain.Models.Category", "Category")
-                        .WithMany("ArticleCategories")
-                        .HasForeignKey("CategoryID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Article");
-
-                    b.Navigation("Category");
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -418,16 +446,6 @@ namespace CmsWebsite.Api.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("CmsWebsite.Api.Domain.Models.Article", b =>
-                {
-                    b.Navigation("ArticleCategories");
-                });
-
-            modelBuilder.Entity("CmsWebsite.Api.Domain.Models.Category", b =>
-                {
-                    b.Navigation("ArticleCategories");
                 });
 #pragma warning restore 612, 618
         }

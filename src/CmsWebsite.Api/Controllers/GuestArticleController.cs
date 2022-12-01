@@ -24,7 +24,7 @@ namespace CmsWebsite.Api.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<GuestArticle>> GetGuestArticle(long id)
+        public async Task<ActionResult<GuestArticle>> GetGuestArticle(Guid id)
         {
             var guestArticle = await _guestArticleService.GetGuestArticleAsync(id);
             if (guestArticle == null)
@@ -35,7 +35,7 @@ namespace CmsWebsite.Api.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutArticle(long id, GuestArticleUpdateRequest guestArticle)
+        public async Task<IActionResult> PutArticle(Guid id, GuestArticleUpdateRequest guestArticle)
         {
             if (id != guestArticle.GuestArticleID)
             {
@@ -54,14 +54,14 @@ namespace CmsWebsite.Api.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<long>> PostGuestArticle(GuestArticleCreateRequest guestArticle)
+        public async Task<ActionResult<Guid>> PostGuestArticle(GuestArticleCreateRequest guestArticle)
         {
             var result = await _guestArticleService.PutGuestArticleAsync(guestArticle);
             return result;
         }
 
         [HttpDelete("{id}")]
-        public async Task<ActionResult<GuestArticle>> DeleteGuestArticle(long id)
+        public async Task<ActionResult<GuestArticle>> DeleteGuestArticle(Guid id)
         {
             var guestArticle = await _guestArticleService.GetGuestArticleAsync(id);
             if (guestArticle == null)

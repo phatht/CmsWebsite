@@ -4,7 +4,7 @@ namespace CmsWebsite.Share.Models.ArticleCategory
 {
     public class ArticleCategoryRequest
     {
-        public long ArticleID { get; set; }
-        public long CategoryID { get; set; }
+        public Guid ArticleID { get; set; }
+        public Guid CategoryID { get; set; }
     }
 }

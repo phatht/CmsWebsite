@@ -16,13 +16,13 @@ namespace CmsWebsite.Client.Blazor.Services.ArticleCategory
             return response.IsSuccessStatusCode;
         }
 
-        public async Task<ArticleCategoryDTO> GetArticleCategory(long id)
+        public async Task<ArticleCategoryDTO> GetArticleCategory(Guid id)
         {
             var response = await _httpClient.GetFromJsonAsync<ArticleCategoryDTO>($"api/ArticleCategory/{id}");
             return response;
         }
 
-        public async Task<bool> UpdateArticleCategory(long articleId, ArticleCategoryDTO ac)
+        public async Task<bool> UpdateArticleCategory(Guid articleId, ArticleCategoryDTO ac)
         {
             var response = await _httpClient.PutAsJsonAsync($"api/ArticleCategory/{articleId}", ac);
             return response.IsSuccessStatusCode;

@@ -9,19 +9,19 @@ namespace CmsWebsite.Api.Domain.Service
     {
         Task<IEnumerable<Article>> GetArticleAsync();
 
-        Task<Article> GetArticleAsync(long id);
+        Task<Article> GetArticleAsync(Guid id);
         //create
-        Task<long> PutArticleAsync(ArticleCreateRequest request);
+        Task<Guid> PutArticleAsync(ArticleCreateRequest request);
 
-        Task<Article> DeleteArticle(long id);
+        Task<Article> DeleteArticle(Guid id);
 
-        Task<Article> PutArticleAsync(long id, ArticleUpdateRequest request);
+        Task<Article> PutArticleAsync(Guid id, ArticleUpdateRequest request);
 
-        Task<Article> SoftDeleteArticle(long id, bool isDeleted);
+        Task<Article> SoftDeleteArticle(Guid id, bool isDeleted);
 
-        Task<IEnumerable<Article>> GetArticleByCategoryIdAsync(long CategoryId);
+        Task<IEnumerable<Article>> GetArticleByCategoryIdAsync(Guid CategoryId);
 
-        Task<int> PostLikeArticle(long id, bool like);
+        Task<int> PostLikeArticle(Guid id, bool like);
 
     }
 
@@ -41,17 +41,18 @@ namespace CmsWebsite.Api.Domain.Service
             return await _unitOfWork.ArticleRepository.ListAsync();
         }
 
-        public async Task<Article> GetArticleAsync(long id)
+        public async Task<Article> GetArticleAsync(Guid id)
         {
             return await _unitOfWork.ArticleRepository.FindAsync(id);
         }
 
-        public async Task<long> PutArticleAsync(ArticleCreateRequest request)
+        public async Task<Guid> PutArticleAsync(ArticleCreateRequest request)
         {
             try
             {
                 var article = new Article()
                 {
+                    ArticleID = new Guid(),
                     UserId = request.UserId,
                     CreatedDate = DateTime.Now,
                     LastModifiedDate = DateTime.Now,
@@ -81,7 +82,7 @@ namespace CmsWebsite.Api.Domain.Service
             }
         }
 
-        public async Task<Article> PutArticleAsync(long id, ArticleUpdateRequest request)
+        public async Task<Article> PutArticleAsync(Guid id, ArticleUpdateRequest request)
         {
             var existingArticle = await GetArticleAsync(id);
 
@@ -113,7 +114,7 @@ namespace CmsWebsite.Api.Domain.Service
             }
         }
 
-        public async Task<Article> DeleteArticle(long id)
+        public async Task<Article> DeleteArticle(Guid id)
         {
             var existingArticle = await _unitOfWork.ArticleRepository.FindAsync(id);
 
@@ -136,7 +137,7 @@ namespace CmsWebsite.Api.Domain.Service
             }
         }
 
-        public async Task<Article> SoftDeleteArticle(long id, bool isDeleted)
+        public async Task<Article> SoftDeleteArticle(Guid id, bool isDeleted)
         {
             var existingArticle = await _unitOfWork.ArticleRepository.FindAsync(id);
 
@@ -167,7 +168,7 @@ namespace CmsWebsite.Api.Domain.Service
             }
         }
 
-        public async Task<IEnumerable<Article>> GetArticleByCategoryIdAsync(long CategoryId)
+        public async Task<IEnumerable<Article>> GetArticleByCategoryIdAsync(Guid CategoryId)
         {
             try
             {
@@ -191,7 +192,7 @@ namespace CmsWebsite.Api.Domain.Service
 
         }
 
-        public async Task<int> PostLikeArticle(long id, bool like)
+        public async Task<int> PostLikeArticle(Guid id, bool like)
         {
             try
             {

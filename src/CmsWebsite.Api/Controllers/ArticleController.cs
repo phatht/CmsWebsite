@@ -25,7 +25,7 @@ namespace CmsWebsite.Api.Controllers
         }
 
         [HttpGet(nameof(LikeArticle))]
-        public async Task<ActionResult> LikeArticle(long id, bool like)
+        public async Task<ActionResult> LikeArticle(Guid id, bool like)
         {
             await _articleService.PostLikeArticle(id, like);
             return Ok();
@@ -41,7 +41,7 @@ namespace CmsWebsite.Api.Controllers
 
         // GET: api/article/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Article>> GetArticle(long id)
+        public async Task<ActionResult<Article>> GetArticle(Guid id)
         {
             var article = await _articleService.GetArticleAsync(id);
             if (article == null)
@@ -53,7 +53,7 @@ namespace CmsWebsite.Api.Controllers
 
         // PUT: api/article/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutArticle(long id, ArticleUpdateRequest article)
+        public async Task<IActionResult> PutArticle(Guid id, ArticleUpdateRequest article)
         {
             if (id != article.ArticleID)
             {
@@ -73,7 +73,7 @@ namespace CmsWebsite.Api.Controllers
 
         // POST: api/article
         [HttpPost]
-        public async Task<ActionResult<long>> PostArticle(ArticleCreateRequest article)
+        public async Task<ActionResult<Guid>> PostArticle(ArticleCreateRequest article)
         {
             var result = await _articleService.PutArticleAsync(article);
             //return CreatedAtAction("GetArticle", new { id = result.ArticleID }, article);
@@ -82,7 +82,7 @@ namespace CmsWebsite.Api.Controllers
 
         // DELETE: api/article/5
         [HttpDelete("{id}")]
-        public async Task<ActionResult<Article>> DeleteArticle(long id)
+        public async Task<ActionResult<Article>> DeleteArticle(Guid id)
         {
             var article = await _articleService.GetArticleAsync(id);
             if (article == null)
@@ -102,7 +102,7 @@ namespace CmsWebsite.Api.Controllers
         }
 
         [HttpDelete("soft/{id}")]
-        public async Task<IActionResult> SoftDeleteArticle(long id, bool isDeleted)
+        public async Task<IActionResult> SoftDeleteArticle(Guid id, bool isDeleted)
         {
 
             try
@@ -118,7 +118,7 @@ namespace CmsWebsite.Api.Controllers
         }
 
         [HttpGet("GetArticleByCategoryId/{CategoryId}")]
-        public async Task<ActionResult<IEnumerable<Article>>> GetArticleByCategoryIdAsync(long CategoryId)
+        public async Task<ActionResult<IEnumerable<Article>>> GetArticleByCategoryIdAsync(Guid CategoryId)
         {
             var article = await _articleService.GetArticleByCategoryIdAsync(CategoryId);
             return Ok(article);

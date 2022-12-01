@@ -4,7 +4,7 @@ namespace CmsWebsite.Share.Models.Article
 {
     public class ArticleUpdateRequest
     {
-        public long ArticleID { get; set; }
+        public Guid ArticleID { get; set; }
         [Required(ErrorMessage = "Bạn cần nhập tiêu đề.")]
         public string Title { get; set; }
         [Required(ErrorMessage = "Bạn cần nhập mô tả bài viết.")]

@@ -9,7 +9,7 @@ namespace CmsWebsite.Share.Models.GuestArticle
 {
     public class GuestArticleDTO
     {
-        public long GuestArticleID { get; set; }
+        public Guid GuestArticleID { get; set; }
         public string FullName { get; set; }
         public string Phone { get; set; }
         public string Email { get; set; }

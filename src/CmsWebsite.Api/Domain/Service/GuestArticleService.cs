@@ -16,7 +16,7 @@ namespace CmsWebsite.Api.Domain.Service
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<GuestArticle> DeleteGuestArticle(long id)
+        public async Task<GuestArticle> DeleteGuestArticle(Guid id)
         {
             var guestArticle = await _unitOfWork.GuestArticleRepository.FindAsync(id);
 
@@ -44,17 +44,18 @@ namespace CmsWebsite.Api.Domain.Service
             return await _unitOfWork.GuestArticleRepository.ListAsync();
         }
 
-        public async Task<GuestArticle> GetGuestArticleAsync(long id)
+        public async Task<GuestArticle> GetGuestArticleAsync(Guid id)
         {
             return await _unitOfWork.GuestArticleRepository.FindAsync(id);
         }
 
-        public async Task<long> PutGuestArticleAsync(GuestArticleCreateRequest request)
+        public async Task<Guid> PutGuestArticleAsync(GuestArticleCreateRequest request)
         {
             try
             {
                 var guestArticle = new GuestArticle()
                 {
+                    GuestArticleID = new Guid(),
                     FullName = request.FullName,
                     Phone = request.Phone,
                     Email = request.Email,
@@ -77,7 +78,7 @@ namespace CmsWebsite.Api.Domain.Service
             }
         }
 
-        public async Task<GuestArticle> PutGuestArticleAsync(long id, GuestArticleUpdateRequest request)
+        public async Task<GuestArticle> PutGuestArticleAsync(Guid id, GuestArticleUpdateRequest request)
         {
             var guestArticle = await GetGuestArticleAsync(id);
 
