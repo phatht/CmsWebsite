@@ -73,13 +73,13 @@
                     <div style="display: flex">
                         <RadzenMenuItem Icon="home" Path="/"></RadzenMenuItem>
 
-                        <RadzenMenuItem Text="Giới thiệu">
+                        @*<RadzenMenuItem Text="Giới thiệu">
                             <RadzenMenuItem Text="Giới thiệu chung" Path="counter">
                             </RadzenMenuItem>
                             <RadzenMenuItem Text="Các kỳ đại hội" Path="">
                             </RadzenMenuItem>
-                        </RadzenMenuItem>
-                        @foreach (var category in categories.Take(4))
+                        </RadzenMenuItem>*@
+                        @foreach (var category in categories.Take(5))
                         {
                             <RadzenMenuItem Text="@category.CategoryName" Click="() => NavigateCategory(category.CategoryId)"></RadzenMenuItem>
                         }
@@ -110,11 +110,11 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr>
+                                        @*<tr>
                                             <td><a href="/" style="color:red">Giới thiệu</a></td>
                                             <td style="color:red">Tin tổng hợp</td>
                                             <td style="color:red">Tin hoạt động</td>
-                                        </tr>
+                                        </tr>*@
                                         <tr>
                                         @foreach (var category in categories.Take(3))
                                         {
