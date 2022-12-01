@@ -13,14 +13,14 @@ namespace CmsWebsite.Client.Blazor.Services.Article
             _httpClient = httpClient;
         }
 
-        public async Task<long> CreateArticle(ArticleCreateRequest arRequest)
+        public async Task<Guid> CreateArticle(ArticleCreateRequest arRequest)
         {
             var response = await _httpClient.PostAsJsonAsync("api/article", arRequest);
-            long result = await response.Content.ReadFromJsonAsync<long>();
+            Guid result = await response.Content.ReadFromJsonAsync<Guid>();
             return result;
         }
 
-        public async Task<bool> DeleteArticle(long id, bool isDeleted)
+        public async Task<bool> DeleteArticle(Guid id, bool isDeleted)
         {
             var result = await _httpClient.DeleteAsync($"/api/article/soft/{id}?isDeleted={isDeleted}");
             return result.IsSuccessStatusCode;
@@ -32,7 +32,7 @@ namespace CmsWebsite.Client.Blazor.Services.Article
             return result.IsSuccessStatusCode;
         }
 
-        public async Task<ArticleDTO> GetArticle(long id)
+        public async Task<ArticleDTO> GetArticle(Guid id)
         {
             var result = await _httpClient.GetFromJsonAsync<ArticleDTO>($"api/article/{id}");
             return result;
@@ -44,7 +44,7 @@ namespace CmsWebsite.Client.Blazor.Services.Article
             return result;
         }
 
-        public async Task<bool> UpdateArticle(long id, ArticleUpdateRequest request)
+        public async Task<bool> UpdateArticle(Guid id, ArticleUpdateRequest request)
         {
             var result = await _httpClient.PutAsJsonAsync($"api/article/{id}", request);
             return result.IsSuccessStatusCode;
@@ -63,19 +63,19 @@ namespace CmsWebsite.Client.Blazor.Services.Article
                return await response.Content.ReadFromJsonAsync<UploadFileResponse>();
             }
         }
-        public async Task<List<ArticleDTO>> GetListArticleCategoryByCategoryId(long categoryId)
+        public async Task<List<ArticleDTO>> GetListArticleCategoryByCategoryId(Guid categoryId)
         {
             var result = await _httpClient.GetFromJsonAsync<List<ArticleDTO>>($"api/article/GetArticleByCategoryId/{categoryId}");
             return result;
         }
 
-        public async Task<ArticleUpdateRequest> GetUpdateArticle(long id)
+        public async Task<ArticleUpdateRequest> GetUpdateArticle(Guid id)
         {
             var result = await _httpClient.GetFromJsonAsync<ArticleUpdateRequest>($"api/article/{id}");
             return result;
         }
 
-        public async Task LikeArticle(long id, bool like)
+        public async Task LikeArticle(Guid id, bool like)
         {
             await _httpClient.GetAsync($"api/Article/LikeArticle?id={id}&like={like}");
         }

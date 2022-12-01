@@ -69,9 +69,9 @@ else
     {
         Categories = await _client.GetListCategory();
     }
-    protected void EditRow(long id) => uriHelper.NavigateTo($"category/edit/{id}");
+    protected void EditRow(Guid id) => uriHelper.NavigateTo($"category/edit/{id}");
 
-    protected async Task IsDeleted(long id, bool isDeleted)
+    protected async Task IsDeleted(Guid id, bool isDeleted)
     {
 
         try

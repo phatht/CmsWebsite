@@ -7,12 +7,12 @@ namespace CmsWebsite.Api.Domain.Interfaces
     {
         Task<IEnumerable<GuestArticle>> GetGuestArticleAsync();
 
-        Task<GuestArticle> GetGuestArticleAsync(long id);
+        Task<GuestArticle> GetGuestArticleAsync(Guid id);
 
-        Task<long> PutGuestArticleAsync(GuestArticleCreateRequest request);
+        Task<Guid> PutGuestArticleAsync(GuestArticleCreateRequest request);
 
-        Task<GuestArticle> DeleteGuestArticle(long id);
+        Task<GuestArticle> DeleteGuestArticle(Guid id);
 
-        Task<GuestArticle> PutGuestArticleAsync(long id, GuestArticleUpdateRequest request);
+        Task<GuestArticle> PutGuestArticleAsync(Guid id, GuestArticleUpdateRequest request);
     }
 }

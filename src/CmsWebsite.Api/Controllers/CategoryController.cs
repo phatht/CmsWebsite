@@ -27,7 +27,7 @@ namespace CmsWebsite.Api.Controllers
 
         //GET: api/Category/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Category>> GetCategory(long id)
+        public async Task<ActionResult<Category>> GetCategory(Guid id)
         {
             var category = await _categoryService.GetCategoryAsync(id);
 
@@ -42,7 +42,7 @@ namespace CmsWebsite.Api.Controllers
         // PUT: api/Category/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutCategory(long id, CategoryUpdateRequest request)
+        public async Task<IActionResult> PutCategory(Guid id, CategoryUpdateRequest request)
         {
             try
             {
@@ -68,7 +68,7 @@ namespace CmsWebsite.Api.Controllers
 
         // DELETE: api/Category/5
         [HttpDelete("{id}")]
-        public async Task<ActionResult<Category>> DeleteCategory(long id)
+        public async Task<ActionResult<Category>> DeleteCategory(Guid id)
         {
             var category = await _categoryService.GetCategoryAsync(id);
             if (category == null)
@@ -87,7 +87,7 @@ namespace CmsWebsite.Api.Controllers
             return category;
         }
         [HttpDelete("soft/{id}")]
-        public async Task<ActionResult<Category>> SoftDeleteCategory(long id, bool isDeleted)
+        public async Task<ActionResult<Category>> SoftDeleteCategory(Guid id, bool isDeleted)
         {
             try
             {

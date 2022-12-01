@@ -17,7 +17,7 @@ namespace CmsWebsite.Api.Infrastructure.Repositories
             return await _context.Article.AsNoTracking().IgnoreQueryFilters().ToListAsync();
         }
 
-        public async Task<Article> FindAsync(long id)
+        public async Task<Article> FindAsync(Guid id)
         {
             var article = await _context.Article.IgnoreQueryFilters()
                 .FirstOrDefaultAsync(r => r.ArticleID == id);

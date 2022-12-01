@@ -24,6 +24,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Infrastructure\Migrations\" />
     <Folder Include="logs\" />
   </ItemGroup>
 

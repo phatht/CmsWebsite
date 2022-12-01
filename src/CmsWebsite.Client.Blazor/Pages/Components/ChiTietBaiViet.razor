@@ -1,4 +1,4 @@
-﻿@page "/chitietbaiviet/{articleId:long}"
+﻿@page "/baiviet/{articleId:guid}"
 @using CmsWebsite.Client.Blazor.Services.Article
 @using CmsWebsite.Share.Models.Article
 @inject IArticleService _articleService
@@ -85,7 +85,7 @@
     }
 
     [Parameter]
-    public long articleId { set; get; }
+    public Guid articleId { set; get; }
 
     private ArticleDTO article { get; set; } = new ArticleDTO();
 

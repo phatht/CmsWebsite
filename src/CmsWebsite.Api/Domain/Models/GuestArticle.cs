@@ -5,7 +5,7 @@ namespace CmsWebsite.Api.Domain.Models
     public class GuestArticle
     {
         [Key]
-        public long GuestArticleID { get; set; }
+        public Guid GuestArticleID { get; set; }
         public string FullName { get; set; }
         [MaxLength(10)]
         public string Phone { get; set; }

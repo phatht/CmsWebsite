@@ -1,10 +1,13 @@
-﻿namespace CmsWebsite.Api.Domain.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace CmsWebsite.Api.Domain.Models
 {
     public class ArticleCategories
     {
-        public long ID { get; set; }
-        public long ArticleID { get; set; }
-        public long CategoryID { get; set; }
+        [Key]
+        public Guid ID { get; set; }
+        public Guid ArticleID { get; set; }
+        public Guid? CategoryID { get; set; }
 
 
     }

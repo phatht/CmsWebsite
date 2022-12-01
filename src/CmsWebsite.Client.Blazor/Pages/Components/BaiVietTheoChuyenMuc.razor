@@ -1,4 +1,4 @@
-﻿@page "/baiviettheochuyenmuc/{categoryId:long}"
+﻿@page "/chuyenmuc/{categoryId:guid}"
 @using CmsWebsite.Client.Blazor.Services.Article;
 @using CmsWebsite.Client.Blazor.Services.Category;
 @using CmsWebsite.Share.Models.Article;
@@ -11,11 +11,11 @@
 <RadzenDataList WrapItems="true" AllowPaging="true" PageSize="10" Data="@listArticle" TItem="ArticleDTO">
     <Template Context="article">
         <RadzenCard Style="display: flex; width: 100%; padding: 15px; overflow: hidden;">
-            <a href="/chitietbaiviet/@article.ArticleID">
+            <a href="/baiviet/@article.ArticleID">
                 <img src=@article.ImageFile style="object-fit: cover; width: 220px; height: 145px;" />
             </a>
             <div style="margin-left: 10px; overflow: hidden;">
-                <a style="color: #000; font-size: 18px; font-weight: 700; text-decoration: none;" href="/chitietbaiviet/@article.ArticleID" onMouseOver="this.style.color='#CC0001'"
+                <a style="color: #000; font-size: 18px; font-weight: 700; text-decoration: none;" href="/baiviet/@article.ArticleID" onMouseOver="this.style.color='#CC0001'"
                    onMouseOut="this.style.color='#000'">
                     @article.Title
                 </a>
@@ -28,7 +28,7 @@
 
 @code {
     [Parameter]
-    public long categoryId { set; get; }
+    public Guid categoryId { set; get; }
 
     public List<ArticleDTO> listArticle { set; get; }
 

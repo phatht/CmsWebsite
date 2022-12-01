@@ -73,8 +73,8 @@ else
     {
         Articles = await _client.GetListArticle();
     }
-    protected void EditRow(long id) => uriHelper.NavigateTo($"article/edit/{id}");
-    protected async Task IsDeleted(long id, bool isDeleted)
+    protected void EditRow(Guid id) => uriHelper.NavigateTo($"article/edit/{id}");
+    protected async Task IsDeleted(Guid id, bool isDeleted)
     {
 
         try

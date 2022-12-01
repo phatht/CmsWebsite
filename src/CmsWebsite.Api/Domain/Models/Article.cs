@@ -1,8 +1,11 @@
-﻿namespace CmsWebsite.Api.Domain.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace CmsWebsite.Api.Domain.Models
 {
     public class Article 
     {
-        public long ArticleID { get; set; }
+        [Key]
+        public Guid ArticleID { get; set; }
         public string UserId { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }

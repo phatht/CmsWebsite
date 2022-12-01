@@ -17,13 +17,13 @@ namespace CmsWebsite.Client.Blazor.Services.Category
             return result.IsSuccessStatusCode;
         }
 
-        public async Task<bool> DeleteCategory(long id, bool isDeleted)
+        public async Task<bool> DeleteCategory(Guid id, bool isDeleted)
         {
             var result = await _httpClient.DeleteAsync($"api/category/soft/{id}?isDeleted={isDeleted}");
             return result.IsSuccessStatusCode;
         }
 
-        public async Task<CategoryDTO> GetCategory(long id)
+        public async Task<CategoryDTO> GetCategory(Guid id)
         {
             var result = await _httpClient.GetFromJsonAsync<CategoryDTO>($"api/category/{id}");
             return result;
@@ -35,7 +35,7 @@ namespace CmsWebsite.Client.Blazor.Services.Category
             return result;
         }
 
-        public async Task<bool> UpdateCategory(long id, CategoryUpdateRequest request)
+        public async Task<bool> UpdateCategory(Guid id, CategoryUpdateRequest request)
         {
             var result = await _httpClient.PutAsJsonAsync($"api/category/{id}", request);
             return result.IsSuccessStatusCode;
@@ -60,7 +60,7 @@ namespace CmsWebsite.Client.Blazor.Services.Category
             return result.IsSuccessStatusCode;
         }
 
-        public async Task<CategoryUpdateRequest> GetUpdateCategory(long id)
+        public async Task<CategoryUpdateRequest> GetUpdateCategory(Guid id)
         {
             var result = await _httpClient.GetFromJsonAsync<CategoryUpdateRequest>($"api/category/{id}");
             return result;

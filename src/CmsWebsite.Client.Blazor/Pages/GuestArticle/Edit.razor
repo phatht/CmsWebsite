@@ -1,4 +1,4 @@
-﻿@page "/guestarticle/edit/{guestArticleId:long}"
+﻿@page "/guestarticle/edit/{guestArticleId:guid}"
 @using CmsWebsite.Client.Blazor.Services.GuestArticle;
 @using CmsWebsite.Share.Models.GuestArticle;
 
@@ -82,7 +82,7 @@
     private GuestArticleUpdateRequest GuestArticle { get; set; } = new GuestArticleUpdateRequest();
 
     [Parameter]
-    public long guestArticleId { set; get; }
+    public Guid guestArticleId { set; get; }
 
     protected async override Task OnParametersSetAsync()
     {

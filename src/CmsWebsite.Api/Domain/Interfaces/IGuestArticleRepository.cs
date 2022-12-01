@@ -6,7 +6,7 @@ namespace CmsWebsite.Api.Domain.Interfaces
     {
         public Task<IEnumerable<GuestArticle>> ListAsync();
 
-        public Task<GuestArticle> FindAsync(long id);
+        public Task<GuestArticle> FindAsync(Guid id);
 
         public Task<GuestArticle> AddAsync(GuestArticle guestArticle);
 

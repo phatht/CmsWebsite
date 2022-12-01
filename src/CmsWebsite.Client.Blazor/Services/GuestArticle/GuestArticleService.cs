@@ -11,20 +11,20 @@ namespace CmsWebsite.Client.Blazor.Services.GuestArticle
         {
             _httpClient = httpClient;
         }
-        public async Task<long> CreateGuestArticle(GuestArticleCreateRequest request)
+        public async Task<Guid> CreateGuestArticle(GuestArticleCreateRequest request)
         {
             var response = await _httpClient.PostAsJsonAsync("api/GuestArticle/PostGuestArticle", request);
-            long result = await response.Content.ReadFromJsonAsync<long>();
+            Guid result = await response.Content.ReadFromJsonAsync<Guid>();
             return result;
         }
 
-        public async Task<bool> DeleteGuestArticle(long id)
+        public async Task<bool> DeleteGuestArticle(Guid id)
         {
             var result = await _httpClient.DeleteAsync($"api/GuestArticle/DeleteGuestArticle/{id}");
             return result.IsSuccessStatusCode;
         }
 
-        public async Task<GuestArticleDTO> GetGuestArticle(long id)
+        public async Task<GuestArticleDTO> GetGuestArticle(Guid id)
         {
             var result = await _httpClient.GetFromJsonAsync<GuestArticleDTO>($"api/GuestArticle/GetGuestArticle/{id}");
             return result;
@@ -36,13 +36,13 @@ namespace CmsWebsite.Client.Blazor.Services.GuestArticle
             return result;
         }
 
-        public async Task<GuestArticleUpdateRequest> GetUpdateGuestArticle(long id)
+        public async Task<GuestArticleUpdateRequest> GetUpdateGuestArticle(Guid id)
         {
             var result = await _httpClient.GetFromJsonAsync<GuestArticleUpdateRequest>($"api/GuestArticle/GetGuestArticle/{id}");
             return result;
         }
 
-        public async Task<bool> UpdateGuestArticle(long id, GuestArticleUpdateRequest request)
+        public async Task<bool> UpdateGuestArticle(Guid id, GuestArticleUpdateRequest request)
         {
             var result = await _httpClient.PutAsJsonAsync($"api/GuestArticle/PutArticle/{id}", request);
             return result.IsSuccessStatusCode;

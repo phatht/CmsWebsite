@@ -94,7 +94,14 @@
                     <RadzenMenuItem Text="Dân tộc - tôn giáo"></RadzenMenuItem>
                     <RadzenMenuItem Text="Đối ngoại kiều bào"></RadzenMenuItem>*@
                     <div style="position: relative;">
-                        <RadzenIcon Icon="menu" class="menu" Style="@(isMenu == false ? "" : "color: #1159f3;")" @onclick="() => isMenu = !isMenu" />
+                        @if (isMenu == false)
+                        {
+                            <RadzenIcon Icon="menu" class="menu" Style="@(isMenu == false ? "" : "color: #1159f3;")" @onclick="() => isMenu = !isMenu" />
+                        }
+                        else
+                        {
+                            <RadzenIcon Icon="highlight_off" class="menu" Style="@(isMenu == false ? "" : "color: #ff0000;")" @onclick="() => isMenu = !isMenu" />
+                        }
                         <div class="row sub-menu" style="@(isMenu == false ? "display: none;" : "display: block;")">
                                 <table class="table">
                                     <thead>
@@ -111,13 +118,13 @@
                                         <tr>
                                         @foreach (var category in categories.Take(3))
                                         {
-                                            <td><a class="text-reset text-decoration-none" href="baiviettheochuyenmuc/@category.CategoryId">@category.CategoryName</a></td>
+                                            <td><a class="text-reset text-decoration-none" href="chuyenmuc/@category.CategoryId">@category.CategoryName</a></td>
                                         }
                                         </tr>
                                         <tr>
                                         @foreach (var category in categories.Skip(3).Take(3))
                                         {
-                                            <td><a class="text-reset text-decoration-none" href="baiviettheochuyenmuc/@category.CategoryId">@category.CategoryName</a></td>
+                                            <td><a class="text-reset text-decoration-none" href="chuyenmuc/@category.CategoryId">@category.CategoryName</a></td>
                                         }
                                         </tr>
                                     </tbody>
@@ -230,13 +237,13 @@
     }
     void OnInput(string value)
     {
-        uriHelper.NavigateTo($"/danhsachtimkiem/{value}");
+        uriHelper.NavigateTo($"timkiem/{value}");
         isSearch = false;
     }
     void LostFocus() => isSearch = false;
-    void NavigateCategory(long id)
+    void NavigateCategory(Guid id)
     {
         Console.WriteLine(id);
-        uriHelper.NavigateTo($"baiviettheochuyenmuc/{id}");
+        uriHelper.NavigateTo($"chuyenmuc/{id}");
     }
 }

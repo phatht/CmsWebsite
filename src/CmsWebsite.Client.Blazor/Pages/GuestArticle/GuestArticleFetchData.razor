@@ -49,8 +49,8 @@ else
     {
         GuestArticles = await GuestArticleService.GetListGuestArticle();
     }
-    protected void EditRow(long id) => NavigationManager.NavigateTo($"guestarticle/edit/{id}");
-    protected async Task DeleteRow(long id)
+    protected void EditRow(Guid id) => NavigationManager.NavigateTo($"guestarticle/edit/{id}");
+    protected async Task DeleteRow(Guid id)
     {
         try
         {

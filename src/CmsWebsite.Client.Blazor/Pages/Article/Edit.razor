@@ -1,4 +1,4 @@
-﻿@page "/article/edit/{articleId:long}"
+﻿@page "/article/edit/{articleId:guid}"
 
 @using CmsWebsite.Client.Blazor.Services.Article
 @using CmsWebsite.Client.Blazor.Services.ArticleCategory
@@ -86,9 +86,9 @@
                             <RadzenLabel Component="Categories" Text="Loại bài viết: " />
                         </div>
                         <div class="col-md-9">
-                            <RadzenDropDown AllowClear=true Name="Categories" Data="@Categories" TextProperty="CategoryName" ValueProperty="CategoryId"
+                            @*<RadzenDropDown AllowClear=true Name="Categories" Data="@Categories" TextProperty="CategoryName" ValueProperty="CategoryId"
                                             @bind-Value=@ac.CategoryID Placeholder="Bài viết thuộc loại..."
-                                            Style="width:100%;" />
+                                            Style="width:100%;" />*@
 
                         </div>
                     </div>
@@ -162,7 +162,7 @@
     private ArticleCategoryDTO ac = new ArticleCategoryDTO();
     private List<CategoryDTO> Categories { get; set; } = new List<CategoryDTO>();
     [Parameter]
-    public long articleId { set; get; }
+    public Guid articleId { set; get; }
 
     [Parameter]
     public string ImgUrl { get; set; }
@@ -182,7 +182,7 @@
     {
         existingArticle = await _articleService.GetUpdateArticle(articleId);
         Categories = await _categoryService.GetListCategory();
-        ac = await _acService.GetArticleCategory(articleId);
+        //ac = await _acService.GetArticleCategory(articleId);
         firstFile = ImgUrl = existingArticle.ImageFile;
         videoFile = VideoUrl = existingArticle.Video;
     }

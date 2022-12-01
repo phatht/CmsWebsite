@@ -23,7 +23,7 @@ namespace CmsWebsite.Api.Infrastructure.Repositories
             return category;
         }
 
-        public async Task<Category> FindAsync(long id)
+        public async Task<Category> FindAsync(Guid id)
         {
             var category = await _context.Categories.IgnoreQueryFilters()
                 .FirstOrDefaultAsync(r => r.CategoryId == id);

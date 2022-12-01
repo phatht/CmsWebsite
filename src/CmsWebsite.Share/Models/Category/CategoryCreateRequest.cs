@@ -7,7 +7,7 @@ namespace CmsWebsite.Share.Models.Category
     {
         [Required(ErrorMessage = "Bạn cần nhập tên loại bài viết.")]
         public string CategoryName { get; set; }
-        public long ParentCategoryId { get; set; }
+        public Guid? ParentCategoryId { get; set; }
         [Required(ErrorMessage = "Bạn cần thêm ảnh cho loại bài viết.")]
         public string IconFile { get; set; }
     }
