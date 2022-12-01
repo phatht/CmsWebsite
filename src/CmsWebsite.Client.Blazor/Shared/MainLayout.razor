@@ -4,9 +4,12 @@
 @inject IArticleService _client
 @inject NavigationManager uriHelper
 @inject IJSRuntime JSRuntime
+@inject ICategoryService CategoryService
 @using CmsWebsite.Client.Blazor.Services.Article
+@using CmsWebsite.Client.Blazor.Services.Category;
 @using CmsWebsite.Share.Models.Article
 @using CmsWebsite.Client.Blazor.Pages.Components;
+@using CmsWebsite.Share.Models.Category;
 
 
 <link href="css/radzen/@(currentTheme).css" rel="stylesheet" />
@@ -28,8 +31,8 @@
             <div class="col-md-3">
                 <a href="/" style="text-decoration: none;">
                     <div class="row">
-                        <div class="col-md-3"> 
-                            <RadzenImage Path="/img/logo.png" style="width:70px" /> 
+                        <div class="col-md-3">
+                            <RadzenImage Path="/img/logo.png" style="width:70px" />
                         </div>
                         <div class="col-md-7 offset-md-2">
                             <span style="color:red; font-weight:700;font-size:16px">MẬT TRẬN TỔ QUỐC VIỆT NAM</span>
@@ -40,7 +43,7 @@
                         </div>
                     </div>
                 </a>
-            </div> 
+            </div>
             <div class="col-md-5 offset-md-2 icons-wrapper d-flex">
                 @*<button type="button" class="btn d-flex" style="font-size:14px"><RadzenIcon Icon="facebook" /><span class="ms-1">Facebook</span></button>*@
                 <button type="button" class="btn d-flex" style="font-size:14px"><RadzenIcon Icon="call" Style="color:green" /><span class="ms-1">(025 111 222)</span></button>
@@ -66,16 +69,22 @@
         <AuthorizeView>
             <NotAuthorized>
 
-                <RadzenMenu Style="width:100%; position: sticky; top: 0; z-index: 1;">
-                    <RadzenMenuItem Icon="home" Path="/"></RadzenMenuItem>
+                <RadzenMenu Style="width: 100%; justify-content: space-between; position: sticky; top: 0; z-index: 1;">
+                    <div style="display: flex">
+                        <RadzenMenuItem Icon="home" Path="/"></RadzenMenuItem>
 
-                    <RadzenMenuItem Text="Giới thiệu">
-                        <RadzenMenuItem Text="Giới thiệu chung" Path="counter">
+                        <RadzenMenuItem Text="Giới thiệu">
+                            <RadzenMenuItem Text="Giới thiệu chung" Path="counter">
+                            </RadzenMenuItem>
+                            <RadzenMenuItem Text="Các kỳ đại hội" Path="">
+                            </RadzenMenuItem>
                         </RadzenMenuItem>
-                        <RadzenMenuItem Text="Các kỳ đại hội" Path="">
-                        </RadzenMenuItem>
-                    </RadzenMenuItem>
-                    <RadzenMenuItem Text="Hoạt động mặt trận">
+                        @foreach (var category in categories.Take(4))
+                        {
+                            <RadzenMenuItem Text="@category.CategoryName" Click="() => NavigateCategory(category.CategoryId)"></RadzenMenuItem>
+                        }
+                    </div>
+                    @*<RadzenMenuItem Text="Hoạt động mặt trận">
                         <RadzenMenuItem Text="Tin hoạt động" Path="">
                         </RadzenMenuItem>
                         <RadzenMenuItem Text="Hoạt động mật trận địa phương" Path="">
@@ -83,38 +92,40 @@
                     </RadzenMenuItem>
                     <RadzenMenuItem Text="Giám sát & phản biện"></RadzenMenuItem>
                     <RadzenMenuItem Text="Dân tộc - tôn giáo"></RadzenMenuItem>
-                    <RadzenMenuItem Text="Đối ngoại kiều bào"></RadzenMenuItem>
-                    <RadzenIcon Icon="menu" @onmouseover="ShowMenu"/>
-                </RadzenMenu>
-                <RadzenCard Style="@(isMenu == false ? "display: none;" : "position: absolute; z-index: 1; width: 97%; box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);")" @onmouseover="ShowMenu" @onmouseout="HideMenu">
-                    <div class="row">
-                        <table class="table">
-                            <thead>
-                                <tr>
-                                    <b>TẤT CẢ CHUYÊN MỤC</b>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td><a href="/" style="color:red">Giới thiệu</a></td>
-                                    <td style="color:red">Tin tổng hợp</td>
-                                    <td style="color:red">Tin hoạt động</td>
-                                </tr>
-                                <tr>
-                                    <td>Chương trình phối hợp</td>
-                                    <td>Văn bản hướng dẫn</td>
-                                    <td>Thành đoàn</td>
-                                </tr>
-                                <tr>
-                                    <td>Đối ngoại kiều bào</td>
-                                    <td>Dân tộc - tôn giáo</td>
-                                    <td>Thư viện ảnh</td>
-                                </tr>
-
-                            </tbody>
-                        </table>
+                    <RadzenMenuItem Text="Đối ngoại kiều bào"></RadzenMenuItem>*@
+                    <div style="position: relative;">
+                        <RadzenIcon Icon="menu" class="menu" Style="@(isMenu == false ? "" : "color: #1159f3;")" @onclick="() => isMenu = !isMenu" />
+                        <div class="row sub-menu" style="@(isMenu == false ? "display: none;" : "display: block;")">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <b>TẤT CẢ CHUYÊN MỤC</b>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td><a href="/" style="color:red">Giới thiệu</a></td>
+                                            <td style="color:red">Tin tổng hợp</td>
+                                            <td style="color:red">Tin hoạt động</td>
+                                        </tr>
+                                        <tr>
+                                        @foreach (var category in categories.Take(3))
+                                        {
+                                            <td><a class="text-reset text-decoration-none" href="baiviettheochuyenmuc/@category.CategoryId">@category.CategoryName</a></td>
+                                        }
+                                        </tr>
+                                        <tr>
+                                        @foreach (var category in categories.Skip(3).Take(3))
+                                        {
+                                            <td><a class="text-reset text-decoration-none" href="baiviettheochuyenmuc/@category.CategoryId">@category.CategoryName</a></td>
+                                        }
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
                     </div>
-                </RadzenCard>
+                </RadzenMenu>
+
 
             </NotAuthorized>
         </AuthorizeView>
@@ -129,7 +140,7 @@
         <NotAuthorized>
             <div class="col-md-3 my-2">
                 @*<RadzenButton Variant="Variant.Text" ButtonStyle="ButtonStyle.Warning" Click=@(args => ChangeThem())>
-                    <RadzenIcon Icon="@modeTheme" />
+                <RadzenIcon Icon="@modeTheme" />
                 </RadzenButton>*@
                 <RadzenButton Variant="Variant.Text" ButtonStyle="ButtonStyle.Warning" Click=@(arg => uriHelper.NavigateTo("components/guibanbientap"))>
                     <RadzenIcon Icon="forward_to_inbox" />
@@ -138,7 +149,7 @@
                     <RadzenIcon Icon="search" />
                 </RadzenButton>
                 <RadzenTextBox Style="@(isSearch == false ? "position: absolute; top: -9999px;" : "position: absolute; z-index: 1; top: 0; width: 268px;")" id="txtSearch" Change=@OnInput class="form-control" Placeholder="Tìm kiếm thông tin" @onblur="LostFocus" />
-                
+
                 <LienKetWebsite></LienKetWebsite>
                 <DanhSachMatTran></DanhSachMatTran>
                 <VanBanPhapLuat></VanBanPhapLuat>
@@ -160,9 +171,11 @@
     Task<AuthenticationState> AuthenticationState { get; set; }
 
     protected List<ArticleDTO> articles { get; set; }
+    public List<CategoryDTO> categories = new();
     protected override async Task OnInitializedAsync()
     {
         articles = await _client.GetListArticle();
+        categories = await CategoryService.GetListCategory();
     }
 
     protected override async Task OnParametersSetAsync()
@@ -221,6 +234,9 @@
         isSearch = false;
     }
     void LostFocus() => isSearch = false;
-    void ShowMenu() => isMenu = true;
-    void HideMenu() => isMenu = false;
+    void NavigateCategory(long id)
+    {
+        Console.WriteLine(id);
+        uriHelper.NavigateTo($"baiviettheochuyenmuc/{id}");
+    }
 }
