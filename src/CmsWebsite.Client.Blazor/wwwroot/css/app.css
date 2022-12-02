@@ -121,7 +121,7 @@ div span {
 .sub-menu {
     display: none;
     position: absolute;
-    padding: 10px 12px 0 12px;
+    padding: 20px 12px 10px 12px;
     width: 870px;
     right: 12px;
     top: 36px;
