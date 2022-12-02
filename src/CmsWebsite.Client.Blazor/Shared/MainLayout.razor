@@ -73,13 +73,13 @@
                     <div style="display: flex">
                         <RadzenMenuItem Icon="home" Path="/"></RadzenMenuItem>
 
-                        <RadzenMenuItem Text="Giới thiệu">
+                        @*<RadzenMenuItem Text="Giới thiệu">
                             <RadzenMenuItem Text="Giới thiệu chung" Path="counter">
                             </RadzenMenuItem>
                             <RadzenMenuItem Text="Các kỳ đại hội" Path="">
                             </RadzenMenuItem>
-                        </RadzenMenuItem>
-                        @foreach (var category in categories.Take(4))
+                        </RadzenMenuItem>*@
+                        @foreach (var category in categories.Take(5))
                         {
                             <RadzenMenuItem Text="@category.CategoryName" Click="() => NavigateCategory(category.CategoryId)"></RadzenMenuItem>
                         }
@@ -103,33 +103,16 @@
                             <RadzenIcon Icon="highlight_off" class="menu" Style="@(isMenu == false ? "" : "color: #ff0000;")" @onclick="() => isMenu = !isMenu" />
                         }
                         <div class="row sub-menu" style="@(isMenu == false ? "display: none;" : "display: block;")">
-                                <table class="table">
-                                    <thead>
-                                        <tr>
-                                            <b>TẤT CẢ CHUYÊN MỤC</b>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td><a href="/" style="color:red">Giới thiệu</a></td>
-                                            <td style="color:red">Tin tổng hợp</td>
-                                            <td style="color:red">Tin hoạt động</td>
-                                        </tr>
-                                        <tr>
-                                        @foreach (var category in categories.Take(3))
-                                        {
-                                            <td><a class="text-reset text-decoration-none" href="chuyenmuc/@category.CategoryId">@category.CategoryName</a></td>
-                                        }
-                                        </tr>
-                                        <tr>
-                                        @foreach (var category in categories.Skip(3).Take(3))
-                                        {
-                                            <td><a class="text-reset text-decoration-none" href="chuyenmuc/@category.CategoryId">@category.CategoryName</a></td>
-                                        }
-                                        </tr>
-                                    </tbody>
-                                </table>
+                            <h4>TẤT CẢ CHUYÊN MỤC</h4>
+                            <div class="row">
+                                @foreach (var category in categories)
+                                {
+                                    <div class="col-md-4 py-2" style="border-bottom: 1px solid #ccc;">
+                                        <a class="text-reset text-decoration-none" href="chuyenmuc/@category.CategoryId">@category.CategoryName</a>
+                                    </div>
+                                }
                             </div>
+                        </div>
                     </div>
                 </RadzenMenu>
 
