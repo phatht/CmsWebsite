@@ -3,7 +3,7 @@
 @using CmsWebsite.Share.Models.Article
 @inject IArticleService _articleService
 @inject NavigationManager MyNavigationManager
-@inject Blazored.LocalStorage.ILocalStorageService localStorage
+@inject Blazored.LocalStorage.ILocalStorageService LocalStorage
 @inject IJSRuntime JSRuntime
 @inherits LayoutComponentBase
 
@@ -25,7 +25,7 @@
                 {
                     <button type="button" @onclick="handleLike" class="btn d-flex text-reset" style="font-size:14px"><RadzenIcon Icon="favorite" Style="color: #f92f60;" /><span class="ms-1">Thích @currentLike</span></button>
                 }
-               &nbsp;&nbsp;&nbsp
+                &nbsp;&nbsp;&nbsp
                 <button class="btn d-flex text-decoration-none text-reset" style="font-size:14px" onclick="window.open('https://www.facebook.com/sharer/sharer.php?p[url]=@MyNavigationManager.Uri', '_blank')">
                     <RadzenIcon Icon="facebook" Style="color:darkblue" />
                     <span class="ms-1">Chia sẻ Facebook</span>
@@ -63,8 +63,9 @@
 
 @code {
     [Parameter]
-    public int currentLike { get; set;}
+    public int currentLike { get; set; }
     private bool checkLike;
+    public List<string> likeLocal;
     private async void handleLike()
     {
         if (checkLike == false)
@@ -72,16 +73,35 @@
             currentLike++;
             checkLike = true;
             await _articleService.LikeArticle(articleId, true);
+            likeLocal.Add(articleId.ToString());
+            await LocalStorage.SetItemAsync("like", likeLocal);
         }
         else
         {
             currentLike--;
             checkLike = false;
             await _articleService.LikeArticle(articleId, false);
+            likeLocal.Remove(articleId.ToString());
+            await LocalStorage.SetItemAsync("like", likeLocal);
         }
     }
     protected override async Task OnInitializedAsync()
     {
+
+        if (await LocalStorage.GetItemAsync<List<string>>("like") == null)
+        {
+            var temp = new List<Guid>()
+            {
+                Guid.NewGuid(),
+            };
+            await LocalStorage.SetItemAsync("like", temp);
+        }
+        else
+        {
+            likeLocal = await LocalStorage.GetItemAsync<List<string>>("like");
+            if (likeLocal.Contains(articleId.ToString()))
+                checkLike = true;
+        }
     }
 
     [Parameter]
