@@ -15,6 +15,8 @@
 @inject NavigationManager uriHelper
 @inject NotificationService NotificationService
 @inject IJSRuntime JSRuntime
+@inject HttpClient HttpClient
+
 <div class="container-fluid">
     <div class="row">
         <RadzenTemplateForm TItem="ArticleUpdateRequest" Data="@existingArticle" Submit=@Update>
@@ -171,7 +173,7 @@
     private bool isSave = false;
     private int count = 0;
 
-    public string uploadPath = "http://localhost:5200/api/file/uploadimageeditor";
+    public string uploadPath;
 
     [Parameter]
     public string VideoUrl { get; set; }
@@ -180,6 +182,8 @@
 
     protected async override Task OnParametersSetAsync()
     {
+        var uri = HttpClient.BaseAddress;
+        uploadPath = $"{uri}api/file/uploadimageeditor";
         existingArticle = await _articleService.GetUpdateArticle(articleId);
         Categories = await _categoryService.GetListCategory();
         //ac = await _acService.GetArticleCategory(articleId);

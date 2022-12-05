@@ -22,6 +22,7 @@
 @inject NotificationService NotificationService
 @inject AuthenticationStateProvider AuthenticationStateProvider
 @inject IJSRuntime JSRuntime
+@inject HttpClient HttpClient
 
 
 @*
@@ -184,7 +185,7 @@
     private bool isSave = false;
     private int count = 0;
     private int countHtmlEditor = 0;
-    public string uploadPath = "http://localhost:5200/api/file/uploadimageeditor";
+    public string uploadPath;
 
     [Parameter]
     public string VideoUrl { get; set; }
@@ -193,6 +194,8 @@
 
     protected override async Task OnInitializedAsync()
     {
+        var uri = HttpClient.BaseAddress;
+        uploadPath = $"{uri}api/file/uploadimageeditor";
         var userInfor = await getCurrentUser();
         article.UserId = userInfor.Id;
         article.Author = userInfor.FullName;
