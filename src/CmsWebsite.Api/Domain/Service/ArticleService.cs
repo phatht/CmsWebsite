@@ -43,7 +43,10 @@ namespace CmsWebsite.Api.Domain.Service
 
         public async Task<Article> GetArticleAsync(Guid id)
         {
-            return await _unitOfWork.ArticleRepository.FindAsync(id);
+            var result = await _unitOfWork.ArticleRepository.FindAsync(id);
+            result.View += 1;
+            await _unitOfWork.CommitAsync();
+            return result;
         }
 
         public async Task<Guid> PutArticleAsync(ArticleCreateRequest request)

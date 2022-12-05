@@ -24,5 +24,6 @@ namespace CmsWebsite.Api.Domain.Models
         public string Author { get; set; }
         public int Like { get; set; }
         public string? Video { get; set; }
+        public int View { get; set; }
     }
 }

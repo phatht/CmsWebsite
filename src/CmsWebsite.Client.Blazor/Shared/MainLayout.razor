@@ -70,38 +70,27 @@
             <NotAuthorized>
 
                 <RadzenMenu Style="width: 100%; justify-content: space-between; position: sticky; top: 0; z-index: 1;">
-                    <div style="display: flex">
+                    <div style="display: flex; align-items: center;">
                         <RadzenMenuItem Icon="home" Path="/"></RadzenMenuItem>
-
-                        @*<RadzenMenuItem Text="Giới thiệu">
-                            <RadzenMenuItem Text="Giới thiệu chung" Path="counter">
-                            </RadzenMenuItem>
-                            <RadzenMenuItem Text="Các kỳ đại hội" Path="">
-                            </RadzenMenuItem>
-                        </RadzenMenuItem>*@
                         @foreach (var category in categories.Take(5))
                         {
-                            <RadzenMenuItem Text="@category.CategoryName" Click="() => NavigateCategory(category.CategoryId)"></RadzenMenuItem>
+                            var subCategory = categories.Where(c => c.ParentCategoryId == category.CategoryId).ToList();
+                            @if (category.ParentCategoryId == null)
+                            {
+                                <div class="dropdown">
+                                    <a class="menu" href="chuyenmuc/@category.CategoryId">@category.CategoryName</a>
+                                        <div class="dropdown-content">
+                                        @foreach (var item in subCategory)
+                                        {
+                                            <a href="chuyenmuc/@item.CategoryId">@item.CategoryName</a>
+                                        }
+                                        </div>
+                                </div>
+                            }
                         }
                     </div>
-                    @*<RadzenMenuItem Text="Hoạt động mặt trận">
-                        <RadzenMenuItem Text="Tin hoạt động" Path="">
-                        </RadzenMenuItem>
-                        <RadzenMenuItem Text="Hoạt động mật trận địa phương" Path="">
-                        </RadzenMenuItem>
-                    </RadzenMenuItem>
-                    <RadzenMenuItem Text="Giám sát & phản biện"></RadzenMenuItem>
-                    <RadzenMenuItem Text="Dân tộc - tôn giáo"></RadzenMenuItem>
-                    <RadzenMenuItem Text="Đối ngoại kiều bào"></RadzenMenuItem>*@
                     <div style="position: relative;">
-                        @if (isMenu == false)
-                        {
-                            <RadzenIcon Icon="menu" class="menu" Style="@(isMenu == false ? "" : "color: #1159f3;")" @onclick="() => isMenu = !isMenu" />
-                        }
-                        else
-                        {
-                            <RadzenIcon Icon="highlight_off" class="menu" Style="@(isMenu == false ? "" : "color: #ff0000;")" @onclick="() => isMenu = !isMenu" />
-                        }
+                        <RadzenMenuItem Icon="@(isMenu == false ? "menu" : "highlight_off")" Click="() => isMenu = !isMenu" />
                         <div class="row sub-menu" style="@(isMenu == false ? "display: none;" : "display: block;")">
                             <h4>TẤT CẢ CHUYÊN MỤC</h4>
                             <div class="row">

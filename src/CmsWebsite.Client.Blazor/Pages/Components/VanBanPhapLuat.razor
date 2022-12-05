@@ -30,32 +30,19 @@
         <RadzenTabsItem Text="LUẬT">
         </RadzenTabsItem>
         <RadzenTabsItem Text="XEM NHIỀU">
-            <table class="table table-hover" width="100%">
-
-                <tbody>
-                    <tr>
-                        <td>
-                            Hội nghị tổng kết công tác phối hợp giữa Chủ tịch nước và Đoàn Chủ tịch UBTƯ MTTQ Việt Nam
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            Gìn giữ bản sắc văn hóa và tinh thần tương thân tương ái trong mỗi kiều bào tại Nhật Bản
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            Tình hình thực hiện thí điểm mô hình Trưởng ban Dân vận cấp ủy đồng thời là Chủ tịch Ủy ban MTTQ Việt Nam ở cấp tỉnh, cấp huyện
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+            <div style="height: 300px;">
+                @foreach (var item in viewArticle)
+                {
+                    <a class="text-decoration-none text-reset" href="/baiviet/@item.ArticleID">@item.Title</a>
+                    <hr />
+                }
+            </div>
         </RadzenTabsItem>
         <RadzenTabsItem Text="TIN MỚI">
             <div style="height: 300px;">
                 @foreach (var item in newArticle)
                 {
-                    <a class="text-decoration-none text-reset" href="/chitietbaiviet/@item.ArticleID">@item.Title</a>
+                    <a class="text-decoration-none text-reset" href="/baiviet/@item.ArticleID">@item.Title</a>
                     <hr />
                 }
             </div>
@@ -68,11 +55,13 @@
 
 @code {
     public List<ArticleDTO> newArticle = new();
+    public List<ArticleDTO> viewArticle = new();
 
     protected async override Task OnInitializedAsync()
     {
         var articles = await ArticleService.GetListArticle();
-        newArticle = articles.OrderByDescending(d => d.CreatedDate).Take(3).ToList();
+        newArticle = articles.OrderByDescending(d => d.CreatedDate).Take(5).ToList();
+        viewArticle = articles.OrderByDescending(v => v.View).Take(5).ToList();
     }
 
     List<int> years = new List<int>();
