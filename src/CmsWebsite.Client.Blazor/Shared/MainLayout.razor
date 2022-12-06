@@ -78,13 +78,13 @@
                             @if (category.ParentCategoryId == null)
                             {
                                 <div class="dropdown">
-                                    <a class="menu" href="chuyenmuc/@category.CategoryId">@category.CategoryName</a>
-                                        <div class="dropdown-content">
-                                        @foreach (var item in subCategory)
-                                        {
-                                            <a href="chuyenmuc/@item.CategoryId">@item.CategoryName</a>
-                                        }
-                                        </div>
+                                    <NavLink class="menu" ActiveClass="active-menu" href="@($"chuyenmuc/{category.CategoryId}")">@category.CategoryName</NavLink>
+                                    <div class="dropdown-content">
+                                    @foreach (var item in subCategory)
+                                    {
+                                        <a href="chuyenmuc/@item.CategoryId">@item.CategoryName</a>
+                                    }
+                                    </div>
                                 </div>
                             }
                         }
@@ -96,8 +96,8 @@
                             <div class="row">
                                 @foreach (var category in categories)
                                 {
-                                    <div class="col-md-4 py-2" style="border-bottom: 1px solid #ccc;">
-                                        <a class="text-reset text-decoration-none" href="chuyenmuc/@category.CategoryId">@category.CategoryName</a>
+                                    <div class="col-md-4 py-2 sub-menu-line">
+                                        <a class="title" href="chuyenmuc/@category.CategoryId">@category.CategoryName</a>
                                     </div>
                                 }
                             </div>
