@@ -21,11 +21,11 @@
 
             <div class="col-md-4" style="height: 545px; overflow: scroll;">
                 <RadzenImage @onclick="() => EditRow(listArticle[1].ArticleID)" Path=@listArticle[1].ImageFile Style="width: 100%; margin-bottom: 10px; cursor: pointer;" class="rounded" />
-                <a class="text-decoration-none text-reset" href="/baiviet/@listArticle[1].ArticleID">@listArticle[1].Title</a>
+                <a class="title" href="/baiviet/@listArticle[1].ArticleID">@listArticle[1].Title</a>
                 @foreach (var article in listArticle.Skip(2).Take(4))
                 {
                     <hr />
-                    <a class="text-decoration-none text-reset" href="/baiviet/@article.ArticleID">@article.Title</a>
+                    <a class="title" href="/baiviet/@article.ArticleID">@article.Title</a>
                 }
             </div>
         </div>
@@ -84,7 +84,7 @@ else
                         {
                             <div class="d-flex overflow-hidden mb-3" style="cursor: pointer;" @onclick="() => EditRow(article.ArticleID)">
                                 <img src="@article.ImageFile" class="rounded mr-2" style="width: 95px; height: 75px; object-fit: cover;">
-                                <p class="wrapper-p" style="font-size: 13px; font-weight: 700;">@article.Title</p>
+                                <p class="wrapper-p hover-text-blue" style="font-size: 13px; font-weight: 700;">@article.Title</p>
                             </div>
                         }
                     </div>
@@ -102,7 +102,7 @@ else
                         <img src=@item.Articles[0].ImageFile Style="width: 350px; height: 235px; object-fit: cover;" class="rounded" />
                         <div style="margin-left: 20px;">
                             <label class="article-title" style="font-weight:700; font-size:22px; cursor: pointer;">@item.Articles[0].Title</label>
-                            <p>@item.Articles[0].Description</p>
+                            <p style="overflow: hidden; display: -webkit-box; -webkit-line-clamp: 9; -webkit-box-orient: vertical;">@item.Articles[0].Description</p>
                         </div>
                     </div>
                     
